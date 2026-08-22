@@ -1,0 +1,2205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>FlixHub Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+    <style>
+        /* ================================================================
+           ROOT & RESET
+        ================================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6c3bff;
+            --primary-dark: #5530cc;
+            --primary-gradient: linear-gradient(135deg, #6c3bff, #a855f7);
+            --bg-dark: #07070d;
+            --bg-card: #12121f;
+            --bg-card-hover: #1c1c32;
+            --text-primary: #ffffff;
+            --text-secondary: #9898b0;
+            --text-muted: #5c5c78;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --shadow-glow: rgba(108, 59, 255, 0.4);
+            --radius: 12px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+        }
+
+        body.light-mode {
+            --bg-dark: #f0f0f5;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f5f5fa;
+            --text-primary: #1a1a2e;
+            --text-secondary: #555577;
+            --text-muted: #9999bb;
+            --border-color: rgba(0, 0, 0, 0.06);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* ================================================================
+           LOGIN PAGE
+        ================================================================ */
+        .login-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 16px;
+            background: var(--bg-dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(108, 59, 255, 0.05) 0%, transparent 60%);
+            animation: loginGlow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes loginGlow {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(10%, 5%) scale(1.2);
+            }
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 400px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-container .login-logo {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .login-container .login-logo i {
+            font-size: 40px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .login-container .login-logo h1 {
+            font-size: 22px;
+            font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-container .login-logo p {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .login-container .form-group {
+            margin-bottom: 14px;
+        }
+
+        .login-container .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .login-container .form-group .input-wrapper {
+            position: relative;
+        }
+
+        .login-container .form-group .input-wrapper i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .login-container .form-group input {
+            width: 100%;
+            padding: 10px 14px 10px 38px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .login-container .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 59, 255, 0.15);
+        }
+
+        .login-container .form-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .login-container .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .login-container .form-options label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .login-container .form-options label input[type="checkbox"] {
+            accent-color: var(--primary);
+            width: 13px;
+            height: 13px;
+            cursor: pointer;
+        }
+
+        .login-container .form-options a {
+            font-size: 11px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .login-container .form-options a:hover {
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 25px var(--shadow-glow);
+        }
+
+        .login-btn:active {
+            transform: scale(0.97);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .login-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            margin-bottom: 12px;
+            display: none;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .login-error.show {
+            display: flex;
+        }
+
+        /* ================================================================
+           DASHBOARD LAYOUT
+        ================================================================ */
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 220px;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            padding: 16px 12px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            z-index: 100;
+            transition: transform 0.3s ease, background 0.3s;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar .logo {
+            font-size: 18px;
+            font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding: 0 4px;
+        }
+
+        .sidebar .logo i {
+            -webkit-text-fill-color: initial;
+            color: var(--primary);
+        }
+
+        .sidebar .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            margin-bottom: 2px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 12px;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .sidebar .nav-item:hover {
+            background: rgba(108, 59, 255, 0.08);
+            color: var(--text-primary);
+        }
+
+        .sidebar .nav-item.active {
+            background: var(--primary-gradient);
+            color: #fff;
+            box-shadow: 0 4px 16px var(--shadow-glow);
+        }
+
+        .sidebar .nav-item i {
+            width: 16px;
+            text-align: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .sidebar .nav-divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 10px 8px;
+        }
+
+        .sidebar .nav-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 0 12px;
+            margin: 8px 0 4px;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+        }
+
+        .sidebar .sidebar-bottom {
+            margin-top: auto;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .sidebar .sidebar-bottom .user-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+        }
+
+        .sidebar .sidebar-bottom .user-info .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .sidebar .sidebar-bottom .user-info .user-name {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .sidebar .sidebar-bottom .user-info .user-role {
+            font-size: 9px;
+            color: var(--text-muted);
+        }
+
+        .sidebar .sidebar-bottom .logout-btn {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .sidebar .sidebar-bottom .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        /* ===== MAIN ===== */
+        .main {
+            margin-left: 220px;
+            padding: 16px 20px;
+            flex: 1;
+            min-height: 100vh;
+            width: calc(100% - 220px);
+            max-width: 100%;
+        }
+
+        /* ===== HEADER 1 BARIS ===== */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0 16px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            flex-wrap: nowrap;
+            gap: 8px;
+        }
+
+        .admin-header .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .admin-header .header-left h1 {
+            font-size: 20px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .admin-header .header-left h1 i {
+            color: var(--primary);
+        }
+
+        .admin-header .header-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .admin-header .header-right .last-updated {
+            font-size: 10px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .admin-header .header-right .btn-icon {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .admin-header .header-right .btn-icon:hover {
+            background: rgba(108, 59, 255, 0.12);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .admin-header .header-right .btn-icon.danger:hover {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        /* ===== PAGES ===== */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 12px 14px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .stat-card .stat-label {
+            font-size: 9px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .stat-card .stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            margin: 1px 0 0;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+
+        .stat-card .stat-change {
+            font-size: 9px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin-top: 1px;
+        }
+
+        .stat-card .stat-change.positive {
+            color: var(--success);
+        }
+        .stat-card .stat-change.negative {
+            color: var(--danger);
+        }
+        .stat-card .stat-change.neutral {
+            color: var(--text-muted);
+        }
+
+        .stat-card .stat-icon {
+            float: right;
+            font-size: 20px;
+            opacity: 0.15;
+            margin-top: -4px;
+        }
+
+        /* ================================================================
+           ADS MANAGEMENT - SETTINGS
+        ================================================================ */
+        .settings-section {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 16px;
+        }
+
+        .settings-section h2 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-section h2 i {
+            color: var(--primary);
+        }
+
+        .settings-section .form-group {
+            margin-bottom: 12px;
+        }
+
+        .settings-section .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+        }
+
+        .settings-section .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+            outline: none;
+            resize: vertical;
+            min-height: 100px;
+            max-width: 100%;
+        }
+
+        .settings-section .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 59, 255, 0.15);
+        }
+
+        .settings-section .form-group input {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+            outline: none;
+            max-width: 100%;
+        }
+
+        .settings-section .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 59, 255, 0.15);
+        }
+
+        .settings-section .form-group .hint {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 3px;
+            word-wrap: break-word;
+        }
+
+        .settings-section .form-group .hint code {
+            background: var(--bg-dark);
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            color: var(--text-secondary);
+            word-break: break-all;
+        }
+
+        .settings-section .btn-save {
+            padding: 8px 24px;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .settings-section .btn-save:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px var(--shadow-glow);
+        }
+
+        .settings-section .btn-save:active {
+            transform: scale(0.97);
+        }
+
+        .settings-section .btn-save .spinner {
+            display: none;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .settings-section .btn-save.loading .spinner {
+            display: inline-block;
+        }
+
+        .settings-section .btn-save.loading .text {
+            display: none;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .toast-message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 10px 18px;
+            border-radius: var(--radius);
+            font-size: 12px;
+            z-index: 9999;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 90%;
+        }
+
+        .toast-message.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast-message i {
+            color: var(--success);
+            font-size: 16px;
+        }
+
+        /* ===== CHARTS ===== */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .chart-card .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .chart-card .chart-header h3 {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .chart-card .chart-header .chart-select {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+        }
+
+        .chart-placeholder {
+            height: 140px;
+            display: flex;
+            align-items: flex-end;
+            gap: 3px;
+            padding-top: 6px;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: var(--primary-gradient);
+            border-radius: 3px 3px 0 0;
+            min-height: 4px;
+            transition: height 0.6s ease;
+            position: relative;
+            opacity: 0.7;
+        }
+
+        .chart-bar:hover {
+            opacity: 1;
+        }
+
+        .chart-bar .bar-label {
+            position: absolute;
+            bottom: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 6px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        /* ===== TRAFFIC ===== */
+        .traffic-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .traffic-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .traffic-card h3 {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .traffic-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .traffic-item:last-child {
+            border-bottom: none;
+        }
+
+        .traffic-item .traffic-name {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+        }
+
+        .traffic-item .traffic-name .dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .traffic-item .traffic-count {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* ===== ACTIVITY ===== */
+        .activity-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .activity-card h3 {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-item .activity-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        .activity-item .activity-icon.primary {
+            background: rgba(108, 59, 255, 0.15);
+            color: var(--primary);
+        }
+        .activity-item .activity-icon.success {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success);
+        }
+        .activity-item .activity-icon.warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        .activity-item .activity-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .activity-item .activity-content .activity-text {
+            font-size: 11px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .activity-item .activity-content .activity-time {
+            font-size: 9px;
+            color: var(--text-muted);
+        }
+
+        .activity-item .activity-content .activity-text strong {
+            color: var(--text-primary);
+        }
+
+        /* ===== OVERLAY ===== */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+            display: none;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* ===== NO DATA ===== */
+        .no-data {
+            text-align: center;
+            padding: 16px;
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .no-data i {
+            font-size: 28px;
+            display: block;
+            margin-bottom: 6px;
+            opacity: 0.2;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 16px;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 40px;
+            opacity: 0.2;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .empty-state h3 {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .empty-state p {
+            font-size: 12px;
+        }
+
+        /* ================================================================
+           RESPONSIVE
+        ================================================================ */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 240px;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main {
+                margin-left: 0;
+                padding: 12px 14px;
+                width: 100%;
+            }
+            .mobile-menu-btn {
+                display: flex !important;
+            }
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            .traffic-grid {
+                grid-template-columns: 1fr;
+            }
+            .login-container {
+                padding: 24px 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+            .stat-card {
+                padding: 10px 12px;
+            }
+            .stat-card .stat-value {
+                font-size: 16px;
+            }
+            .admin-header .header-left h1 {
+                font-size: 16px;
+            }
+            .admin-header .header-right .last-updated {
+                font-size: 8px;
+                display: none;
+            }
+            .login-container {
+                padding: 20px 16px;
+            }
+            .login-container .login-logo i {
+                font-size: 32px;
+            }
+            .login-container .login-logo h1 {
+                font-size: 18px;
+            }
+            .settings-section {
+                padding: 14px 14px;
+            }
+            .settings-section h2 {
+                font-size: 14px;
+            }
+            .chart-placeholder {
+                height: 120px;
+            }
+            .admin-header .header-right .btn-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main {
+                padding: 8px 10px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 4px;
+            }
+            .stat-card {
+                padding: 8px 10px;
+            }
+            .stat-card .stat-value {
+                font-size: 14px;
+            }
+            .stat-card .stat-label {
+                font-size: 8px;
+            }
+            .stat-card .stat-icon {
+                font-size: 16px;
+            }
+            .stat-card .stat-change {
+                font-size: 8px;
+            }
+            .admin-header .header-left h1 {
+                font-size: 14px;
+                white-space: normal;
+            }
+            .admin-header .header-left h1 i {
+                font-size: 14px;
+            }
+            .admin-header .header-right .btn-icon {
+                width: 26px;
+                height: 26px;
+                font-size: 10px;
+            }
+            .admin-header {
+                padding: 6px 0 10px;
+                margin-bottom: 12px;
+                flex-wrap: wrap;
+            }
+            .settings-section {
+                padding: 10px 10px;
+            }
+            .settings-section h2 {
+                font-size: 13px;
+            }
+            .settings-section .form-group textarea {
+                min-height: 80px;
+                font-size: 11px;
+                padding: 8px 10px;
+            }
+            .settings-section .form-group input {
+                font-size: 11px;
+                padding: 8px 10px;
+            }
+            .settings-section .form-group label {
+                font-size: 11px;
+            }
+            .settings-section .btn-save {
+                padding: 6px 18px;
+                font-size: 12px;
+                width: 100%;
+                justify-content: center;
+            }
+            .chart-placeholder {
+                height: 100px;
+            }
+            .chart-card {
+                padding: 10px 12px;
+            }
+            .chart-card .chart-header h3 {
+                font-size: 12px;
+            }
+            .traffic-card {
+                padding: 10px 12px;
+            }
+            .traffic-card h3 {
+                font-size: 12px;
+            }
+            .traffic-item .traffic-name {
+                font-size: 10px;
+            }
+            .traffic-item .traffic-count {
+                font-size: 10px;
+            }
+            .activity-card {
+                padding: 10px 12px;
+            }
+            .activity-card h3 {
+                font-size: 12px;
+            }
+            .activity-item .activity-content .activity-text {
+                font-size: 10px;
+            }
+            .activity-item .activity-icon {
+                width: 22px;
+                height: 22px;
+                font-size: 9px;
+            }
+            .login-container {
+                padding: 16px 14px;
+                margin: 8px;
+            }
+            .login-container .login-logo i {
+                font-size: 28px;
+            }
+            .login-container .login-logo h1 {
+                font-size: 16px;
+            }
+            .login-container .form-group input {
+                font-size: 12px;
+                padding: 8px 12px 8px 34px;
+            }
+            .login-btn {
+                font-size: 13px;
+                padding: 10px;
+            }
+            .toast-message {
+                font-size: 11px;
+                padding: 8px 14px;
+                bottom: 12px;
+                right: 12px;
+            }
+            .empty-state {
+                padding: 24px 12px;
+            }
+            .empty-state i {
+                font-size: 32px;
+            }
+            .empty-state h3 {
+                font-size: 14px;
+            }
+            .empty-state p {
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 3px;
+            }
+            .stat-card {
+                padding: 6px 8px;
+            }
+            .stat-card .stat-value {
+                font-size: 12px;
+            }
+            .admin-header .header-left h1 {
+                font-size: 12px;
+            }
+            .settings-section .form-group textarea {
+                min-height: 60px;
+                font-size: 10px;
+            }
+        }
+
+        .btn-danger {
+            color: var(--danger) !important;
+        }
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.15) !important;
+            border-color: var(--danger) !important;
+            color: var(--danger) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ================================================================
+    LOGIN PAGE
+    ================================================================ -->
+    <div class="login-page" id="loginPage">
+        <div class="login-container">
+            <div class="login-logo">
+                <i class="fas fa-film"></i>
+                <h1>FlixHub Admin</h1>
+                <p>Sign in to manage your website</p>
+            </div>
+
+            <div class="login-error" id="loginError">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="loginErrorMessage">Invalid credentials</span>
+            </div>
+
+            <form id="loginForm" autocomplete="off">
+                <div class="form-group">
+                    <label>Username</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="usernameInput" placeholder="Enter username" required />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="passwordInput" placeholder="Enter password" required />
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label>
+                        <input type="checkbox" id="rememberMe" /> Remember me
+                    </label>
+                    <a href="javascript:void(0)">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================================================================
+    DASHBOARD - APP
+    ================================================================ -->
+    <div class="app" id="dashboardApp" style="display:none;">
+
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="logo">
+                <i class="fas fa-film"></i> FlixHub
+            </div>
+
+            <div class="nav-label">Main</div>
+            <button class="nav-item active" data-page="dashboard">
+                <i class="fas fa-chart-pie"></i> Dashboard
+            </button>
+            <button class="nav-item" data-page="traffic">
+                <i class="fas fa-users"></i> Traffic
+            </button>
+            <button class="nav-item" data-page="movies">
+                <i class="fas fa-film"></i> Movies
+            </button>
+
+            <div class="nav-divider"></div>
+
+            <div class="nav-label">Monetization</div>
+            <button class="nav-item" data-page="ads">
+                <i class="fas fa-ad"></i> Ad Revenue
+            </button>
+            <button class="nav-item" data-page="cpa">
+                <i class="fas fa-dollar-sign"></i> CPA
+            </button>
+
+            <div class="nav-divider"></div>
+
+            <div class="nav-label">Settings</div>
+            <button class="nav-item" data-page="settings">
+                <i class="fas fa-cog"></i> Settings
+            </button>
+            <button class="nav-item" onclick="toggleTheme()">
+                <i class="fas fa-moon" id="themeIcon"></i> Theme
+            </button>
+
+            <div class="sidebar-bottom">
+                <div class="user-info">
+                    <div class="avatar" id="userAvatar">A</div>
+                    <div>
+                        <div class="user-name" id="userName">Admin</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- ===== OVERLAY ===== -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- ===== MAIN ===== -->
+        <main class="main">
+
+            <!-- ===== HEADER ===== -->
+            <header class="admin-header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1><i class="fas fa-chart-pie"></i> <span id="pageTitle">Dashboard</span></h1>
+                </div>
+                <div class="header-right">
+                    <span class="last-updated" id="lastUpdated">—</span>
+                    <button class="btn-icon" onclick="refreshData()" title="Refresh">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button class="btn-icon btn-danger" onclick="resetAllData()" title="Reset All Data">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                    <button class="btn-icon" onclick="toggleTheme()" title="Theme">
+                        <i class="fas fa-moon" id="headerThemeIcon"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- ============================================================
+            PAGE: DASHBOARD
+            ============================================================ -->
+            <div class="page active" id="page-dashboard">
+
+                <!-- STATS -->
+                <section class="stats-grid" id="statsGrid">
+                    <div class="stat-card">
+                        <span class="stat-label">Visitors</span>
+                        <div class="stat-value" id="totalVisitors">0</div>
+                        <span class="stat-change neutral" id="visitorChange">—</span>
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Page Views</span>
+                        <div class="stat-value" id="pageViews">0</div>
+                        <span class="stat-change neutral" id="pageChange">—</span>
+                        <div class="stat-icon"><i class="fas fa-eye"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Movies Watched</span>
+                        <div class="stat-value" id="moviesWatched">0</div>
+                        <span class="stat-change neutral" id="movieChange">—</span>
+                        <div class="stat-icon"><i class="fas fa-play"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Ad Revenue</span>
+                        <div class="stat-value" id="adRevenue">$0</div>
+                        <span class="stat-change neutral" id="revenueChange">—</span>
+                        <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">CPA Clicks</span>
+                        <div class="stat-value" id="cpaClicks">0</div>
+                        <span class="stat-change neutral" id="cpaChange">—</span>
+                        <div class="stat-icon"><i class="fas fa-mouse-pointer"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Bounce Rate</span>
+                        <div class="stat-value" id="bounceRate">0%</div>
+                        <span class="stat-change neutral" id="bounceChange">—</span>
+                        <div class="stat-icon"><i class="fas fa-arrow-right"></i></div>
+                    </div>
+                </section>
+
+                <!-- CHARTS -->
+                <section class="charts-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-chart-bar" style="color:var(--primary);"></i> Traffic</h3>
+                            <select class="chart-select" id="chartRange">
+                                <option value="7">7 Days</option>
+                                <option value="14">14 Days</option>
+                                <option value="30" selected>30 Days</option>
+                            </select>
+                        </div>
+                        <div class="chart-placeholder" id="trafficChart"></div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-circle" style="color:var(--primary);"></i> Devices</h3>
+                        </div>
+                        <div id="deviceChart">
+                            <div class="traffic-item">
+                                <span class="traffic-name"><span class="dot" style="background:#6c3bff;"></span> Mobile</span>
+                                <span class="traffic-count" id="deviceMobile">0%</span>
+                            </div>
+                            <div class="traffic-item">
+                                <span class="traffic-name"><span class="dot" style="background:#a855f7;"></span> Desktop</span>
+                                <span class="traffic-count" id="deviceDesktop">0%</span>
+                            </div>
+                            <div class="traffic-item">
+                                <span class="traffic-name"><span class="dot" style="background:#22c55e;"></span> Tablet</span>
+                                <span class="traffic-count" id="deviceTablet">0%</span>
+                            </div>
+                            <div style="height:50px;display:flex;align-items:center;justify-content:center;gap:12px;margin-top:4px;">
+                                <div style="width:50px;height:50px;border-radius:50%;background:conic-gradient(#6c3bff 0% 0%, #a855f7 0% 0%, #22c55e 0% 100%);" id="deviceDonut"></div>
+                                <div>
+                                    <div style="font-size:10px;color:var(--text-muted);">Mobile <span style="color:#6c3bff;">●</span></div>
+                                    <div style="font-size:10px;color:var(--text-muted);">Desktop <span style="color:#a855f7;">●</span></div>
+                                    <div style="font-size:10px;color:var(--text-muted);">Tablet <span style="color:#22c55e;">●</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TRAFFIC SOURCES -->
+                <section class="traffic-grid">
+                    <div class="traffic-card">
+                        <h3><i class="fas fa-globe" style="color:var(--primary);"></i> Sources</h3>
+                        <div id="trafficSources">
+                            <div class="traffic-item">
+                                <span class="traffic-name"><span class="dot" style="background:#6c3bff;"></span> Direct</span>
+                                <span class="traffic-count" id="sourceDirect">0</span>
+                            </div>
+                            <div class="traffic-item">
+                                <span class="traffic-name"><span class="dot" style="background:#3b82f6;"></span> Search</span>
+                                <span class="traffic-count" id="sourceSearch">0</span>
+                            </div>
+                            <div class="traffic-item">
+                                <span class="traffic-name"><span class="dot" style="background:#e94560;"></span> Social</span>
+                                <span class="traffic-count" id="sourceSocial">0</span>
+                            </div>
+                            <div class="traffic-item">
+                                <span class="traffic-name"><span class="dot" style="background:#22c55e;"></span> Referral</span>
+                                <span class="traffic-count" id="sourceReferral">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="traffic-card">
+                        <h3><i class="fas fa-flag" style="color:var(--primary);"></i> Top Countries</h3>
+                        <div id="topCountries">
+                            <div class="traffic-item">
+                                <span class="traffic-name">🇺🇸 United States</span>
+                                <span class="traffic-count" id="countryUS">0</span>
+                            </div>
+                            <div class="traffic-item">
+                                <span class="traffic-name">🇬🇧 United Kingdom</span>
+                                <span class="traffic-count" id="countryUK">0</span>
+                            </div>
+                            <div class="traffic-item">
+                                <span class="traffic-name">🇨🇦 Canada</span>
+                                <span class="traffic-count" id="countryCA">0</span>
+                            </div>
+                            <div class="traffic-item">
+                                <span class="traffic-name">🇦🇺 Australia</span>
+                                <span class="traffic-count" id="countryAU">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ACTIVITY -->
+                <section class="activity-card">
+                    <h3><i class="fas fa-clock" style="color:var(--primary);"></i> Recent Activity</h3>
+                    <div id="recentActivity">
+                        <div class="no-data">
+                            <i class="fas fa-inbox"></i>
+                            No activity yet. Start sending traffic!
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ============================================================
+            PAGE: SETTINGS - ADS MANAGEMENT
+            ============================================================ -->
+            <div class="page" id="page-settings">
+                <div class="settings-section">
+                    <h2><i class="fas fa-ad"></i> Ad Unit Management</h2>
+                    <p style="color:var(--text-muted);font-size:12px;margin-bottom:14px;">
+                        Manage all ad units from one place. Changes will apply to all pages instantly.
+                    </p>
+
+                    <form id="adSettingsForm">
+                        <div class="form-group">
+                            <label>Header Banner - Desktop (728x90)</label>
+                            <textarea id="adHeaderDesktop" placeholder="Paste Adsterra script for 728x90 banner"></textarea>
+                            <div class="hint">
+                                <i class="fas fa-info-circle"></i> Appears at the top of the page on desktop.
+                                <br><span style="color:var(--text-muted);">💡 Script tag: <code>&lt;script type="text/javascript"&gt;...&lt;/script&gt;</code></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Header Banner - Mobile (320x50)</label>
+                            <textarea id="adHeaderMobile" placeholder="Paste Adsterra script for 320x50 banner"></textarea>
+                            <div class="hint">
+                                <i class="fas fa-info-circle"></i> Appears at the top of the page on mobile.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Footer Banner - Desktop (728x90)</label>
+                            <textarea id="adFooterDesktop" placeholder="Paste Adsterra script for 728x90 banner"></textarea>
+                            <div class="hint">
+                                <i class="fas fa-info-circle"></i> Appears at the bottom of the page on desktop.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Footer Banner - Mobile (320x50)</label>
+                            <textarea id="adFooterMobile" placeholder="Paste Adsterra script for 320x50 banner"></textarea>
+                            <div class="hint">
+                                <i class="fas fa-info-circle"></i> Appears at the bottom of the page on mobile.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Player Top Banner - Desktop (728x90)</label>
+                            <textarea id="adPlayerTopDesktop" placeholder="Paste Adsterra script for 728x90 banner"></textarea>
+                            <div class="hint">
+                                <i class="fas fa-info-circle"></i> Appears above the player on desktop.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Player Top Banner - Mobile (320x50)</label>
+                            <textarea id="adPlayerTopMobile" placeholder="Paste Adsterra script for 320x50 banner"></textarea>
+                            <div class="hint">
+                                <i class="fas fa-info-circle"></i> Appears above the player on mobile.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>VAST Video Ad Tag</label>
+                            <textarea id="adVastTag" placeholder="Paste your VAST tag URL here" style="min-height:50px;"></textarea>
+                            <div class="hint">
+                                <i class="fas fa-info-circle"></i> VAST tag for pre-roll video ads.
+                                <br><span style="color:var(--text-muted);">💡 Example: <code>https://example.com/vast.xml</code></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>CPA Offer Link</label>
+                            <input type="text" id="adCpaLink" placeholder="https://your.cpa.link/offer" />
+                            <div class="hint">
+                                <i class="fas fa-info-circle"></i> CPA offer link for the "Watch Now" button.
+                                <br><span style="color:var(--text-muted);">💡 Add <code>?movie={title}</code> at the end for dynamic tracking.</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-save" id="saveAdsBtn">
+                            <span class="spinner"><i class="fas fa-spinner"></i></span>
+                            <span class="text"><i class="fas fa-save"></i> Save All Ad Units</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ============================================================
+            PAGE: TRAFFIC
+            ============================================================ -->
+            <div class="page" id="page-traffic">
+                <div class="empty-state">
+                    <i class="fas fa-users"></i>
+                    <h3>Traffic Analytics</h3>
+                    <p>Detailed traffic data will appear here as visitors come to your site.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================
+            PAGE: MOVIES
+            ============================================================ -->
+            <div class="page" id="page-movies">
+                <div class="empty-state">
+                    <i class="fas fa-film"></i>
+                    <h3>Movies Management</h3>
+                    <p>Movie data and analytics will appear here as users watch content.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================
+            PAGE: ADS
+            ============================================================ -->
+            <div class="page" id="page-ads">
+                <div class="empty-state">
+                    <i class="fas fa-ad"></i>
+                    <h3>Ad Revenue</h3>
+                    <p>Ad performance data will appear here as ads generate revenue.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================
+            PAGE: CPA
+            ============================================================ -->
+            <div class="page" id="page-cpa">
+                <div class="empty-state">
+                    <i class="fas fa-dollar-sign"></i>
+                    <h3>CPA Performance</h3>
+                    <p>CPA conversion data will appear here as users click on offers.</p>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast-message" id="toastMessage">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastText">Settings saved successfully!</span>
+    </div>
+
+    <script>
+        // ================================================================
+        //  CONFIG
+        // ================================================================
+        const ADMIN_USER = 'admin';
+        const ADMIN_PASS = 'flixhub2025';
+
+        // ================================================================
+        //  LOGIN
+        // ================================================================
+        const loginPage = document.getElementById('loginPage');
+        const dashboardApp = document.getElementById('dashboardApp');
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('usernameInput');
+        const passwordInput = document.getElementById('passwordInput');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginError = document.getElementById('loginError');
+        const loginErrorMessage = document.getElementById('loginErrorMessage');
+        const rememberMe = document.getElementById('rememberMe');
+
+        if (localStorage.getItem('flixhub_admin_logged') === 'true') {
+            const savedUser = localStorage.getItem('flixhub_admin_user') || 'Admin';
+            showDashboard(savedUser);
+        }
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!username || !password) {
+                showLoginError('Please fill in all fields');
+                return;
+            }
+
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+
+            setTimeout(() => {
+                if (username === ADMIN_USER && password === ADMIN_PASS) {
+                    if (rememberMe.checked) {
+                        localStorage.setItem('flixhub_admin_logged', 'true');
+                        localStorage.setItem('flixhub_admin_user', username);
+                    }
+                    showDashboard(username);
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+                } else {
+                    showLoginError('Invalid username or password');
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+                }
+            }, 1000);
+        });
+
+        function showLoginError(message) {
+            loginErrorMessage.textContent = message;
+            loginError.classList.add('show');
+            setTimeout(() => loginError.classList.remove('show'), 4000);
+        }
+
+        function showDashboard(username) {
+            loginPage.style.display = 'none';
+            dashboardApp.style.display = 'flex';
+            document.getElementById('userName').textContent = username.charAt(0).toUpperCase() + username.slice(1);
+            document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
+            loadAdSettings();
+            updateDashboard();
+            setInterval(updateDashboard, 30000);
+        }
+
+        // ================================================================
+        //  LOGOUT
+        // ================================================================
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('flixhub_admin_logged');
+            localStorage.removeItem('flixhub_admin_user');
+            loginPage.style.display = 'flex';
+            dashboardApp.style.display = 'none';
+            usernameInput.value = '';
+            passwordInput.value = '';
+            loginError.classList.remove('show');
+        });
+
+        // ================================================================
+        //  THEME
+        // ================================================================
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const icon = document.querySelector('#themeIcon');
+            const headerIcon = document.querySelector('#headerThemeIcon');
+            const newIcon = document.body.classList.contains('light-mode') ? 'fa-sun' : 'fa-moon';
+            if (icon) icon.className = `fas ${newIcon}`;
+            if (headerIcon) headerIcon.className = `fas ${newIcon}`;
+            localStorage.setItem('adminTheme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        }
+
+        if (localStorage.getItem('adminTheme') === 'light') {
+            document.body.classList.add('light-mode');
+            document.querySelector('#themeIcon').className = 'fas fa-sun';
+            document.querySelector('#headerThemeIcon').className = 'fas fa-sun';
+        }
+
+        // ================================================================
+        //  MOBILE SIDEBAR
+        // ================================================================
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+
+        mobileBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        });
+
+        // ================================================================
+        //  NAVIGATION
+        // ================================================================
+        document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item[data-page]').forEach(n => n.classList.remove('active'));
+                this.classList.add('active');
+
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+                const pageId = 'page-' + this.dataset.page;
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) targetPage.classList.add('active');
+
+                const titles = {
+                    dashboard: 'Dashboard',
+                    traffic: 'Traffic Analytics',
+                    movies: 'Movies Management',
+                    ads: 'Ad Revenue',
+                    cpa: 'CPA Performance',
+                    settings: 'Settings'
+                };
+                document.getElementById('pageTitle').textContent = titles[this.dataset.page] || this.dataset.page;
+
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            });
+        });
+
+        // ================================================================
+        //  RESET ALL DATA
+        // ================================================================
+        function resetAllData() {
+            if (confirm('⚠️ Are you sure? This will delete ALL data including:\n- Visitors\n- Page Views\n- Movies Watched\n- CPA Clicks\n- Watch History\n\nThis action cannot be undone!')) {
+                if (confirm('Type "RESET" to confirm:')) {
+                    Object.keys(localStorage).forEach(key => {
+                        if (key.startsWith('flixhub_')) {
+                            localStorage.removeItem(key);
+                        }
+                    });
+                    showToast('🗑️ All data has been reset!');
+                    setTimeout(() => location.reload(), 1000);
+                }
+            }
+        }
+
+        // ================================================================
+        //  ADS MANAGEMENT - SAVE & LOAD
+        // ================================================================
+        function loadAdSettings() {
+            const keys = [
+                'adHeaderDesktop', 'adHeaderMobile', 'adFooterDesktop', 'adFooterMobile',
+                'adPlayerTopDesktop', 'adPlayerTopMobile', 'adVastTag', 'adCpaLink'
+            ];
+
+            keys.forEach(key => {
+                const el = document.getElementById(key);
+                if (el) {
+                    const val = localStorage.getItem('flixhub_' + key);
+                    if (val) {
+                        el.value = val;
+                    }
+                }
+            });
+        }
+
+        document.getElementById('adSettingsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('saveAdsBtn');
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            setTimeout(() => {
+                const keys = [
+                    'adHeaderDesktop', 'adHeaderMobile', 'adFooterDesktop', 'adFooterMobile',
+                    'adPlayerTopDesktop', 'adPlayerTopMobile', 'adVastTag', 'adCpaLink'
+                ];
+
+                keys.forEach(key => {
+                    const el = document.getElementById(key);
+                    if (el) {
+                        localStorage.setItem('flixhub_' + key, el.value);
+                    }
+                });
+
+                localStorage.setItem('flixhub_ads_updated', Date.now().toString());
+
+                btn.classList.remove('loading');
+                btn.disabled = false;
+                showToast('✅ All ad settings saved successfully!');
+            }, 800);
+        });
+
+        // ================================================================
+        //  TOAST
+        // ================================================================
+        function showToast(message) {
+            const toast = document.getElementById('toastMessage');
+            const text = document.getElementById('toastText');
+            text.textContent = message;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // ================================================================
+        //  DATA HELPER - REAL DATA FROM LOCALSTORAGE
+        // ================================================================
+        function getData(key, defaultValue = 0) {
+            try {
+                const val = localStorage.getItem('flixhub_' + key);
+                if (val === null || val === 'null' || val === 'undefined') return defaultValue;
+                return JSON.parse(val);
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+
+        function getArray(key, defaultValue = []) {
+            try {
+                const val = localStorage.getItem('flixhub_' + key);
+                if (val === null || val === 'null' || val === 'undefined') return defaultValue;
+                const parsed = JSON.parse(val);
+                return Array.isArray(parsed) ? parsed : defaultValue;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+
+        function formatNumber(n) {
+            if (n === 0 || n === null || n === undefined) return '0';
+            return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function timeAgo(date) {
+            if (!date) return 'Just now';
+            try {
+                const diff = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
+                if (diff < 60) return 'Just now';
+                if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+                if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+                if (diff < 604800) return Math.floor(diff / 86400) + 'd ago';
+                return new Date(date).toLocaleDateString();
+            } catch (e) {
+                return 'Just now';
+            }
+        }
+
+        // ================================================================
+        //  UPDATE DASHBOARD - REAL DATA ONLY, NO DUMMY
+        // ================================================================
+        function updateDashboard() {
+            const totalVisitors = getData('totalVisits', 0);
+            const pageViews = getData('pageViews', 0);
+            const moviesWatched = getData('moviesWatched', 0);
+            const cpaClicks = getData('cpaClicks', 0);
+            const adRevenue = (pageViews * 0.002).toFixed(2);
+
+            const sessions = getArray('sessions', []);
+            const bounced = sessions.filter(s => s.pages === 1).length;
+            const bounceRate = sessions.length > 0 ? Math.round((bounced / sessions.length) * 100) : 0;
+
+            document.getElementById('totalVisitors').textContent = formatNumber(totalVisitors);
+            document.getElementById('pageViews').textContent = formatNumber(pageViews);
+            document.getElementById('moviesWatched').textContent = formatNumber(moviesWatched);
+            document.getElementById('adRevenue').textContent = `$${adRevenue}`;
+            document.getElementById('cpaClicks').textContent = formatNumber(cpaClicks);
+            document.getElementById('bounceRate').textContent = `${bounceRate}%`;
+
+            const prevVisitors = getData('prevTotalVisits', totalVisitors);
+            const change = totalVisitors - prevVisitors;
+            const changeEl = document.getElementById('visitorChange');
+
+            if (totalVisitors === 0 && prevVisitors === 0) {
+                changeEl.textContent = '—';
+                changeEl.className = 'stat-change neutral';
+            } else if (change > 0) {
+                changeEl.textContent = `↑ ${formatNumber(change)}`;
+                changeEl.className = 'stat-change positive';
+            } else if (change < 0) {
+                changeEl.textContent = `↓ ${formatNumber(Math.abs(change))}`;
+                changeEl.className = 'stat-change negative';
+            } else {
+                changeEl.textContent = '—';
+                changeEl.className = 'stat-change neutral';
+            }
+
+            const referrers = getArray('referrers', []);
+            let direct = 0,
+                search = 0,
+                social = 0,
+                referral = 0;
+
+            referrers.forEach(r => {
+                const url = (r.url || '').toLowerCase();
+                if (!url || url === 'direct' || url === '') {
+                    direct++;
+                } else if (url.includes('google') || url.includes('bing') || url.includes('yahoo') || url.includes('duckduckgo')) {
+                    search++;
+                } else if (url.includes('facebook') || url.includes('twitter') || url.includes('instagram') ||
+                    url.includes('youtube') || url.includes('tiktok') || url.includes('linkedin')) {
+                    social++;
+                } else {
+                    referral++;
+                }
+            });
+
+            if (referrers.length === 0 && totalVisitors > 0) {
+                direct = totalVisitors;
+            }
+
+            document.getElementById('sourceDirect').textContent = formatNumber(direct);
+            document.getElementById('sourceSearch').textContent = formatNumber(search);
+            document.getElementById('sourceSocial').textContent = formatNumber(social);
+            document.getElementById('sourceReferral').textContent = formatNumber(referral);
+
+            const sessionsList = getArray('sessions', []);
+            let mobile = 0,
+                desktop = 0,
+                tablet = 0;
+
+            sessionsList.forEach(s => {
+                const ua = (s.userAgent || '').toLowerCase();
+                if (ua.includes('mobile') || ua.includes('android') || ua.includes('iphone') || ua.includes('ipod')) {
+                    mobile++;
+                } else if (ua.includes('tablet') || ua.includes('ipad')) {
+                    tablet++;
+                } else if (ua && ua.length > 0) {
+                    desktop++;
+                }
+            });
+
+            const totalSessions = sessionsList.length || 1;
+            const mobilePct = Math.round((mobile / totalSessions) * 100);
+            const desktopPct = Math.round((desktop / totalSessions) * 100);
+            const tabletPct = Math.max(0, 100 - mobilePct - desktopPct);
+
+            document.getElementById('deviceMobile').textContent = `${mobilePct}%`;
+            document.getElementById('deviceDesktop').textContent = `${desktopPct}%`;
+            document.getElementById('deviceTablet').textContent = `${tabletPct}%`;
+
+            const mobileEnd = mobilePct;
+            const desktopEnd = mobilePct + desktopPct;
+            document.getElementById('deviceDonut').style.background =
+                `conic-gradient(#6c3bff 0% ${mobileEnd}%, #a855f7 ${mobileEnd}% ${desktopEnd}%, #22c55e ${desktopEnd}% 100%)`;
+
+            const countries = getArray('countries', []);
+            document.getElementById('countryUS').textContent = formatNumber(countries.filter(c => c.code === 'US').length || 0);
+            document.getElementById('countryUK').textContent = formatNumber(countries.filter(c => c.code === 'GB').length || 0);
+            document.getElementById('countryCA').textContent = formatNumber(countries.filter(c => c.code === 'CA').length || 0);
+            document.getElementById('countryAU').textContent = formatNumber(countries.filter(c => c.code === 'AU').length || 0);
+
+            updateTrafficChart();
+            updateActivity();
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString();
+            localStorage.setItem('flixhub_prevTotalVisits', JSON.stringify(totalVisitors));
+        }
+
+        // ================================================================
+        //  TRAFFIC CHART
+        // ================================================================
+        function updateTrafficChart() {
+            const chart = document.getElementById('trafficChart');
+            const days = parseInt(document.getElementById('chartRange').value);
+
+            const dailyVisits = getArray('dailyVisits', []);
+            const now = new Date();
+            const chartData = [];
+
+            for (let i = days - 1; i >= 0; i--) {
+                const date = new Date(now);
+                date.setDate(date.getDate() - i);
+                const key = date.toISOString().slice(0, 10);
+                const visit = dailyVisits.find(d => d.date === key);
+                chartData.push({
+                    label: date.getDate().toString(),
+                    value: visit ? visit.count : 0
+                });
+            }
+
+            const max = Math.max(...chartData.map(d => d.value), 1);
+
+            if (chartData.every(d => d.value === 0)) {
+                chart.innerHTML =
+                    `<div class="no-data" style="width:100%;padding:30px 0;"><i class="fas fa-chart-bar"></i>No traffic data yet</div>`;
+                return;
+            }
+
+            chart.innerHTML = chartData.map(d => `
+                <div class="chart-bar" style="height: ${(d.value / max) * 120 + 10}%;">
+                    <span class="bar-label">${d.label}</span>
+                </div>
+            `).join('');
+        }
+
+        // ================================================================
+        //  ACTIVITY
+        // ================================================================
+        function updateActivity() {
+            const container = document.getElementById('recentActivity');
+            const activities = getArray('activities', []);
+
+            if (!activities || activities.length === 0) {
+                container.innerHTML =
+                    `<div class="no-data"><i class="fas fa-inbox"></i>No activity yet. Start sending traffic!</div>`;
+                return;
+            }
+
+            const recent = activities.slice(-10).reverse();
+            const icons = {
+                'page_view': { icon: 'fa-eye', cls: 'primary' },
+                'watch': { icon: 'fa-play', cls: 'primary' },
+                'cpa_click': { icon: 'fa-mouse-pointer', cls: 'success' },
+                'visit': { icon: 'fa-user', cls: 'warning' },
+                'search': { icon: 'fa-search', cls: 'info' }
+            };
+
+            container.innerHTML = recent.map(act => {
+                const icon = icons[act.type] || icons['visit'];
+                const text = act.text || act.type || 'Activity occurred';
+                return `
+                    <div class="activity-item">
+                        <div class="activity-icon ${icon.cls}"><i class="fas ${icon.icon}"></i></div>
+                        <div class="activity-content">
+                            <div class="activity-text">${text}</div>
+                            <div class="activity-time">${timeAgo(act.timestamp)}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ================================================================
+        //  REFRESH
+        // ================================================================
+        function refreshData() {
+            const btn = document.querySelector('.btn-icon[onclick="refreshData()"]');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            updateDashboard();
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i>';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-sync-alt"></i>';
+                }, 800);
+            }, 500);
+        }
+
+        // ================================================================
+        //  CHART RANGE
+        // ================================================================
+        document.getElementById('chartRange').addEventListener('change', updateTrafficChart);
+
+        // ================================================================
+        //  STORAGE SYNC
+        // ================================================================
+        window.addEventListener('storage', function(e) {
+            if (e.key && e.key.startsWith('flixhub_')) {
+                if (e.key === 'flixhub_ads_updated') {
+                    loadAdSettings();
+                }
+                updateDashboard();
+            }
+        });
+
+        // ================================================================
+        //  INIT
+        // ================================================================
+        console.log('📊 FlixHub Admin Panel loaded successfully!');
+        console.log('🔐 Login: admin / flixhub2025');
+        console.log('📈 All ad units can be managed from Settings page');
+        console.log('🔄 Auto-refresh every 30 seconds');
+        console.log('📊 Data is real-time from localStorage, no dummy data');
+        console.log('🗑️ Click trash icon to reset all data');
+    </script>
+
+</body>
+</html>

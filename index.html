@@ -1,0 +1,2811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>FlixHub - Watch Movies & TV Shows Online Free in HD</title>
+    <meta name="description" content="Watch thousands of movies and TV shows online for free in HD. No registration required. Stream the latest releases instantly." />
+    <link rel="canonical" href="https://www.flixhub.com/" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#6c3bff" id="themeColor" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="FlixHub - Watch Movies & TV Shows Online Free in HD" />
+    <meta property="og:description" content="Watch thousands of movies and TV shows online for free in HD. No registration required." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.flixhub.com/" />
+    <meta property="og:image" content="https://image.tmdb.org/t/p/w500/placeholder.jpg" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="FlixHub - Watch Movies & TV Shows Online Free in HD" />
+    <meta name="twitter:description" content="Watch thousands of movies and TV shows online for free in HD. No registration required." />
+
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <!-- Google Fonts Premium -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <style>
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6c3bff;
+            --primary-dark: #5530cc;
+            --primary-gradient: linear-gradient(135deg, #6c3bff, #a855f7);
+            --bg-dark: #07070d;
+            --bg-card: #12121f;
+            --bg-card-hover: #1c1c32;
+            --text-primary: #ffffff;
+            --text-secondary: #9898b0;
+            --text-muted: #5c5c78;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --shadow-glow: rgba(108, 59, 255, 0.4);
+            --radius: 14px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        body.light-mode {
+            --bg-dark: #f0f0f5;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f5f5fa;
+            --text-primary: #1a1a2e;
+            --text-secondary: #555577;
+            --text-muted: #9999bb;
+            --border-color: rgba(0, 0, 0, 0.06);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 16px;
+            width: 100%;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        /* ===== SPLASH SCREEN ===== */
+        #splashScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            transition: opacity 0.8s ease, visibility 0.8s ease, background 0.3s;
+        }
+
+        #splashScreen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .splash-logo {
+            font-size: 48px;
+            font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: splashPulse 1.5s ease-in-out infinite;
+        }
+
+        .splash-logo i {
+            font-size: 52px;
+            -webkit-text-fill-color: initial;
+            color: var(--primary);
+        }
+
+        .splash-loader {
+            margin-top: 30px;
+            width: 60px;
+            height: 60px;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .splash-text {
+            margin-top: 20px;
+            color: var(--text-muted);
+            font-size: 14px;
+            letter-spacing: 2px;
+            animation: splashPulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes splashPulse {
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.02);
+            }
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: rgba(7, 7, 13, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 8px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: background 0.3s, border-color 0.3s;
+        }
+
+        body.light-mode header {
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        header.scrolled {
+            background: rgba(7, 7, 13, 0.95);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        body.light-mode header.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .logo i {
+            font-size: 22px;
+            -webkit-text-fill-color: initial;
+            color: var(--primary);
+        }
+
+        .search-wrapper {
+            flex: 1;
+            max-width: 460px;
+            min-width: 100px;
+            width: 100%;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 50px;
+            padding: 0 3px 0 14px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        body.light-mode .search-box {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .search-box:focus-within {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 30px rgba(108, 59, 255, 0.06);
+        }
+
+        .search-box .search-icon {
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        .search-box input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 13px;
+            padding: 8px 0;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            min-width: 40px;
+            width: 100%;
+        }
+
+        .search-box input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .search-box button {
+            background: var(--primary-gradient);
+            border: none;
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .search-box button:hover:not(:disabled) {
+            transform: scale(1.03);
+            box-shadow: 0 4px 20px var(--shadow-glow);
+        }
+
+        .search-box button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .header-actions .btn-icon {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .header-actions .btn-icon:hover {
+            background: rgba(108, 59, 255, 0.12);
+            color: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .header-actions .btn-icon:active {
+            transform: scale(0.92);
+        }
+
+        .pwa-btn.hidden {
+            display: none;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            padding: 30px 0 8px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 36px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-top: 6px;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero .stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+
+        .hero .stats span i {
+            color: var(--primary);
+            margin-right: 4px;
+        }
+
+        /* ===== AD CONTAINER ===== */
+        .ad-container {
+            text-align: center;
+            margin: 8px 0 16px;
+            padding: 6px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s, border-color 0.3s;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .ad-container .ad-label {
+            font-size: 9px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .ad-container iframe,
+        .ad-container ins,
+        .ad-container img {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+
+        .mobileShow {
+            display: none !important;
+        }
+        .mobileHide {
+            display: block !important;
+        }
+
+        /* ===== GENRE ===== */
+        .genre-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 16px 0 20px;
+            justify-content: center;
+        }
+
+        .genre-btn {
+            padding: 5px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+        }
+
+        .genre-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        body.light-mode .genre-btn:hover {
+            background: rgba(0, 0, 0, 0.04);
+            color: var(--text-primary);
+        }
+
+        .genre-btn.active {
+            background: var(--primary-gradient);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 20px var(--shadow-glow);
+        }
+
+        /* ===== CONTINUE WATCHING ===== */
+        .continue-section {
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .continue-section.visible {
+            display: block;
+        }
+
+        .continue-section h2 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .continue-section h2 i {
+            color: var(--primary);
+        }
+
+        .continue-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+
+        .continue-item {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .continue-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 30px var(--shadow-glow);
+        }
+
+        .continue-item img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .continue-item .continue-info {
+            padding: 8px 10px;
+        }
+
+        .continue-item .continue-info h4 {
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .continue-item .continue-info .progress-bar {
+            width: 100%;
+            height: 3px;
+            background: var(--border-color);
+            border-radius: 4px;
+            margin-top: 4px;
+            overflow: hidden;
+        }
+
+        .continue-item .continue-info .progress-bar .progress-fill {
+            height: 100%;
+            background: var(--primary-gradient);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .continue-item .continue-info .progress-text {
+            font-size: 9px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .continue-item .continue-badge {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: var(--primary-gradient);
+            color: #fff;
+            font-size: 8px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        /* ===== MOVIE GRID ===== */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .section-header h2 {
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-primary);
+        }
+
+        .section-header h2 i {
+            color: var(--primary);
+        }
+
+        .section-header span {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px;
+            padding-bottom: 24px;
+        }
+
+        .movie-card {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        .movie-card:nth-child(1) { animation-delay: 0.05s; }
+        .movie-card:nth-child(2) { animation-delay: 0.10s; }
+        .movie-card:nth-child(3) { animation-delay: 0.15s; }
+        .movie-card:nth-child(4) { animation-delay: 0.20s; }
+        .movie-card:nth-child(5) { animation-delay: 0.25s; }
+        .movie-card:nth-child(6) { animation-delay: 0.30s; }
+        .movie-card:nth-child(7) { animation-delay: 0.35s; }
+        .movie-card:nth-child(8) { animation-delay: 0.40s; }
+        .movie-card:nth-child(9) { animation-delay: 0.45s; }
+        .movie-card:nth-child(10) { animation-delay: 0.50s; }
+        .movie-card:nth-child(11) { animation-delay: 0.55s; }
+        .movie-card:nth-child(12) { animation-delay: 0.60s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .skeleton-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 16px;
+            padding-bottom: 24px;
+        }
+
+        .skeleton-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            animation: shimmer 1.8s infinite;
+        }
+
+        .skeleton-card .skeleton-img {
+            height: 240px;
+            background: linear-gradient(90deg, var(--bg-card), var(--bg-card-hover), var(--bg-card));
+            background-size: 200% 100%;
+        }
+
+        .skeleton-card .skeleton-text {
+            height: 50px;
+            padding: 12px;
+            background: linear-gradient(90deg, var(--bg-card), var(--bg-card-hover), var(--bg-card));
+            background-size: 200% 100%;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        .movie-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-primary);
+            display: block;
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        .movie-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 40px var(--shadow-glow);
+            background: var(--bg-card-hover);
+        }
+
+        .movie-card .poster-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .movie-card .poster-wrapper img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            display: block;
+            transition: var(--transition);
+        }
+
+        .movie-card:hover .poster-wrapper img {
+            transform: scale(1.05);
+        }
+
+        .movie-card .badge-top {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: var(--primary-gradient);
+            color: #fff;
+            font-size: 8px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .movie-card .badge-year {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            color: #fff;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 50px;
+        }
+
+        .movie-card .card-body {
+            padding: 10px 12px 12px;
+        }
+
+        .movie-card .card-body h3 {
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 2px;
+        }
+
+        .movie-card .card-body .meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .movie-card .rating {
+            color: #fbbf24;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .load-more {
+            text-align: center;
+            padding: 8px 0 30px;
+        }
+
+        .load-more button {
+            padding: 10px 32px;
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .load-more button:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border-color: var(--primary);
+        }
+
+        body.light-mode .load-more button:hover:not(:disabled) {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        .load-more button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .report-btn {
+            text-align: center;
+            margin: 6px 0 16px;
+        }
+
+        .report-btn a {
+            color: var(--text-muted);
+            font-size: 11px;
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .report-btn a:hover {
+            color: var(--primary);
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            padding: 16px 0;
+            margin-top: 8px;
+            transition: background 0.3s;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .footer-content p {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .footer-content p a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+        }
+
+        .footer-social a {
+            color: var(--text-muted);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .footer-social a:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 12px 20px;
+            border-radius: var(--radius);
+            font-size: 12px;
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 90%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast i {
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            color: #fff;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 25px var(--shadow-glow);
+            transition: var(--transition);
+            opacity: 0;
+            transform: scale(0);
+            z-index: 999;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .scroll-top:hover {
+            transform: scale(1.1) translateY(-3px);
+        }
+
+        /* ===== COOKIE CONSENT ===== */
+        #cookieConsent {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border-top: 2px solid var(--primary);
+            padding: 12px 16px;
+            z-index: 99998;
+            display: none;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            transition: background 0.3s;
+        }
+
+        #cookieConsent p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin: 0;
+            flex: 1;
+        }
+
+        #cookieConsent p a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        #cookieConsent .cookie-btn {
+            background: var(--primary-gradient);
+            border: none;
+            color: #fff;
+            padding: 6px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+            transition: var(--transition);
+        }
+
+        #cookieConsent .cookie-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 20px var(--shadow-glow);
+        }
+
+        /* ===== FLOATING ACTION BUTTON ===== */
+        .fab-btn {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(108, 59, 255, 0.4);
+            transition: var(--transition);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fab-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 8px 35px rgba(108, 59, 255, 0.6);
+        }
+
+        .fab-btn:active {
+            transform: scale(0.92);
+        }
+
+        .fab-btn.open {
+            transform: rotate(45deg);
+        }
+
+        /* ===== BOTTOM SHEET ===== */
+        .bottom-sheet {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .bottom-sheet.active {
+            display: flex;
+        }
+
+        .bottom-sheet-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            animation: fadeInOverlay 0.3s ease;
+        }
+
+        @keyframes fadeInOverlay {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .bottom-sheet-content {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            max-height: 85vh;
+            background: var(--bg-card);
+            border-radius: 20px 20px 0 0;
+            padding: 8px 20px 24px;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.3);
+            border-top: 1px solid var(--border-color);
+            animation: slideUpSheet 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+        }
+
+        @keyframes slideUpSheet {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .bottom-sheet-content.dragging {
+            transition: none;
+        }
+
+        .bottom-sheet-handle {
+            display: flex;
+            justify-content: center;
+            padding: 8px 0 4px;
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .bottom-sheet-handle:active {
+            cursor: grabbing;
+        }
+
+        .handle-bar {
+            width: 40px;
+            height: 4px;
+            border-radius: 4px;
+            background: var(--text-muted);
+            opacity: 0.4;
+            transition: opacity 0.3s;
+        }
+
+        .handle-bar:hover {
+            opacity: 0.7;
+        }
+
+        .bottom-sheet-body {
+            padding: 4px 0;
+        }
+
+        .bottom-sheet-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .bottom-sheet-header i {
+            font-size: 20px;
+        }
+
+        .bottom-sheet-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .bottom-sheet-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .bs-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 12px 8px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .bs-item:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--primary);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .bs-item:active {
+            transform: scale(0.95);
+        }
+
+        .bs-item i {
+            font-size: 20px;
+            color: var(--primary);
+        }
+
+        .bs-item span {
+            font-size: 10px;
+        }
+
+        /* ===== BOTTOM SHEET DIVIDER ===== */
+        .bottom-sheet-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .bottom-sheet-divider span {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .bottom-sheet-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        /* ===== RECOMMENDED MOVIE CARD ===== */
+        .bottom-sheet-movie {
+            background: var(--bg-dark);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+            cursor: pointer;
+            margin-bottom: 6px;
+        }
+
+        .bottom-sheet-movie:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 20px var(--shadow-glow);
+        }
+
+        .bs-movie-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            gap: 8px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        .bs-movie-loading i {
+            font-size: 24px;
+            color: var(--primary);
+        }
+
+        .bs-movie-content {
+            display: flex;
+            gap: 12px;
+            padding: 10px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .bs-movie-content img {
+            width: 80px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .bs-movie-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .bs-movie-info h4 {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .bs-movie-info .bs-movie-meta {
+            display: flex;
+            gap: 10px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+
+        .bs-movie-info .bs-movie-meta .rating {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+
+        .bs-movie-info .bs-movie-meta .year {
+            color: var(--text-muted);
+        }
+
+        .bs-movie-info .bs-movie-overview {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.4;
+        }
+
+        .bottom-sheet-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-color);
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 30px;
+            }
+            .movie-grid,
+            .skeleton-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 14px;
+            }
+            .movie-card .poster-wrapper img,
+            .skeleton-card .skeleton-img {
+                height: 210px;
+            }
+            .continue-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            }
+            .continue-item img {
+                height: 160px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 12px;
+            }
+            .logo {
+                font-size: 17px;
+            }
+            .logo i {
+                font-size: 18px;
+            }
+            .search-wrapper {
+                max-width: 100%;
+                min-width: 80px;
+            }
+            .search-box input {
+                font-size: 12px;
+                padding: 6px 0;
+            }
+            .search-box button {
+                padding: 5px 12px;
+                font-size: 11px;
+            }
+            .search-box {
+                padding: 0 3px 0 10px;
+            }
+            .header-actions .btn-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 12px;
+            }
+            .splash-logo {
+                font-size: 32px;
+            }
+            .splash-logo i {
+                font-size: 36px;
+            }
+            #cookieConsent {
+                padding: 10px 14px;
+            }
+            #cookieConsent p {
+                font-size: 11px;
+            }
+            .mobileShow {
+                display: block !important;
+            }
+            .mobileHide {
+                display: none !important;
+            }
+            .hero h1 {
+                font-size: 26px;
+            }
+            .hero p {
+                font-size: 13px;
+            }
+            .hero .stats {
+                gap: 12px;
+                font-size: 11px;
+            }
+            .genre-btn {
+                font-size: 10px;
+                padding: 4px 10px;
+            }
+            .movie-grid,
+            .skeleton-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 12px;
+            }
+            .movie-card .poster-wrapper img,
+            .skeleton-card .skeleton-img {
+                height: 180px;
+            }
+            .movie-card .card-body h3 {
+                font-size: 12px;
+            }
+            .movie-card .card-body .meta {
+                font-size: 10px;
+            }
+            .continue-grid {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            }
+            .continue-item img {
+                height: 140px;
+            }
+            .continue-item .continue-info h4 {
+                font-size: 11px;
+            }
+            .ad-container {
+                min-height: 60px;
+                margin: 6px 0 12px;
+                padding: 4px;
+            }
+            .fab-btn {
+                bottom: 22px;
+                right: 22px;
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+            .bottom-sheet-content {
+                padding: 6px 16px 18px;
+                border-radius: 16px 16px 0 0;
+            }
+            .bottom-sheet-grid {
+                gap: 6px;
+            }
+            .bs-item {
+                padding: 10px 6px;
+                font-size: 10px;
+            }
+            .bs-item i {
+                font-size: 16px;
+            }
+            .bottom-sheet-header h3 {
+                font-size: 14px;
+            }
+            .bs-movie-content img {
+                width: 70px;
+                height: 105px;
+            }
+            .bs-movie-info h4 {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content {
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            .logo {
+                font-size: 18px;
+                flex: 0 0 auto;
+            }
+            .search-wrapper {
+                order: 3;
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            .search-box input {
+                font-size: 12px;
+                padding: 6px 0;
+            }
+            .search-box button {
+                padding: 5px 12px;
+                font-size: 10px;
+            }
+            .header-actions {
+                gap: 3px;
+            }
+            .header-actions .btn-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 11px;
+            }
+            .hero h1 {
+                font-size: 22px;
+            }
+            .hero p {
+                font-size: 12px;
+            }
+            .hero .stats {
+                gap: 8px;
+                font-size: 10px;
+            }
+            .hero .stats span {
+                display: flex;
+                align-items: center;
+                gap: 3px;
+            }
+            .hero {
+                padding: 20px 0 4px;
+            }
+            .genre-filter {
+                gap: 4px;
+                margin: 12px 0 14px;
+            }
+            .genre-btn {
+                font-size: 9px;
+                padding: 3px 8px;
+            }
+            .movie-grid,
+            .skeleton-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .movie-card .poster-wrapper img,
+            .skeleton-card .skeleton-img {
+                height: 150px;
+            }
+            .movie-card .card-body {
+                padding: 6px 8px 8px;
+            }
+            .movie-card .card-body h3 {
+                font-size: 11px;
+            }
+            .movie-card .card-body .meta {
+                font-size: 9px;
+            }
+            .movie-card .badge-top {
+                font-size: 7px;
+                padding: 1px 8px;
+                top: 5px;
+                left: 5px;
+            }
+            .movie-card .badge-year {
+                font-size: 8px;
+                padding: 1px 8px;
+                bottom: 5px;
+                right: 5px;
+            }
+            .section-header h2 {
+                font-size: 14px;
+            }
+            .section-header span {
+                font-size: 10px;
+            }
+            .load-more button {
+                padding: 8px 24px;
+                font-size: 12px;
+            }
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-social a {
+                font-size: 14px;
+            }
+            .toast {
+                font-size: 11px;
+                padding: 8px 14px;
+                bottom: 10px;
+            }
+            .scroll-top {
+                width: 34px;
+                height: 34px;
+                font-size: 14px;
+                bottom: 16px;
+                right: 16px;
+            }
+            .splash-logo {
+                font-size: 24px;
+            }
+            .splash-logo i {
+                font-size: 28px;
+            }
+            .splash-loader {
+                width: 36px;
+                height: 36px;
+                margin-top: 20px;
+            }
+            .splash-text {
+                font-size: 11px;
+                margin-top: 14px;
+            }
+            #cookieConsent {
+                flex-direction: column;
+                text-align: center;
+                padding: 10px 12px;
+            }
+            #cookieConsent .cookie-btn {
+                width: 100%;
+            }
+            .continue-grid {
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+                gap: 8px;
+            }
+            .continue-item img {
+                height: 110px;
+            }
+            .continue-item .continue-info h4 {
+                font-size: 10px;
+            }
+            .continue-item .continue-info .progress-text {
+                font-size: 8px;
+            }
+            .continue-item .continue-badge {
+                font-size: 7px;
+                padding: 1px 6px;
+            }
+            .ad-container {
+                min-height: 50px;
+                margin: 4px 0 8px;
+                padding: 4px;
+            }
+            .ad-container .ad-label {
+                font-size: 8px;
+            }
+            .report-btn a {
+                font-size: 10px;
+            }
+            .load-more {
+                padding: 4px 0 20px;
+            }
+            .fab-btn {
+                bottom: 16px;
+                right: 16px;
+                width: 44px;
+                height: 44px;
+                font-size: 18px;
+            }
+            .bottom-sheet-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 4px;
+            }
+            .bs-item {
+                padding: 8px 4px;
+                font-size: 9px;
+            }
+            .bs-item i {
+                font-size: 14px;
+            }
+            .bottom-sheet-content {
+                padding: 4px 12px 14px;
+                border-radius: 14px 14px 0 0;
+            }
+            .bottom-sheet-header h3 {
+                font-size: 13px;
+            }
+            .bottom-sheet-footer {
+                font-size: 10px;
+            }
+            .bs-movie-content img {
+                width: 60px;
+                height: 90px;
+            }
+            .bs-movie-info h4 {
+                font-size: 13px;
+            }
+            .bs-movie-info .bs-movie-overview {
+                font-size: 10px;
+                -webkit-line-clamp: 1;
+            }
+            .bs-movie-info .bs-movie-meta {
+                font-size: 10px;
+                gap: 6px;
+            }
+            .bottom-sheet-divider span {
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .movie-grid,
+            .skeleton-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+            .movie-card .poster-wrapper img,
+            .skeleton-card .skeleton-img {
+                height: 120px;
+            }
+            .movie-card .card-body h3 {
+                font-size: 10px;
+            }
+            .movie-card .card-body .meta {
+                font-size: 8px;
+            }
+            .container {
+                padding: 0 8px;
+            }
+            .hero h1 {
+                font-size: 18px;
+            }
+            .genre-btn {
+                font-size: 8px;
+                padding: 2px 6px;
+            }
+            .continue-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+            }
+            .continue-item img {
+                height: 90px;
+            }
+            .fab-btn {
+                bottom: 14px;
+                right: 14px;
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+            .bottom-sheet-content {
+                padding: 4px 10px 12px;
+            }
+            .bottom-sheet-grid {
+                gap: 3px;
+            }
+            .bs-item {
+                padding: 6px 3px;
+                font-size: 8px;
+            }
+            .bs-item i {
+                font-size: 12px;
+            }
+            .bs-movie-content img {
+                width: 50px;
+                height: 75px;
+            }
+            .bs-movie-info h4 {
+                font-size: 12px;
+            }
+            .bs-movie-info .bs-movie-overview {
+                display: none;
+            }
+        }
+
+        .error-msg {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .error-msg i {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 10px;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== SPLASH SCREEN ===== -->
+    <div id="splashScreen">
+        <div class="splash-logo">
+            <i class="fas fa-film"></i> FlixHub
+        </div>
+        <div class="splash-loader"></div>
+        <div class="splash-text">Loading...</div>
+    </div>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-film"></i> FlixHub
+                </a>
+                <div class="search-wrapper">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Search movies..." aria-label="Search" />
+                        <button id="searchBtn">Search</button>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-icon" id="themeToggle" aria-label="Toggle theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="btn-icon pwa-btn hidden" id="pwaInstallBtn" aria-label="Install App">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main>
+
+        <!-- ===== HERO ===== -->
+        <section class="hero">
+            <div class="container">
+                <h1>Watch Movies & TV Shows <br />Free in HD</h1>
+                <p>Stream thousands of movies and TV series instantly. No registration required.</p>
+                <div class="stats">
+                    <span><i class="fas fa-check-circle"></i> 100% Free</span>
+                    <span><i class="fas fa-hdmi"></i> HD Quality</span>
+                    <span><i class="fas fa-bolt"></i> Fast Streaming</span>
+                    <span><i class="fas fa-globe"></i> 50+ Countries</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== ADS: Above The Fold ===== -->
+        <div class="container">
+            <div class="ad-container" id="adHeaderContainer">
+                <span class="ad-label">— Advertisement —</span>
+                <div class="mobileHide" id="adHeaderDesktopContainer">
+                    <div id="adHeaderDesktopPlaceholder" style="background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; color:var(--text-muted); font-size:11px; text-align:center;">
+                        <i class="fas fa-ad"></i> Banner 728x90 - Adsterra
+                    </div>
+                </div>
+                <div class="mobileShow" id="adHeaderMobileContainer">
+                    <div id="adHeaderMobilePlaceholder" style="background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; color:var(--text-muted); font-size:11px; text-align:center;">
+                        <i class="fas fa-ad"></i> Banner 320x50 - Adsterra
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+
+            <!-- ===== CONTINUE WATCHING ===== -->
+            <div class="continue-section" id="continueSection">
+                <h2><i class="fas fa-clock"></i> Continue Watching</h2>
+                <div class="continue-grid" id="continueGrid"></div>
+            </div>
+
+            <!-- ===== GENRE ===== -->
+            <div class="genre-filter" id="genreFilter">
+                <button class="genre-btn active" data-genre="all"><i class="fas fa-th-large"></i> All</button>
+                <button class="genre-btn" data-genre="28">Action</button>
+                <button class="genre-btn" data-genre="35">Comedy</button>
+                <button class="genre-btn" data-genre="18">Drama</button>
+                <button class="genre-btn" data-genre="27">Horror</button>
+                <button class="genre-btn" data-genre="878">Sci-Fi</button>
+                <button class="genre-btn" data-genre="10749">Romance</button>
+                <button class="genre-btn" data-genre="16">Animation</button>
+                <button class="genre-btn" data-genre="53">Thriller</button>
+                <button class="genre-btn" data-genre="12">Adventure</button>
+            </div>
+
+            <!-- ===== SECTION HEADER ===== -->
+            <div class="section-header">
+                <h2><i class="fas fa-fire"></i> Trending Now</h2>
+                <span id="resultCount">Loading...</span>
+            </div>
+
+            <!-- ===== MOVIE GRID ===== -->
+            <div id="movieGrid" class="movie-grid"></div>
+
+            <!-- ===== LOAD MORE ===== -->
+            <div class="load-more" id="loadMoreContainer">
+                <button id="loadMoreBtn"><i class="fas fa-plus-circle"></i> Load More</button>
+            </div>
+
+            <!-- ===== REPORT BROKEN ===== -->
+            <div class="report-btn">
+                <a href="#" onclick="reportBroken()" id="reportLink">
+                    <i class="fas fa-exclamation-triangle"></i> Report broken link
+                </a>
+            </div>
+
+            <!-- ===== ADS: Bottom ===== -->
+            <div class="ad-container" style="margin-bottom: 20px;" id="adFooterContainer">
+                <span class="ad-label">— Advertisement —</span>
+                <div class="mobileHide" id="adFooterDesktopContainer">
+                    <div id="adFooterDesktopPlaceholder" style="background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; color:var(--text-muted); font-size:11px; text-align:center;">
+                        <i class="fas fa-ad"></i> Banner 728x90 - Adsterra
+                    </div>
+                </div>
+                <div class="mobileShow" id="adFooterMobileContainer">
+                    <div id="adFooterMobilePlaceholder" style="background:rgba(255,255,255,0.03); padding:12px; border-radius:8px; color:var(--text-muted); font-size:11px; text-align:center;">
+                        <i class="fas fa-ad"></i> Banner 320x50 - Adsterra
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="container footer-content">
+            <p>&copy; 2025 <a href="index.html">FlixHub</a> — Watch movies online free. All rights reserved.</p>
+            <div class="footer-social">
+                <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                <a href="#" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Welcome to FlixHub!</span>
+    </div>
+
+    <!-- ===== SCROLL TOP ===== -->
+    <button class="scroll-top" id="scrollTopBtn" aria-label="Scroll to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- ===== COOKIE CONSENT ===== -->
+    <div id="cookieConsent">
+        <p>
+            <i class="fas fa-cookie-bite" style="color:var(--primary);margin-right:6px;"></i>
+            We use cookies to improve your experience. By using our site, you accept our
+            <a href="#">Privacy Policy</a>.
+        </p>
+        <button class="cookie-btn" onclick="acceptCookies()">Accept</button>
+    </div>
+
+    <!-- ===== FLOATING ACTION BUTTON ===== -->
+    <button class="fab-btn" id="fabBtn" aria-label="Quick actions">
+        <i class="fas fa-plus"></i>
+    </button>
+
+    <!-- ===== BOTTOM SHEET ===== -->
+    <div class="bottom-sheet" id="bottomSheet">
+        <div class="bottom-sheet-overlay" id="bottomSheetOverlay"></div>
+        <div class="bottom-sheet-content" id="bottomSheetContent">
+            <div class="bottom-sheet-handle" id="bottomSheetHandle">
+                <div class="handle-bar"></div>
+            </div>
+            <div class="bottom-sheet-body">
+
+                <!-- HEADER -->
+                <div class="bottom-sheet-header">
+                    <i class="fas fa-bolt" style="color:var(--primary);"></i>
+                    <h3>Quick Actions</h3>
+                </div>
+
+                <!-- GRID -->
+                <div class="bottom-sheet-grid">
+                    <button class="bs-item" onclick="window.location.href='index.html'">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </button>
+                    <button class="bs-item" onclick="showRandomMovie()">
+                        <i class="fas fa-dice"></i>
+                        <span>Random</span>
+                    </button>
+                    <button class="bs-item" onclick="focusSearch()">
+                        <i class="fas fa-search"></i>
+                        <span>Search</span>
+                    </button>
+                    <button class="bs-item" onclick="shareSite()">
+                        <i class="fas fa-share-alt"></i>
+                        <span>Share</span>
+                    </button>
+                    <button class="bs-item" onclick="openFavorites()">
+                        <i class="fas fa-heart"></i>
+                        <span>Favorites</span>
+                    </button>
+                    <button class="bs-item" onclick="toggleTheme()">
+                        <i class="fas fa-moon" id="fabThemeIcon"></i>
+                        <span>Theme</span>
+                    </button>
+                </div>
+
+                <!-- RECOMMENDED MOVIE -->
+                <div class="bottom-sheet-divider">
+                    <span>🎬 Recommended for You</span>
+                </div>
+
+                <div class="bottom-sheet-movie" id="bsRecommendedMovie">
+                    <div class="bs-movie-loading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>Click Random to get recommendation</span>
+                    </div>
+                </div>
+
+                <div class="bottom-sheet-footer">
+                    <span>FlixHub v2.0</span>
+                    <span>•</span>
+                    <span id="bsViewerCount">0 watching now</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================================================================
+        //  KONFIGURASI
+        // ================================================================
+        const API_KEY = '9fd04e2ae2805583a279390ff2b77125';
+        const BASE_URL = 'https://api.themoviedb.org/3';
+        const IMG_URL = 'https://image.tmdb.org/t/p/w500';
+
+        let genreCache = null;
+        let recommendedMovie = null;
+        let isLoadingRecommendation = false;
+
+        // ================================================================
+        //  SPLASH SCREEN
+        // ================================================================
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('splashScreen').classList.add('hidden');
+            }, 800);
+        });
+
+        // ================================================================
+        //  THEME
+        // ================================================================
+        const themeToggle = document.getElementById('themeToggle');
+        const themeColor = document.getElementById('themeColor');
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const icon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('light-mode')) {
+                icon.className = 'fas fa-sun';
+                themeColor.content = '#f0f0f5';
+            } else {
+                icon.className = 'fas fa-moon';
+                themeColor.content = '#6c3bff';
+            }
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+            updateFabThemeIcon();
+        }
+
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.querySelector('i').className = 'fas fa-sun';
+            themeColor.content = '#f0f0f5';
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // ================================================================
+        //  HEADER SCROLL EFFECT
+        // ================================================================
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // ================================================================
+        //  COOKIE CONSENT
+        // ================================================================
+        if (!localStorage.getItem('cookiesAccepted')) {
+            document.getElementById('cookieConsent').style.display = 'flex';
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            document.getElementById('cookieConsent').style.display = 'none';
+        }
+
+        // ================================================================
+        //  KEYBOARD SHORTCUTS
+        // ================================================================
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+            }
+            if (e.key === 'Escape') {
+                document.getElementById('searchInput').blur();
+            }
+        });
+
+        // ================================================================
+        //  TOAST
+        // ================================================================
+        function showToast(message, icon = 'fa-check-circle') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.querySelector('i').className = `fas ${icon}`;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        // ================================================================
+        //  REPORT BROKEN
+        // ================================================================
+        function reportBroken() {
+            showToast('📧 Thank you! We\'ll fix it ASAP.', 'fa-check-circle');
+            closeBottomSheet();
+            return false;
+        }
+
+        // ================================================================
+        //  GET GENRE NAMES
+        // ================================================================
+        async function getGenreNames(genreIds) {
+            if (!genreCache) {
+                try {
+                    const res = await fetch(`${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=en-US`);
+                    const data = await res.json();
+                    genreCache = data.genres || [];
+                } catch (e) {
+                    return '';
+                }
+            }
+
+            if (!genreIds || genreIds.length === 0) return '';
+            const names = genreIds.slice(0, 2).map(id => {
+                const genre = genreCache.find(g => g.id === id);
+                return genre ? genre.name : '';
+            }).filter(Boolean);
+
+            return names.join(', ');
+        }
+
+        // ================================================================
+        //  FETCH RECOMMENDED MOVIES (HIGH RATING + NEW)
+        // ================================================================
+        async function fetchRecommendedMovies() {
+            try {
+                // Fetch popular movies
+                const popularRes = await fetch(
+                    `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=${Math.floor(Math.random() * 5) + 1}`
+                );
+                const popularData = await popularRes.json();
+
+                // Fetch now playing (new movies)
+                const nowPlayingRes = await fetch(
+                    `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=${Math.floor(Math.random() * 3) + 1}`
+                );
+                const nowPlayingData = await nowPlayingRes.json();
+
+                // Combine and filter: rating > 6.5, release date within 2 years, has poster
+                const allMovies = [...popularData.results, ...nowPlayingData.results];
+                const twoYearsAgo = new Date();
+                twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2);
+
+                const filtered = allMovies.filter(movie => {
+                    const rating = movie.vote_average || 0;
+                    const releaseDate = movie.release_date ? new Date(movie.release_date) : new Date(0);
+                    return rating > 6.5 && movie.poster_path && releaseDate > twoYearsAgo;
+                });
+
+                // Remove duplicates by id
+                const unique = [];
+                const seen = new Set();
+                for (const movie of filtered) {
+                    if (!seen.has(movie.id)) {
+                        seen.add(movie.id);
+                        unique.push(movie);
+                    }
+                }
+
+                if (unique.length === 0) {
+                    // Fallback: get any popular movie
+                    const fallbackRes = await fetch(
+                        `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
+                    );
+                    const fallbackData = await fallbackRes.json();
+                    const fallback = fallbackData.results.find(m => m.poster_path) || fallbackData.results[0];
+                    return fallback || null;
+                }
+
+                return unique[Math.floor(Math.random() * unique.length)] || null;
+
+            } catch (error) {
+                console.error('Error fetching recommendations:', error);
+                return null;
+            }
+        }
+
+        // ================================================================
+        //  SHOW RANDOM MOVIE
+        // ================================================================
+        async function showRandomMovie() {
+            if (isLoadingRecommendation) return;
+            isLoadingRecommendation = true;
+
+            const container = document.getElementById('bsRecommendedMovie');
+            container.innerHTML = `
+                <div class="bs-movie-loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <span>Finding best movie for you...</span>
+                </div>
+            `;
+
+            openBottomSheet();
+
+            const movie = await fetchRecommendedMovies();
+
+            if (!movie) {
+                container.innerHTML = `
+                    <div class="bs-movie-loading" style="color:var(--danger);">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>No movies found. Try again!</span>
+                    </div>
+                `;
+                isLoadingRecommendation = false;
+                return;
+            }
+
+            recommendedMovie = movie;
+
+            const poster = movie.poster_path ? `${IMG_URL}${movie.poster_path}` :
+                'https://via.placeholder.com/500x750/12121f/5c5c78?text=No+Image';
+            const year = movie.release_date ? movie.release_date.slice(0, 4) : 'N/A';
+            const rating = movie.vote_average ? movie.vote_average.toFixed(1) : '0.0';
+            const overview = movie.overview || 'No description available.';
+            const genreNames = movie.genre_ids ? await getGenreNames(movie.genre_ids) : '';
+
+            container.innerHTML = `
+                <a href="player.html?movie=${movie.id}&auto=1" class="bs-movie-content" id="bsMovieLink">
+                    <img src="${poster}" alt="${movie.title}" loading="lazy" />
+                    <div class="bs-movie-info">
+                        <h4>${movie.title}</h4>
+                        <div class="bs-movie-meta">
+                            <span class="rating"><i class="fas fa-star"></i> ${rating}</span>
+                            <span class="year">${year}</span>
+                            <span>${genreNames}</span>
+                        </div>
+                        <div class="bs-movie-overview">${overview}</div>
+                    </div>
+                </a>
+            `;
+
+            document.getElementById('bsMovieLink').addEventListener('click', function() {
+                setTimeout(() => closeBottomSheet(), 100);
+            });
+
+            isLoadingRecommendation = false;
+        }
+
+        // ================================================================
+        //  FOCUS SEARCH
+        // ================================================================
+        function focusSearch() {
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.focus();
+                searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            closeBottomSheet();
+        }
+
+        // ================================================================
+        //  FAVORITES
+        // ================================================================
+        function openFavorites() {
+            const favorites = JSON.parse(localStorage.getItem('flixhub_favorites') || '[]');
+            if (favorites.length === 0) {
+                showToast('⭐ No favorites yet. Click the heart icon!', 'fa-heart');
+            } else {
+                showToast(`⭐ ${favorites.length} favorites saved`, 'fa-heart');
+            }
+            closeBottomSheet();
+        }
+
+        // ================================================================
+        //  SHARE SITE
+        // ================================================================
+        function shareSite() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'FlixHub - Watch Movies Free',
+                    text: 'Watch thousands of movies and TV shows for free!',
+                    url: window.location.origin
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(window.location.origin).then(() => {
+                    showToast('📋 Link copied!', 'fa-link');
+                }).catch(() => {
+                    showToast('📋 ' + window.location.origin, 'fa-link');
+                });
+            }
+            closeBottomSheet();
+        }
+
+        // ================================================================
+        //  FAB + BOTTOM SHEET
+        // ================================================================
+        const fabBtn = document.getElementById('fabBtn');
+        const bottomSheet = document.getElementById('bottomSheet');
+        const bottomSheetContent = document.getElementById('bottomSheetContent');
+        const bottomSheetOverlay = document.getElementById('bottomSheetOverlay');
+        const sheetHandle = document.getElementById('bottomSheetHandle');
+
+        let isSheetOpen = false;
+        let startY = 0;
+        let currentY = 0;
+        let isDragging = false;
+
+        fabBtn.addEventListener('click', () => {
+            if (isSheetOpen) {
+                closeBottomSheet();
+            } else {
+                openBottomSheet();
+            }
+        });
+
+        bottomSheetOverlay.addEventListener('click', () => {
+            closeBottomSheet();
+        });
+
+        // Touch events
+        sheetHandle.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+            isDragging = true;
+            bottomSheetContent.classList.add('dragging');
+        }, { passive: true });
+
+        sheetHandle.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            currentY = e.touches[0].clientY;
+            const diff = currentY - startY;
+            if (diff > 0) {
+                bottomSheetContent.style.transform = `translateY(${diff}px)`;
+            }
+        }, { passive: true });
+
+        sheetHandle.addEventListener('touchend', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            bottomSheetContent.classList.remove('dragging');
+            const diff = currentY - startY;
+            if (diff > 100) {
+                closeBottomSheet();
+            } else {
+                bottomSheetContent.style.transform = 'translateY(0)';
+            }
+            startY = 0;
+            currentY = 0;
+        }, { passive: true });
+
+        // Mouse events
+        sheetHandle.addEventListener('mousedown', (e) => {
+            startY = e.clientY;
+            isDragging = true;
+            bottomSheetContent.classList.add('dragging');
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+
+        function onMouseMove(e) {
+            if (!isDragging) return;
+            currentY = e.clientY;
+            const diff = currentY - startY;
+            if (diff > 0) {
+                bottomSheetContent.style.transform = `translateY(${diff}px)`;
+            }
+        }
+
+        function onMouseUp() {
+            isDragging = false;
+            bottomSheetContent.classList.remove('dragging');
+            const diff = currentY - startY;
+            if (diff > 100) {
+                closeBottomSheet();
+            } else {
+                bottomSheetContent.style.transform = 'translateY(0)';
+            }
+            startY = 0;
+            currentY = 0;
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', onMouseUp);
+        }
+
+        function openBottomSheet() {
+            isSheetOpen = true;
+            bottomSheet.classList.add('active');
+            fabBtn.classList.add('open');
+            bottomSheetContent.style.transform = 'translateY(0)';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBottomSheet() {
+            isSheetOpen = false;
+            bottomSheetContent.style.transform = 'translateY(100%)';
+            fabBtn.classList.remove('open');
+            document.body.style.overflow = '';
+            setTimeout(() => {
+                bottomSheet.classList.remove('active');
+            }, 300);
+        }
+
+        // ================================================================
+        //  UPDATE VIEWER COUNT
+        // ================================================================
+        function updateBSViewerCount() {
+            const el = document.getElementById('bsViewerCount');
+            if (el) {
+                const base = 12000;
+                const random = Math.floor(Math.random() * 5000);
+                el.textContent = (base + random).toLocaleString() + ' watching now';
+            }
+        }
+        setInterval(updateBSViewerCount, 30000);
+        updateBSViewerCount();
+
+        // ================================================================
+        //  UPDATE FAB THEME ICON
+        // ================================================================
+        function updateFabThemeIcon() {
+            const icon = document.getElementById('fabThemeIcon');
+            if (icon) {
+                const isLight = document.body.classList.contains('light-mode');
+                icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+            }
+        }
+        updateFabThemeIcon();
+
+        // ================================================================
+        //  LOAD ADS FROM ADMIN
+        // ================================================================
+        function loadAds() {
+            const adHeaderDesktop = localStorage.getItem('flixhub_adHeaderDesktop');
+            if (adHeaderDesktop && adHeaderDesktop.trim() !== '') {
+                const container = document.getElementById('adHeaderDesktopContainer');
+                if (container) container.innerHTML = adHeaderDesktop;
+            }
+
+            const adHeaderMobile = localStorage.getItem('flixhub_adHeaderMobile');
+            if (adHeaderMobile && adHeaderMobile.trim() !== '') {
+                const container = document.getElementById('adHeaderMobileContainer');
+                if (container) container.innerHTML = adHeaderMobile;
+            }
+
+            const adFooterDesktop = localStorage.getItem('flixhub_adFooterDesktop');
+            if (adFooterDesktop && adFooterDesktop.trim() !== '') {
+                const container = document.getElementById('adFooterDesktopContainer');
+                if (container) container.innerHTML = adFooterDesktop;
+            }
+
+            const adFooterMobile = localStorage.getItem('flixhub_adFooterMobile');
+            if (adFooterMobile && adFooterMobile.trim() !== '') {
+                const container = document.getElementById('adFooterMobileContainer');
+                if (container) container.innerHTML = adFooterMobile;
+            }
+
+            const cpaLink = localStorage.getItem('flixhub_adCpaLink');
+            if (cpaLink && cpaLink.trim() !== '') {
+                document.querySelectorAll('.cta-btn, .popup-cta, .watch-btn').forEach(el => {
+                    if (el.href) {
+                        const title = document.getElementById('movieTitle')?.textContent || '';
+                        el.href = cpaLink + (title ? `?movie=${encodeURIComponent(title)}` : '');
+                    }
+                });
+            }
+        }
+
+        // ================================================================
+        //  CONTINUE WATCHING
+        // ================================================================
+        function loadContinueWatching() {
+            const history = JSON.parse(localStorage.getItem('flixhub_watchHistory') || '[]');
+            const container = document.getElementById('continueGrid');
+            const section = document.getElementById('continueSection');
+
+            if (!history || history.length === 0) {
+                section.classList.remove('visible');
+                return;
+            }
+
+            section.classList.add('visible');
+
+            const unique = [];
+            const seen = new Set();
+            for (let i = history.length - 1; i >= 0 && unique.length < 6; i--) {
+                if (!seen.has(history[i].movie)) {
+                    seen.add(history[i].movie);
+                    unique.push(history[i]);
+                }
+            }
+
+            container.innerHTML = unique.map(item => `
+                <a href="player.html?movie=${item.movieId}" class="continue-item">
+                    <img src="${item.poster || 'https://via.placeholder.com/300x450/12121f/5c5c78?text=No+Image'}" alt="${item.movie}" loading="lazy" />
+                    <span class="continue-badge">${Math.round(item.progress || 0)}%</span>
+                    <div class="continue-info">
+                        <h4>${item.movie}</h4>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${item.progress || 0}%;"></div>
+                        </div>
+                        <div class="progress-text">${Math.round(item.progress || 0)}% watched</div>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        // ================================================================
+        //  SYNC ADMIN DATA
+        // ================================================================
+        function syncAdminData() {
+            try {
+                const now = new Date().toISOString();
+                let sessionId = sessionStorage.getItem('flixhub_session');
+                if (!sessionId) {
+                    sessionId = Date.now() + '_' + Math.random().toString(36).slice(2, 6);
+                    sessionStorage.setItem('flixhub_session', sessionId);
+                }
+
+                let pageViews = parseInt(localStorage.getItem('flixhub_pageViews') || '0');
+                pageViews++;
+                localStorage.setItem('flixhub_pageViews', pageViews);
+
+                let totalVisits = parseInt(localStorage.getItem('flixhub_totalVisits') || '0');
+                if (!sessionStorage.getItem('flixhub_visited')) {
+                    totalVisits++;
+                    localStorage.setItem('flixhub_totalVisits', totalVisits);
+                    sessionStorage.setItem('flixhub_visited', 'true');
+                }
+
+                const today = now.slice(0, 10);
+                let dailyVisits = JSON.parse(localStorage.getItem('flixhub_dailyVisits') || '[]');
+                const existing = dailyVisits.find(d => d.date === today);
+                if (existing) {
+                    existing.count++;
+                } else {
+                    dailyVisits.push({ date: today, count: 1 });
+                }
+                if (dailyVisits.length > 90) dailyVisits = dailyVisits.slice(-90);
+                localStorage.setItem('flixhub_dailyVisits', JSON.stringify(dailyVisits));
+
+                if (document.referrer) {
+                    let referrers = JSON.parse(localStorage.getItem('flixhub_referrers') || '[]');
+                    referrers.push({ url: document.referrer, time: now });
+                    if (referrers.length > 200) referrers = referrers.slice(-200);
+                    localStorage.setItem('flixhub_referrers', JSON.stringify(referrers));
+                }
+
+                let sessions = JSON.parse(localStorage.getItem('flixhub_sessions') || '[]');
+                let session = sessions.find(s => s.id === sessionId);
+                if (session) {
+                    session.pages = (session.pages || 0) + 1;
+                    session.lastActivity = now;
+                } else {
+                    sessions.push({
+                        id: sessionId,
+                        userAgent: navigator.userAgent,
+                        pages: 1,
+                        start: now,
+                        lastActivity: now
+                    });
+                }
+                if (sessions.length > 500) sessions = sessions.slice(-500);
+                localStorage.setItem('flixhub_sessions', JSON.stringify(sessions));
+
+                let activities = JSON.parse(localStorage.getItem('flixhub_activities') || '[]');
+                activities.push({
+                    type: 'page_view',
+                    text: `Visited ${window.location.pathname || 'home'}`,
+                    timestamp: now
+                });
+                if (activities.length > 100) activities = activities.slice(-100);
+                localStorage.setItem('flixhub_activities', JSON.stringify(activities));
+
+                try {
+                    fetch('https://ipapi.co/json/')
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.country_code) {
+                                let countries = JSON.parse(localStorage.getItem('flixhub_countries') || '[]');
+                                countries.push({ code: data.country_code, time: now });
+                                if (countries.length > 500) countries = countries.slice(-500);
+                                localStorage.setItem('flixhub_countries', JSON.stringify(countries));
+                            }
+                        })
+                        .catch(() => {});
+                } catch (e) {}
+
+            } catch (e) {
+                console.log('Sync error:', e);
+            }
+        }
+
+        // ================================================================
+        //  STORAGE LISTENER
+        // ================================================================
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'flixhub_ads_updated') {
+                loadAds();
+            }
+            if (e.key === 'flixhub_watchHistory') {
+                loadContinueWatching();
+            }
+        });
+
+        // ================================================================
+        //  KONFIGURASI TMDB
+        // ================================================================
+        const grid = document.getElementById('movieGrid');
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const genreBtns = document.querySelectorAll('.genre-btn');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        const loadMoreContainer = document.getElementById('loadMoreContainer');
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        const resultCount = document.getElementById('resultCount');
+
+        let currentGenre = 'all';
+        let currentQuery = '';
+        let currentPage = 1;
+        let isLoading = false;
+        let hasMore = true;
+
+        function showSkeletons(count = 8) {
+            grid.innerHTML = '';
+            const skel = document.createElement('div');
+            skel.className = 'skeleton-grid';
+            for (let i = 0; i < count; i++) {
+                skel.innerHTML += `
+                    <div class="skeleton-card">
+                        <div class="skeleton-img"></div>
+                        <div class="skeleton-text"></div>
+                    </div>
+                `;
+            }
+            grid.appendChild(skel);
+        }
+
+        async function fetchMovies(endpoint, params = '') {
+            try {
+                const res = await fetch(`${BASE_URL}${endpoint}?api_key=${API_KEY}&language=en-US${params}`);
+                if (!res.ok) throw new Error('Failed to fetch');
+                return await res.json();
+            } catch (error) {
+                console.error('Error:', error);
+                return null;
+            }
+        }
+
+        function renderMovies(movies, append = false) {
+            if (!movies || movies.length === 0) {
+                if (!append) {
+                    grid.innerHTML = `<div class="error-msg">
+                        <i class="fas fa-film"></i>
+                        No movies found. Try a different search.
+                    </div>`;
+                    loadMoreContainer.style.display = 'none';
+                    resultCount.textContent = '0 results';
+                }
+                return;
+            }
+
+            const cards = movies.map(movie => {
+                const poster = movie.poster_path ?
+                    `${IMG_URL}${movie.poster_path}` :
+                    'https://via.placeholder.com/500x750/12121f/5c5c78?text=No+Image';
+                const year = movie.release_date ? movie.release_date.slice(0, 4) : 'N/A';
+                const rating = movie.vote_average ? movie.vote_average.toFixed(1) : '0';
+
+                return `
+                    <a href="player.html?movie=${movie.id}" class="movie-card" data-id="${movie.id}">
+                        <div class="poster-wrapper">
+                            <span class="badge-top"><i class="fas fa-play"></i> Watch</span>
+                            <span class="badge-year">${year}</span>
+                            <img src="${poster}" alt="${movie.title || 'Movie'}" loading="lazy" />
+                        </div>
+                        <div class="card-body">
+                            <h3 title="${movie.title || 'Untitled'}">${movie.title || 'Untitled'}</h3>
+                            <div class="meta">
+                                <span>${year}</span>
+                                <span class="rating"><i class="fas fa-star"></i> ${rating}</span>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+
+            if (append) {
+                grid.innerHTML += cards;
+            } else {
+                grid.innerHTML = cards;
+            }
+
+            loadMoreContainer.style.display = hasMore ? 'block' : 'none';
+            resultCount.textContent = movies.length > 0 ? `${movies.length} titles` : '0 results';
+        }
+
+        async function loadMovies(page = 1, append = false) {
+            if (isLoading) return;
+            isLoading = true;
+
+            if (!append) {
+                showSkeletons();
+                loadMoreBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+                loadMoreBtn.disabled = true;
+            }
+
+            let data;
+            const query = currentQuery.trim();
+
+            if (query !== '') {
+                data = await fetchMovies('/search/movie', `&query=${encodeURIComponent(query)}&page=${page}`);
+            } else if (currentGenre === 'all') {
+                data = await fetchMovies('/movie/popular', `&page=${page}`);
+            } else {
+                data = await fetchMovies('/discover/movie', `&with_genres=${currentGenre}&sort_by=popularity.desc&page=${page}`);
+            }
+
+            isLoading = false;
+
+            if (data === null) {
+                grid.innerHTML = `<div class="error-msg">
+                    <i class="fas fa-exclamation-triangle" style="color:var(--primary);"></i>
+                    Failed to load data. Check your connection.
+                </div>`;
+                loadMoreContainer.style.display = 'none';
+                return;
+            }
+
+            const movies = data.results || [];
+            hasMore = page < data.total_pages;
+
+            if (movies.length === 0 && !append) {
+                renderMovies([]);
+                return;
+            }
+
+            renderMovies(movies, append);
+
+            loadMoreBtn.innerHTML = hasMore ? '<i class="fas fa-plus-circle"></i> Load More' : '✨ All movies loaded';
+            loadMoreBtn.disabled = !hasMore;
+        }
+
+        loadMoreBtn.addEventListener('click', () => {
+            if (!isLoading && hasMore) {
+                currentPage++;
+                loadMovies(currentPage, true);
+            }
+        });
+
+        function performSearch() {
+            currentQuery = searchInput.value.trim();
+            currentPage = 1;
+            hasMore = true;
+            if (currentQuery === '') {
+                genreBtns.forEach(b => b.classList.remove('active'));
+                document.querySelector('.genre-btn[data-genre="all"]').classList.add('active');
+                currentGenre = 'all';
+            } else {
+                genreBtns.forEach(b => b.classList.remove('active'));
+            }
+            loadMovies(1, false);
+        }
+
+        searchBtn.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+
+        genreBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                genreBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentGenre = this.dataset.genre;
+                currentQuery = '';
+                searchInput.value = '';
+                currentPage = 1;
+                hasMore = true;
+                loadMovies(1, false);
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ================================================================
+        //  PWA
+        // ================================================================
+        let deferredPrompt;
+        const pwaBtn = document.getElementById('pwaInstallBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            pwaBtn.classList.remove('hidden');
+        });
+
+        pwaBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const result = await deferredPrompt.userChoice;
+                if (result.outcome === 'accepted') {
+                    showToast('🎉 App installed successfully!', 'fa-check-circle');
+                }
+                deferredPrompt = null;
+                pwaBtn.classList.add('hidden');
+            }
+        });
+
+        // ================================================================
+        //  INIT
+        // ================================================================
+        loadAds();
+        loadContinueWatching();
+        syncAdminData();
+        setInterval(syncAdminData, 30000);
+        showToast('🎬 Welcome to FlixHub!', 'fa-film');
+        loadMovies(1, false);
+
+        console.log('🎬 FlixHub loaded with all features!');
+        console.log('🎲 Click FAB → Random to get movie recommendation');
+    </script>
+
+</body>
+</html>
