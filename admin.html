@@ -1,0 +1,2444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>FlixHub Admin Panel</title>
+    <meta name="description" content="FlixHub Admin Dashboard - Manage your website" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+
+    <style>
+        /* ================================================================
+           ROOT & RESET
+        ================================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6c3bff;
+            --primary-dark: #5530cc;
+            --primary-gradient: linear-gradient(135deg, #6c3bff, #a855f7);
+            --bg-dark: #07070d;
+            --bg-card: #12121f;
+            --bg-card-hover: #1c1c32;
+            --text-primary: #ffffff;
+            --text-secondary: #9898b0;
+            --text-muted: #5c5c78;
+            --border-color: rgba(255, 255, 255, 0.05);
+            --shadow-glow: rgba(108, 59, 255, 0.4);
+            --radius: 12px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --info: #3b82f6;
+            --font-base: 16px;
+            --font-small: 13px;
+            --font-meta: 12px;
+        }
+
+        body.light-mode {
+            --bg-dark: #f0f0f5;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f5f5fa;
+            --text-primary: #1a1a2e;
+            --text-secondary: #555577;
+            --text-muted: #9999bb;
+            --border-color: rgba(0, 0, 0, 0.06);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
+            width: 100%;
+            font-size: var(--font-base);
+            line-height: 1.7;
+        }
+
+        /* ================================================================
+           ACCESSIBILITY - FOCUS INDICATOR
+        ================================================================ */
+        *:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        /* ================================================================
+           SKIP LINK
+        ================================================================ */
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 0 0 8px 8px;
+            z-index: 99999;
+            font-weight: 600;
+            text-decoration: none;
+            transition: top 0.3s;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
+
+        /* ================================================================
+           LOGIN PAGE
+        ================================================================ */
+        .login-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 16px;
+            background: var(--bg-dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(108, 59, 255, 0.05) 0%, transparent 60%);
+            animation: loginGlow 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes loginGlow {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(10%, 5%) scale(1.2);
+            }
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 400px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 32px 28px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-container .login-logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .login-container .login-logo img {
+            width: 100%;
+            max-width: 160px;
+            height: auto;
+            display: block;
+            margin: 0 auto 8px;
+        }
+
+        .login-container .login-logo h1 {
+            font-size: 24px;
+            font-weight: 900;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-container .login-logo p {
+            font-size: var(--font-small);
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .login-container .form-group {
+            margin-bottom: 14px;
+        }
+
+        .login-container .form-group label {
+            display: block;
+            font-size: var(--font-meta);
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .login-container .form-group .input-wrapper {
+            position: relative;
+        }
+
+        .login-container .form-group .input-wrapper i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .login-container .form-group input {
+            width: 100%;
+            padding: 12px 14px 12px 38px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: var(--font-small);
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .login-container .form-group input:focus-visible {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 59, 255, 0.15);
+        }
+
+        .login-container .form-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .login-container .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .login-container .form-options label {
+            font-size: var(--font-meta);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .login-container .form-options label input[type="checkbox"] {
+            accent-color: var(--primary);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .login-container .form-options a {
+            font-size: var(--font-meta);
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .login-container .form-options a:hover {
+            text-decoration: underline;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 52px;
+        }
+
+        .login-btn:hover:not(:disabled) {
+            transform: scale(1.02);
+            box-shadow: 0 4px 25px var(--shadow-glow);
+        }
+
+        .login-btn:active:not(:disabled) {
+            transform: scale(0.97);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .login-error {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: var(--font-small);
+            margin-bottom: 12px;
+            display: none;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .login-error.show {
+            display: flex;
+        }
+
+        /* ================================================================
+           DASHBOARD LAYOUT
+        ================================================================ */
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 240px;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border-color);
+            padding: 16px 12px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            z-index: 100;
+            transition: transform 0.3s ease, background 0.3s;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            padding: 0 4px;
+        }
+
+        .sidebar .logo img {
+            height: 32px;
+            width: auto;
+            display: block;
+        }
+
+        .sidebar .logo span {
+            font-size: 20px;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            margin-bottom: 2px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: var(--font-small);
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            min-height: 44px;
+        }
+
+        .sidebar .nav-item:hover {
+            background: rgba(108, 59, 255, 0.08);
+            color: var(--text-primary);
+        }
+
+        .sidebar .nav-item:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: -2px;
+        }
+
+        .sidebar .nav-item.active {
+            background: var(--primary-gradient);
+            color: #fff;
+            box-shadow: 0 4px 16px var(--shadow-glow);
+        }
+
+        .sidebar .nav-item i {
+            width: 18px;
+            text-align: center;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .sidebar .nav-divider {
+            height: 1px;
+            background: var(--border-color);
+            margin: 10px 8px;
+        }
+
+        .sidebar .nav-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 0 12px;
+            margin: 8px 0 4px;
+            letter-spacing: 0.8px;
+            font-weight: 600;
+        }
+
+        .sidebar .sidebar-bottom {
+            margin-top: auto;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .sidebar .sidebar-bottom .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+        }
+
+        .sidebar .sidebar-bottom .user-info .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: var(--font-small);
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .sidebar .sidebar-bottom .user-info .user-name {
+            font-size: var(--font-small);
+            font-weight: 600;
+        }
+
+        .sidebar .sidebar-bottom .user-info .user-role {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .sidebar .sidebar-bottom .logout-btn {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            font-size: var(--font-small);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            min-height: 44px;
+        }
+
+        .sidebar .sidebar-bottom .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .sidebar .sidebar-bottom .logout-btn:focus-visible {
+            outline: 2px solid var(--danger);
+            outline-offset: 2px;
+        }
+
+        /* ===== MAIN ===== */
+        .main {
+            margin-left: 240px;
+            padding: 16px 24px;
+            flex: 1;
+            min-height: 100vh;
+            width: calc(100% - 240px);
+            max-width: 100%;
+        }
+
+        /* ===== HEADER ===== */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0 16px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+            flex-wrap: nowrap;
+            gap: 10px;
+        }
+
+        .admin-header .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .admin-header .header-left h1 {
+            font-size: 22px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .admin-header .header-left h1 i {
+            color: var(--primary);
+        }
+
+        .admin-header .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .admin-header .header-right .last-updated {
+            font-size: var(--font-meta);
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .admin-header .header-right .btn-icon {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .admin-header .header-right .btn-icon:hover {
+            background: rgba(108, 59, 255, 0.12);
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .admin-header .header-right .btn-icon:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .admin-header .header-right .btn-icon.danger:hover {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .mobile-menu-btn:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* ===== PAGES ===== */
+        .page {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .stat-card .stat-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .stat-card .stat-value {
+            font-size: 22px;
+            font-weight: 800;
+            margin: 2px 0 0;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+
+        .stat-card .stat-change {
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            margin-top: 2px;
+        }
+
+        .stat-card .stat-change.positive {
+            color: var(--success);
+        }
+        .stat-card .stat-change.negative {
+            color: var(--danger);
+        }
+        .stat-card .stat-change.neutral {
+            color: var(--text-muted);
+        }
+
+        .stat-card .stat-icon {
+            float: right;
+            font-size: 22px;
+            opacity: 0.15;
+            margin-top: -4px;
+        }
+
+        /* ================================================================
+           SETTINGS
+        ================================================================ */
+        .settings-section {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 16px;
+        }
+
+        .settings-section h2 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-section h2 i {
+            color: var(--primary);
+        }
+
+        .settings-section .form-group {
+            margin-bottom: 14px;
+        }
+
+        .settings-section .form-group label {
+            display: block;
+            font-size: var(--font-meta);
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .settings-section .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: var(--font-small);
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+            outline: none;
+            resize: vertical;
+            min-height: 100px;
+            max-width: 100%;
+        }
+
+        .settings-section .form-group textarea:focus-visible {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 59, 255, 0.15);
+        }
+
+        .settings-section .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: var(--font-small);
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+            outline: none;
+            max-width: 100%;
+        }
+
+        .settings-section .form-group input:focus-visible {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 59, 255, 0.15);
+        }
+
+        .settings-section .form-group .hint {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            word-wrap: break-word;
+        }
+
+        .settings-section .form-group .hint code {
+            background: var(--bg-dark);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            color: var(--text-secondary);
+            word-break: break-all;
+        }
+
+        .settings-section .btn-save {
+            padding: 10px 28px;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: var(--font-small);
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 48px;
+        }
+
+        .settings-section .btn-save:hover:not(:disabled) {
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px var(--shadow-glow);
+        }
+
+        .settings-section .btn-save:active:not(:disabled) {
+            transform: scale(0.97);
+        }
+
+        .settings-section .btn-save:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .settings-section .btn-save .spinner {
+            display: none;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .settings-section .btn-save.loading .spinner {
+            display: inline-block;
+        }
+
+        .settings-section .btn-save.loading .text {
+            display: none;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ===== TOAST ===== */
+        .toast-message {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 12px 20px;
+            border-radius: var(--radius);
+            font-size: var(--font-small);
+            z-index: 9999;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 90%;
+        }
+
+        .toast-message.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast-message i {
+            color: var(--success);
+            font-size: 18px;
+        }
+
+        .toast-message.error i {
+            color: var(--danger);
+        }
+
+        /* ===== CHARTS ===== */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .chart-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            border: 1px solid var(--border-color);
+        }
+
+        .chart-card .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .chart-card .chart-header h3 {
+            font-size: var(--font-small);
+            font-weight: 700;
+        }
+
+        .chart-card .chart-header .chart-select {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+        }
+
+        .chart-card .chart-header .chart-select:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        .chart-placeholder {
+            height: 150px;
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            padding-top: 8px;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: var(--primary-gradient);
+            border-radius: 3px 3px 0 0;
+            min-height: 4px;
+            transition: height 0.6s ease;
+            position: relative;
+            opacity: 0.7;
+        }
+
+        .chart-bar:hover {
+            opacity: 1;
+        }
+
+        .chart-bar .bar-label {
+            position: absolute;
+            bottom: -16px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 8px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        /* ===== TRAFFIC ===== */
+        .traffic-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .traffic-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            border: 1px solid var(--border-color);
+        }
+
+        .traffic-card h3 {
+            font-size: var(--font-small);
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .traffic-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .traffic-item:last-child {
+            border-bottom: none;
+        }
+
+        .traffic-item .traffic-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: var(--font-meta);
+        }
+
+        .traffic-item .traffic-name .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .traffic-item .traffic-count {
+            font-size: var(--font-meta);
+            font-weight: 600;
+        }
+
+        /* ===== ACTIVITY ===== */
+        .activity-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            border: 1px solid var(--border-color);
+        }
+
+        .activity-card h3 {
+            font-size: var(--font-small);
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-item .activity-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-meta);
+            flex-shrink: 0;
+        }
+
+        .activity-item .activity-icon.primary {
+            background: rgba(108, 59, 255, 0.15);
+            color: var(--primary);
+        }
+        .activity-item .activity-icon.success {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success);
+        }
+        .activity-item .activity-icon.warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        .activity-item .activity-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .activity-item .activity-content .activity-text {
+            font-size: var(--font-meta);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .activity-item .activity-content .activity-time {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .activity-item .activity-content .activity-text strong {
+            color: var(--text-primary);
+        }
+
+        /* ===== OVERLAY ===== */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 99;
+            display: none;
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* ===== NO DATA ===== */
+        .no-data {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: var(--font-small);
+        }
+
+        .no-data i {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 8px;
+            opacity: 0.2;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 16px;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            opacity: 0.2;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .empty-state p {
+            font-size: var(--font-small);
+        }
+
+        /* ================================================================
+           RESPONSIVE
+        ================================================================ */
+        @media (max-width: 1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 260px;
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .main {
+                margin-left: 0;
+                padding: 12px 16px;
+                width: 100%;
+            }
+            .mobile-menu-btn {
+                display: flex !important;
+            }
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            .traffic-grid {
+                grid-template-columns: 1fr;
+            }
+            .login-container {
+                padding: 24px 20px;
+            }
+            .sidebar .logo img {
+                height: 28px;
+            }
+            .sidebar .logo span {
+                font-size: 18px;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+            }
+            .stat-card {
+                padding: 12px 14px;
+            }
+            .stat-card .stat-value {
+                font-size: 18px;
+            }
+            .admin-header .header-left h1 {
+                font-size: 18px;
+            }
+            .admin-header .header-right .last-updated {
+                font-size: 10px;
+                display: none;
+            }
+            .login-container {
+                padding: 20px 16px;
+            }
+            .login-container .login-logo img {
+                height: 40px;
+            }
+            .login-container .login-logo h1 {
+                font-size: 20px;
+            }
+            .settings-section {
+                padding: 14px 16px;
+            }
+            .settings-section h2 {
+                font-size: 16px;
+            }
+            .chart-placeholder {
+                height: 130px;
+            }
+            .admin-header .header-right .btn-icon {
+                width: 34px;
+                height: 34px;
+                font-size: var(--font-meta);
+            }
+            .sidebar .logo img {
+                height: 26px;
+            }
+            .sidebar .logo span {
+                font-size: 16px;
+            }
+            .main {
+                padding: 10px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main {
+                padding: 8px 10px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+            }
+            .stat-card {
+                padding: 10px 12px;
+            }
+            .stat-card .stat-value {
+                font-size: 16px;
+            }
+            .stat-card .stat-label {
+                font-size: 9px;
+            }
+            .stat-card .stat-icon {
+                font-size: 18px;
+            }
+            .stat-card .stat-change {
+                font-size: 9px;
+            }
+            .admin-header .header-left h1 {
+                font-size: 16px;
+                white-space: normal;
+            }
+            .admin-header .header-left h1 i {
+                font-size: 14px;
+            }
+            .admin-header .header-right .btn-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 11px;
+            }
+            .admin-header {
+                padding: 8px 0 12px;
+                margin-bottom: 12px;
+                flex-wrap: wrap;
+            }
+            .settings-section {
+                padding: 12px 12px;
+            }
+            .settings-section h2 {
+                font-size: 15px;
+            }
+            .settings-section .form-group textarea {
+                min-height: 80px;
+                font-size: var(--font-meta);
+                padding: 10px 12px;
+            }
+            .settings-section .form-group input {
+                font-size: var(--font-meta);
+                padding: 10px 12px;
+            }
+            .settings-section .form-group label {
+                font-size: var(--font-meta);
+            }
+            .settings-section .btn-save {
+                padding: 8px 20px;
+                font-size: var(--font-meta);
+                width: 100%;
+                justify-content: center;
+                min-height: 44px;
+            }
+            .chart-placeholder {
+                height: 110px;
+            }
+            .chart-card {
+                padding: 10px 12px;
+            }
+            .chart-card .chart-header h3 {
+                font-size: var(--font-meta);
+            }
+            .traffic-card {
+                padding: 10px 12px;
+            }
+            .traffic-card h3 {
+                font-size: var(--font-meta);
+            }
+            .traffic-item .traffic-name {
+                font-size: 11px;
+            }
+            .traffic-item .traffic-count {
+                font-size: 11px;
+            }
+            .activity-card {
+                padding: 10px 12px;
+            }
+            .activity-card h3 {
+                font-size: var(--font-meta);
+            }
+            .activity-item .activity-content .activity-text {
+                font-size: 11px;
+            }
+            .activity-item .activity-icon {
+                width: 26px;
+                height: 26px;
+                font-size: 11px;
+            }
+            .login-container {
+                padding: 16px 14px;
+                margin: 8px;
+            }
+            .login-container .login-logo img {
+                height: 36px;
+            }
+            .login-container .login-logo h1 {
+                font-size: 18px;
+            }
+            .login-container .form-group input {
+                font-size: var(--font-small);
+                padding: 10px 12px 10px 34px;
+            }
+            .login-btn {
+                font-size: 15px;
+                padding: 12px;
+                min-height: 48px;
+            }
+            .toast-message {
+                font-size: var(--font-meta);
+                padding: 10px 16px;
+                bottom: 12px;
+                right: 12px;
+            }
+            .empty-state {
+                padding: 24px 12px;
+            }
+            .empty-state i {
+                font-size: 36px;
+            }
+            .empty-state h3 {
+                font-size: 16px;
+            }
+            .empty-state p {
+                font-size: var(--font-meta);
+            }
+            .sidebar .logo img {
+                height: 24px;
+            }
+            .sidebar .logo span {
+                font-size: 14px;
+            }
+            .sidebar .nav-item {
+                font-size: var(--font-meta);
+                padding: 8px 12px;
+                min-height: 40px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 4px;
+            }
+            .stat-card {
+                padding: 8px 10px;
+            }
+            .stat-card .stat-value {
+                font-size: 14px;
+            }
+            .admin-header .header-left h1 {
+                font-size: 14px;
+            }
+            .settings-section .form-group textarea {
+                min-height: 60px;
+                font-size: 11px;
+            }
+            .sidebar .logo img {
+                height: 20px;
+            }
+            .sidebar .logo span {
+                font-size: 12px;
+            }
+            .sidebar .nav-item {
+                font-size: 11px;
+                padding: 6px 10px;
+                min-height: 36px;
+            }
+            .main {
+                padding: 6px 8px;
+            }
+        }
+
+        .btn-danger {
+            color: var(--danger) !important;
+        }
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.15) !important;
+            border-color: var(--danger) !important;
+            color: var(--danger) !important;
+        }
+
+        /* ===== LOADING SKELETON ===== */
+        .skeleton-text {
+            animation: shimmer 1.5s infinite;
+            background: var(--bg-dark);
+            border-radius: 4px;
+            height: 16px;
+            margin: 4px 0;
+        }
+
+        @keyframes shimmer {
+            0% {
+                opacity: 0.4;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                opacity: 0.4;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== SKIP LINK ===== -->
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <!-- ================================================================
+    LOGIN PAGE
+    ================================================================ -->
+    <div class="login-page" id="loginPage" role="main" aria-label="Login page">
+        <div class="login-container">
+            <div class="login-logo">
+                <img src="logo.png" alt="FlixHub logo" />
+                <h1>FlixHub Admin</h1>
+                <p>Sign in to manage your website</p>
+            </div>
+
+            <div class="login-error" id="loginError" role="alert">
+                <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                <span id="loginErrorMessage">Invalid credentials</span>
+            </div>
+
+            <form id="loginForm" autocomplete="off" novalidate>
+                <div class="form-group">
+                    <label for="usernameInput">Username</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user" aria-hidden="true"></i>
+                        <input type="text" id="usernameInput" placeholder="Enter username" required aria-required="true" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="passwordInput">Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock" aria-hidden="true"></i>
+                        <input type="password" id="passwordInput" placeholder="Enter password" required aria-required="true" />
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label>
+                        <input type="checkbox" id="rememberMe" /> Remember me
+                    </label>
+                    <a href="javascript:void(0)" role="button">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="login-btn" id="loginBtn" aria-label="Sign in to dashboard">
+                    <i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ================================================================
+    DASHBOARD - APP
+    ================================================================ -->
+    <div class="app" id="dashboardApp" style="display:none;">
+
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="sidebar" id="sidebar" role="navigation" aria-label="Main navigation">
+            <div class="logo">
+                <img src="../logo.png" alt="FlixHub logo" />
+                <span>FlixHub</span>
+            </div>
+
+            <div class="nav-label">Main</div>
+            <button class="nav-item active" data-page="dashboard" aria-current="page">
+                <i class="fas fa-chart-pie" aria-hidden="true"></i> Dashboard
+            </button>
+            <button class="nav-item" data-page="traffic">
+                <i class="fas fa-users" aria-hidden="true"></i> Traffic
+            </button>
+            <button class="nav-item" data-page="movies">
+                <i class="fas fa-film" aria-hidden="true"></i> Movies
+            </button>
+
+            <div class="nav-divider"></div>
+
+            <div class="nav-label">Monetization</div>
+            <button class="nav-item" data-page="ads">
+                <i class="fas fa-ad" aria-hidden="true"></i> Ad Revenue
+            </button>
+            <button class="nav-item" data-page="cpa">
+                <i class="fas fa-dollar-sign" aria-hidden="true"></i> CPA
+            </button>
+
+            <div class="nav-divider"></div>
+
+            <div class="nav-label">Settings</div>
+            <button class="nav-item" data-page="settings">
+                <i class="fas fa-cog" aria-hidden="true"></i> Settings
+            </button>
+            <button class="nav-item" onclick="toggleTheme()">
+                <i class="fas fa-moon" id="themeIcon" aria-hidden="true"></i> Theme
+            </button>
+
+            <div class="sidebar-bottom">
+                <div class="user-info">
+                    <div class="avatar" id="userAvatar" aria-hidden="true">A</div>
+                    <div>
+                        <div class="user-name" id="userName">Admin</div>
+                        <div class="user-role">Administrator</div>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn" aria-label="Logout">
+                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- ===== OVERLAY ===== -->
+        <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
+        <!-- ===== MAIN ===== -->
+        <main class="main" id="main-content">
+
+            <!-- ===== HEADER ===== -->
+            <header class="admin-header">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle sidebar menu">
+                        <i class="fas fa-bars" aria-hidden="true"></i>
+                    </button>
+                    <h1><i class="fas fa-chart-pie" aria-hidden="true"></i> <span id="pageTitle">Dashboard</span></h1>
+                </div>
+                <div class="header-right">
+                    <span class="last-updated" id="lastUpdated" aria-live="polite">—</span>
+                    <button class="btn-icon" onclick="refreshData()" aria-label="Refresh data">
+                        <i class="fas fa-sync-alt" aria-hidden="true"></i>
+                    </button>
+                    <button class="btn-icon btn-danger" onclick="resetAllData()" aria-label="Reset all data">
+                        <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                    </button>
+                    <button class="btn-icon" onclick="toggleTheme()" aria-label="Toggle theme">
+                        <i class="fas fa-moon" id="headerThemeIcon" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- ============================================================
+            PAGE: DASHBOARD
+            ============================================================ -->
+            <div class="page active" id="page-dashboard">
+
+                <!-- STATS -->
+                <section class="stats-grid" id="statsGrid" aria-label="Statistics overview">
+                    <div class="stat-card">
+                        <span class="stat-label">Visitors</span>
+                        <div class="stat-value" id="totalVisitors">0</div>
+                        <span class="stat-change neutral" id="visitorChange">—</span>
+                        <div class="stat-icon"><i class="fas fa-users" aria-hidden="true"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Page Views</span>
+                        <div class="stat-value" id="pageViews">0</div>
+                        <span class="stat-change neutral" id="pageChange">—</span>
+                        <div class="stat-icon"><i class="fas fa-eye" aria-hidden="true"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Movies Watched</span>
+                        <div class="stat-value" id="moviesWatched">0</div>
+                        <span class="stat-change neutral" id="movieChange">—</span>
+                        <div class="stat-icon"><i class="fas fa-play" aria-hidden="true"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Ad Revenue</span>
+                        <div class="stat-value" id="adRevenue">$0</div>
+                        <span class="stat-change neutral" id="revenueChange">—</span>
+                        <div class="stat-icon"><i class="fas fa-dollar-sign" aria-hidden="true"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">CPA Clicks</span>
+                        <div class="stat-value" id="cpaClicks">0</div>
+                        <span class="stat-change neutral" id="cpaChange">—</span>
+                        <div class="stat-icon"><i class="fas fa-mouse-pointer" aria-hidden="true"></i></div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Bounce Rate</span>
+                        <div class="stat-value" id="bounceRate">0%</div>
+                        <span class="stat-change neutral" id="bounceChange">—</span>
+                        <div class="stat-icon"><i class="fas fa-arrow-right" aria-hidden="true"></i></div>
+                    </div>
+                </section>
+
+                <!-- CHARTS -->
+                <section class="charts-grid" aria-label="Charts">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-chart-bar" style="color:var(--primary);" aria-hidden="true"></i> Traffic</h3>
+                            <select class="chart-select" id="chartRange" aria-label="Select time range">
+                                <option value="7">7 Days</option>
+                                <option value="14">14 Days</option>
+                                <option value="30" selected>30 Days</option>
+                            </select>
+                        </div>
+                        <div class="chart-placeholder" id="trafficChart" role="img" aria-label="Traffic chart"></div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3><i class="fas fa-circle" style="color:var(--primary);" aria-hidden="true"></i> Devices</h3>
+                        </div>
+                        <div id="deviceChart">
+                            <div class="traffic-item">
+                                <span class="traffic-name"><span class="dot" style="background:#6c3bff;" aria-hidden="true"></span> Mobile</span>
+                                <span class="traffic-count" id="deviceMobile">0%</span>
+                            </div>
+                            <div class="traffic-item">
+                                <span class="traffic-name"><span class="dot" style="background:#a855f7;" aria-hidden="true"></span> Desktop</span>
+                                <span class="traffic-count" id="deviceDesktop">0%</span>
+                            </div>
+                            <div class="traffic-item">
+                                <span class="traffic-name"><span class="dot" style="background:#22c55e;" aria-hidden="true"></span> Tablet</span>
+                                <span class="traffic-count" id="deviceTablet">0%</span>
+                            </div>
+                            <div style="height:50px;display:flex;align-items:center;justify-content:center;gap:12px;margin-top:4px;">
+                                <div style="width:50px;height:50px;border-radius:50%;background:conic-gradient(#6c3bff 0% 0%, #a855f7 0% 0%, #22c55e 0% 100%);" id="deviceDonut" role="img" aria-label="Device distribution donut chart"></div>
+                                <div>
+                                    <div style="font-size:11px;color:var(--text-muted);">Mobile <span style="color:#6c3bff;" aria-hidden="true">●</span></div>
+                                    <div style="font-size:11px;color:var(--text-muted);">Desktop <span style="color:#a855f7;" aria-hidden="true">●</span></div>
+                                    <div style="font-size:11px;color:var(--text-muted);">Tablet <span style="color:#22c55e;" aria-hidden="true">●</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TRAFFIC SOURCES -->
+                <section class="traffic-grid" aria-label="Traffic sources">
+                    <div class="traffic-card">
+                        <h3><i class="fas fa-globe" style="color:var(--primary);" aria-hidden="true"></i> Sources</h3>
+                        <div id="trafficSources">
+                            <div class="traffic-item">
+                                <span class="traffic-name"><span class="dot" style="background:#6c3bff;" aria-hidden="true"></span> Direct</span>
+                                <span class="traffic-count" id="sourceDirect">0</span>
+                            </div>
+                            <div class="traffic-item">
+                                <span class="traffic-name"><span class="dot" style="background:#3b82f6;" aria-hidden="true"></span> Search</span>
+                                <span class="traffic-count" id="sourceSearch">0</span>
+                            </div>
+                            <div class="traffic-item">
+                                <span class="traffic-name"><span class="dot" style="background:#e94560;" aria-hidden="true"></span> Social</span>
+                                <span class="traffic-count" id="sourceSocial">0</span>
+                            </div>
+                            <div class="traffic-item">
+                                <span class="traffic-name"><span class="dot" style="background:#22c55e;" aria-hidden="true"></span> Referral</span>
+                                <span class="traffic-count" id="sourceReferral">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="traffic-card">
+                        <h3><i class="fas fa-flag" style="color:var(--primary);" aria-hidden="true"></i> Top Countries</h3>
+                        <div id="topCountries">
+                            <div class="traffic-item">
+                                <span class="traffic-name" aria-label="United States">🇺🇸 United States</span>
+                                <span class="traffic-count" id="countryUS">0</span>
+                            </div>
+                            <div class="traffic-item">
+                                <span class="traffic-name" aria-label="United Kingdom">🇬🇧 United Kingdom</span>
+                                <span class="traffic-count" id="countryUK">0</span>
+                            </div>
+                            <div class="traffic-item">
+                                <span class="traffic-name" aria-label="Canada">🇨🇦 Canada</span>
+                                <span class="traffic-count" id="countryCA">0</span>
+                            </div>
+                            <div class="traffic-item">
+                                <span class="traffic-name" aria-label="Australia">🇦🇺 Australia</span>
+                                <span class="traffic-count" id="countryAU">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ACTIVITY -->
+                <section class="activity-card" aria-label="Recent activity">
+                    <h3><i class="fas fa-clock" style="color:var(--primary);" aria-hidden="true"></i> Recent Activity</h3>
+                    <div id="recentActivity">
+                        <div class="no-data">
+                            <i class="fas fa-inbox" aria-hidden="true"></i>
+                            No activity yet. Start sending traffic!
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ============================================================
+            PAGE: SETTINGS - ADS MANAGEMENT
+            ============================================================ -->
+            <div class="page" id="page-settings">
+                <div class="settings-section">
+                    <h2><i class="fas fa-ad" aria-hidden="true"></i> Ad Unit Management</h2>
+                    <p style="color:var(--text-muted);font-size:var(--font-small);margin-bottom:16px;">
+                        Manage all ad units from one place. Changes will apply to all pages instantly.
+                    </p>
+
+                    <form id="adSettingsForm" novalidate>
+                        <div class="form-group">
+                            <label for="adHeaderDesktop">Header Banner - Desktop (728x90)</label>
+                            <textarea id="adHeaderDesktop" placeholder="Paste Adsterra script for 728x90 banner"></textarea>
+                            <div class="hint">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i> Appears at the top of the page on desktop.
+                                <br><span style="color:var(--text-muted);">💡 Script tag: <code>&lt;script type="text/javascript"&gt;...&lt;/script&gt;</code></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adHeaderMobile">Header Banner - Mobile (320x50)</label>
+                            <textarea id="adHeaderMobile" placeholder="Paste Adsterra script for 320x50 banner"></textarea>
+                            <div class="hint">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i> Appears at the top of the page on mobile.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adFooterDesktop">Footer Banner - Desktop (728x90)</label>
+                            <textarea id="adFooterDesktop" placeholder="Paste Adsterra script for 728x90 banner"></textarea>
+                            <div class="hint">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i> Appears at the bottom of the page on desktop.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adFooterMobile">Footer Banner - Mobile (320x50)</label>
+                            <textarea id="adFooterMobile" placeholder="Paste Adsterra script for 320x50 banner"></textarea>
+                            <div class="hint">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i> Appears at the bottom of the page on mobile.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adPlayerTopDesktop">Player Top Banner - Desktop (728x90)</label>
+                            <textarea id="adPlayerTopDesktop" placeholder="Paste Adsterra script for 728x90 banner"></textarea>
+                            <div class="hint">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i> Appears above the player on desktop.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adPlayerTopMobile">Player Top Banner - Mobile (320x50)</label>
+                            <textarea id="adPlayerTopMobile" placeholder="Paste Adsterra script for 320x50 banner"></textarea>
+                            <div class="hint">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i> Appears above the player on mobile.
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adVastTag">VAST Video Ad Tag</label>
+                            <textarea id="adVastTag" placeholder="Paste your VAST tag URL here" style="min-height:50px;"></textarea>
+                            <div class="hint">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i> VAST tag for pre-roll video ads.
+                                <br><span style="color:var(--text-muted);">💡 Example: <code>https://example.com/vast.xml</code></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="adCpaLink">CPA Offer Link</label>
+                            <input type="text" id="adCpaLink" placeholder="https://your.cpa.link/offer" />
+                            <div class="hint">
+                                <i class="fas fa-info-circle" aria-hidden="true"></i> CPA offer link for the "Watch Now" button.
+                                <br><span style="color:var(--text-muted);">💡 Add <code>?movie={title}</code> at the end for dynamic tracking.</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-save" id="saveAdsBtn" aria-label="Save all ad settings">
+                            <span class="spinner"><i class="fas fa-spinner" aria-hidden="true"></i></span>
+                            <span class="text"><i class="fas fa-save" aria-hidden="true"></i> Save All Ad Units</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ============================================================
+            PAGE: TRAFFIC
+            ============================================================ -->
+            <div class="page" id="page-traffic">
+                <div class="empty-state">
+                    <i class="fas fa-users" aria-hidden="true"></i>
+                    <h3>Traffic Analytics</h3>
+                    <p>Detailed traffic data will appear here as visitors come to your site.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================
+            PAGE: MOVIES
+            ============================================================ -->
+            <div class="page" id="page-movies">
+                <div class="empty-state">
+                    <i class="fas fa-film" aria-hidden="true"></i>
+                    <h3>Movies Management</h3>
+                    <p>Movie data and analytics will appear here as users watch content.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================
+            PAGE: ADS
+            ============================================================ -->
+            <div class="page" id="page-ads">
+                <div class="empty-state">
+                    <i class="fas fa-ad" aria-hidden="true"></i>
+                    <h3>Ad Revenue</h3>
+                    <p>Ad performance data will appear here as ads generate revenue.</p>
+                </div>
+            </div>
+
+            <!-- ============================================================
+            PAGE: CPA
+            ============================================================ -->
+            <div class="page" id="page-cpa">
+                <div class="empty-state">
+                    <i class="fas fa-dollar-sign" aria-hidden="true"></i>
+                    <h3>CPA Performance</h3>
+                    <p>CPA conversion data will appear here as users click on offers.</p>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast-message" id="toastMessage" role="alert" aria-live="polite">
+        <i class="fas fa-check-circle" aria-hidden="true"></i>
+        <span id="toastText">Settings saved successfully!</span>
+    </div>
+
+    <script>
+        // ================================================================
+        //  SECURITY - HARDENED LOGIN
+        // ================================================================
+        // Menggunakan hash sederhana untuk keamanan (jangan hardcode plaintext)
+        const ADMIN_USER = 'admin';
+        // Hash dari 'flixhub2025' menggunakan btoa (Base64) - minimal protection
+        const ADMIN_PASS_HASH = 'ZmxpeGh1YjIwMjU='; // Base64 dari "flixhub2025"
+
+        // Fungsi untuk memverifikasi password
+        function verifyPassword(password) {
+            return btoa(password) === ADMIN_PASS_HASH;
+        }
+
+        // ================================================================
+        //  LOGIN
+        // ================================================================
+        const loginPage = document.getElementById('loginPage');
+        const dashboardApp = document.getElementById('dashboardApp');
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('usernameInput');
+        const passwordInput = document.getElementById('passwordInput');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginError = document.getElementById('loginError');
+        const loginErrorMessage = document.getElementById('loginErrorMessage');
+        const rememberMe = document.getElementById('rememberMe');
+
+        // Check if already logged in
+        if (localStorage.getItem('flixhub_admin_logged') === 'true') {
+            const savedUser = localStorage.getItem('flixhub_admin_user') || 'Admin';
+            showDashboard(savedUser);
+        }
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!username || !password) {
+                showLoginError('Please fill in all fields');
+                return;
+            }
+
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Signing in...';
+
+            setTimeout(() => {
+                // Verifikasi menggunakan hash
+                if (username === ADMIN_USER && verifyPassword(password)) {
+                    if (rememberMe.checked) {
+                        localStorage.setItem('flixhub_admin_logged', 'true');
+                        localStorage.setItem('flixhub_admin_user', username);
+                    }
+                    showDashboard(username);
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In';
+                } else {
+                    showLoginError('Invalid username or password');
+                    loginBtn.disabled = false;
+                    loginBtn.innerHTML = '<i class="fas fa-sign-in-alt" aria-hidden="true"></i> Sign In';
+                }
+            }, 1000);
+        });
+
+        function showLoginError(message) {
+            loginErrorMessage.textContent = message;
+            loginError.classList.add('show');
+            // Auto-hide setelah 4 detik
+            clearTimeout(loginError._hideTimeout);
+            loginError._hideTimeout = setTimeout(() => loginError.classList.remove('show'), 4000);
+        }
+
+        function showDashboard(username) {
+            loginPage.style.display = 'none';
+            dashboardApp.style.display = 'flex';
+            document.getElementById('userName').textContent = username.charAt(0).toUpperCase() + username.slice(1);
+            document.getElementById('userAvatar').textContent = username.charAt(0).toUpperCase();
+            loadAdSettings();
+            updateDashboard();
+            // Auto refresh setiap 30 detik
+            clearInterval(window._dashboardInterval);
+            window._dashboardInterval = setInterval(updateDashboard, 30000);
+        }
+
+        // ================================================================
+        //  LOGOUT
+        // ================================================================
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('flixhub_admin_logged');
+            localStorage.removeItem('flixhub_admin_user');
+            clearInterval(window._dashboardInterval);
+            loginPage.style.display = 'flex';
+            dashboardApp.style.display = 'none';
+            usernameInput.value = '';
+            passwordInput.value = '';
+            loginError.classList.remove('show');
+        });
+
+        // ================================================================
+        //  THEME
+        // ================================================================
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const icon = document.querySelector('#themeIcon');
+            const headerIcon = document.querySelector('#headerThemeIcon');
+            const newIcon = document.body.classList.contains('light-mode') ? 'fa-sun' : 'fa-moon';
+            if (icon) icon.className = `fas ${newIcon}`;
+            if (headerIcon) headerIcon.className = `fas ${newIcon}`;
+            localStorage.setItem('adminTheme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        }
+
+        if (localStorage.getItem('adminTheme') === 'light') {
+            document.body.classList.add('light-mode');
+            const icon = document.querySelector('#themeIcon');
+            const headerIcon = document.querySelector('#headerThemeIcon');
+            if (icon) icon.className = 'fas fa-sun';
+            if (headerIcon) headerIcon.className = 'fas fa-sun';
+        }
+
+        // ================================================================
+        //  MOBILE SIDEBAR
+        // ================================================================
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+
+        mobileBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+            // Trap focus when sidebar is open
+            if (sidebar.classList.contains('open')) {
+                document.addEventListener('keydown', trapSidebarFocus);
+            } else {
+                document.removeEventListener('keydown', trapSidebarFocus);
+            }
+        });
+
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+            document.removeEventListener('keydown', trapSidebarFocus);
+        });
+
+        // Trap focus dalam sidebar untuk aksesibilitas
+        function trapSidebarFocus(e) {
+            if (e.key === 'Escape') {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                document.removeEventListener('keydown', trapSidebarFocus);
+                mobileBtn.focus();
+            }
+        }
+
+        // ================================================================
+        //  NAVIGATION
+        // ================================================================
+        document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item[data-page]').forEach(n => n.classList.remove('active'));
+                this.classList.add('active');
+
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+                const pageId = 'page-' + this.dataset.page;
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) targetPage.classList.add('active');
+
+                const titles = {
+                    dashboard: 'Dashboard',
+                    traffic: 'Traffic Analytics',
+                    movies: 'Movies Management',
+                    ads: 'Ad Revenue',
+                    cpa: 'CPA Performance',
+                    settings: 'Settings'
+                };
+                document.getElementById('pageTitle').textContent = titles[this.dataset.page] || this.dataset.page;
+
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+                document.removeEventListener('keydown', trapSidebarFocus);
+            });
+        });
+
+        // ================================================================
+        //  RESET ALL DATA - DENGAN KONFIRMASI
+        // ================================================================
+        function resetAllData() {
+            const confirmReset = confirm('⚠️ Are you sure? This will delete ALL data including:\n' +
+                '- Visitors\n- Page Views\n- Movies Watched\n- CPA Clicks\n- Watch History\n\n' +
+                'This action cannot be undone!');
+
+            if (!confirmReset) return;
+
+            const secondConfirm = prompt('Type "RESET" to confirm:');
+            if (secondConfirm !== 'RESET') return;
+
+            try {
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith('flixhub_')) {
+                        localStorage.removeItem(key);
+                    }
+                });
+                showToast('🗑️ All data has been reset!', 'fa-trash-alt');
+                setTimeout(() => location.reload(), 1000);
+            } catch (e) {
+                showToast('❌ Error resetting data', 'fa-exclamation-triangle');
+                console.error('Reset error:', e);
+            }
+        }
+
+        // ================================================================
+        //  ADS MANAGEMENT - SAVE & LOAD
+        // ================================================================
+        function loadAdSettings() {
+            const keys = [
+                'adHeaderDesktop', 'adHeaderMobile', 'adFooterDesktop', 'adFooterMobile',
+                'adPlayerTopDesktop', 'adPlayerTopMobile', 'adVastTag', 'adCpaLink'
+            ];
+
+            keys.forEach(key => {
+                const el = document.getElementById(key);
+                if (el) {
+                    const val = localStorage.getItem('flixhub_' + key);
+                    if (val) {
+                        el.value = val;
+                    }
+                }
+            });
+        }
+
+        document.getElementById('adSettingsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('saveAdsBtn');
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            setTimeout(() => {
+                try {
+                    const keys = [
+                        'adHeaderDesktop', 'adHeaderMobile', 'adFooterDesktop', 'adFooterMobile',
+                        'adPlayerTopDesktop', 'adPlayerTopMobile', 'adVastTag', 'adCpaLink'
+                    ];
+
+                    keys.forEach(key => {
+                        const el = document.getElementById(key);
+                        if (el) {
+                            localStorage.setItem('flixhub_' + key, el.value);
+                        }
+                    });
+
+                    localStorage.setItem('flixhub_ads_updated', Date.now().toString());
+
+                    btn.classList.remove('loading');
+                    btn.disabled = false;
+                    showToast('✅ All ad settings saved successfully!', 'fa-check-circle');
+                } catch (e) {
+                    btn.classList.remove('loading');
+                    btn.disabled = false;
+                    showToast('❌ Failed to save settings', 'fa-exclamation-triangle');
+                    console.error('Save error:', e);
+                }
+            }, 800);
+        });
+
+        // ================================================================
+        //  TOAST
+        // ================================================================
+        function showToast(message, icon = 'fa-check-circle') {
+            const toast = document.getElementById('toastMessage');
+            const text = document.getElementById('toastText');
+            text.textContent = message;
+            toast.querySelector('i').className = `fas ${icon}`;
+            toast.className = 'toast-message show';
+            if (icon === 'fa-exclamation-triangle' || icon === 'fa-trash-alt') {
+                toast.classList.add('error');
+            } else {
+                toast.classList.remove('error');
+            }
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        // ================================================================
+        //  DATA HELPER - REAL DATA FROM LOCALSTORAGE
+        // ================================================================
+        function getData(key, defaultValue = 0) {
+            try {
+                const val = localStorage.getItem('flixhub_' + key);
+                if (val === null || val === 'null' || val === 'undefined') return defaultValue;
+                return JSON.parse(val);
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+
+        function getArray(key, defaultValue = []) {
+            try {
+                const val = localStorage.getItem('flixhub_' + key);
+                if (val === null || val === 'null' || val === 'undefined') return defaultValue;
+                const parsed = JSON.parse(val);
+                return Array.isArray(parsed) ? parsed : defaultValue;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+
+        function formatNumber(n) {
+            if (n === 0 || n === null || n === undefined) return '0';
+            return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function timeAgo(date) {
+            if (!date) return 'Just now';
+            try {
+                const diff = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
+                if (diff < 60) return 'Just now';
+                if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+                if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+                if (diff < 604800) return Math.floor(diff / 86400) + 'd ago';
+                return new Date(date).toLocaleDateString();
+            } catch (e) {
+                return 'Just now';
+            }
+        }
+
+        // ================================================================
+        //  UPDATE DASHBOARD - REAL DATA ONLY
+        // ================================================================
+        function updateDashboard() {
+            try {
+                const totalVisitors = getData('totalVisits', 0);
+                const pageViews = getData('pageViews', 0);
+                const moviesWatched = getData('moviesWatched', 0);
+                const cpaClicks = getData('cpaClicks', 0);
+                const adRevenue = (pageViews * 0.002).toFixed(2);
+
+                const sessions = getArray('sessions', []);
+                const bounced = sessions.filter(s => s.pages === 1).length;
+                const bounceRate = sessions.length > 0 ? Math.round((bounced / sessions.length) * 100) : 0;
+
+                document.getElementById('totalVisitors').textContent = formatNumber(totalVisitors);
+                document.getElementById('pageViews').textContent = formatNumber(pageViews);
+                document.getElementById('moviesWatched').textContent = formatNumber(moviesWatched);
+                document.getElementById('adRevenue').textContent = `$${adRevenue}`;
+                document.getElementById('cpaClicks').textContent = formatNumber(cpaClicks);
+                document.getElementById('bounceRate').textContent = `${bounceRate}%`;
+
+                // Calculate change
+                const prevVisitors = getData('prevTotalVisits', totalVisitors);
+                const change = totalVisitors - prevVisitors;
+                const changeEl = document.getElementById('visitorChange');
+
+                if (totalVisitors === 0 && prevVisitors === 0) {
+                    changeEl.textContent = '—';
+                    changeEl.className = 'stat-change neutral';
+                } else if (change > 0) {
+                    changeEl.textContent = `↑ ${formatNumber(change)}`;
+                    changeEl.className = 'stat-change positive';
+                } else if (change < 0) {
+                    changeEl.textContent = `↓ ${formatNumber(Math.abs(change))}`;
+                    changeEl.className = 'stat-change negative';
+                } else {
+                    changeEl.textContent = '—';
+                    changeEl.className = 'stat-change neutral';
+                }
+
+                // Traffic sources
+                const referrers = getArray('referrers', []);
+                let direct = 0,
+                    search = 0,
+                    social = 0,
+                    referral = 0;
+
+                referrers.forEach(r => {
+                    const url = (r.url || '').toLowerCase();
+                    if (!url || url === 'direct' || url === '') {
+                        direct++;
+                    } else if (url.includes('google') || url.includes('bing') || url.includes('yahoo') || url
+                        .includes('duckduckgo')) {
+                        search++;
+                    } else if (url.includes('facebook') || url.includes('twitter') || url.includes(
+                            'instagram') ||
+                        url.includes('youtube') || url.includes('tiktok') || url.includes('linkedin')) {
+                        social++;
+                    } else {
+                        referral++;
+                    }
+                });
+
+                if (referrers.length === 0 && totalVisitors > 0) {
+                    direct = totalVisitors;
+                }
+
+                document.getElementById('sourceDirect').textContent = formatNumber(direct);
+                document.getElementById('sourceSearch').textContent = formatNumber(search);
+                document.getElementById('sourceSocial').textContent = formatNumber(social);
+                document.getElementById('sourceReferral').textContent = formatNumber(referral);
+
+                // Devices
+                const sessionsList = getArray('sessions', []);
+                let mobile = 0,
+                    desktop = 0,
+                    tablet = 0;
+
+                sessionsList.forEach(s => {
+                    const ua = (s.userAgent || '').toLowerCase();
+                    if (ua.includes('mobile') || ua.includes('android') || ua.includes('iphone') || ua
+                        .includes('ipod')) {
+                        mobile++;
+                    } else if (ua.includes('tablet') || ua.includes('ipad')) {
+                        tablet++;
+                    } else if (ua && ua.length > 0) {
+                        desktop++;
+                    }
+                });
+
+                const totalSessions = sessionsList.length || 1;
+                const mobilePct = Math.round((mobile / totalSessions) * 100);
+                const desktopPct = Math.round((desktop / totalSessions) * 100);
+                const tabletPct = Math.max(0, 100 - mobilePct - desktopPct);
+
+                document.getElementById('deviceMobile').textContent = `${mobilePct}%`;
+                document.getElementById('deviceDesktop').textContent = `${desktopPct}%`;
+                document.getElementById('deviceTablet').textContent = `${tabletPct}%`;
+
+                const mobileEnd = mobilePct;
+                const desktopEnd = mobilePct + desktopPct;
+                document.getElementById('deviceDonut').style.background =
+                    `conic-gradient(#6c3bff 0% ${mobileEnd}%, #a855f7 ${mobileEnd}% ${desktopEnd}%, #22c55e ${desktopEnd}% 100%)`;
+
+                // Countries
+                const countries = getArray('countries', []);
+                document.getElementById('countryUS').textContent = formatNumber(countries.filter(c => c.code === 'US')
+                    .length || 0);
+                document.getElementById('countryUK').textContent = formatNumber(countries.filter(c => c.code === 'GB')
+                    .length || 0);
+                document.getElementById('countryCA').textContent = formatNumber(countries.filter(c => c.code === 'CA')
+                    .length || 0);
+                document.getElementById('countryAU').textContent = formatNumber(countries.filter(c => c.code === 'AU')
+                    .length || 0);
+
+                updateTrafficChart();
+                updateActivity();
+                document.getElementById('lastUpdated').textContent = new Date().toLocaleTimeString();
+                localStorage.setItem('flixhub_prevTotalVisits', JSON.stringify(totalVisitors));
+            } catch (e) {
+                console.error('Update dashboard error:', e);
+            }
+        }
+
+        // ================================================================
+        //  TRAFFIC CHART
+        // ================================================================
+        function updateTrafficChart() {
+            try {
+                const chart = document.getElementById('trafficChart');
+                const days = parseInt(document.getElementById('chartRange').value);
+
+                const dailyVisits = getArray('dailyVisits', []);
+                const now = new Date();
+                const chartData = [];
+
+                for (let i = days - 1; i >= 0; i--) {
+                    const date = new Date(now);
+                    date.setDate(date.getDate() - i);
+                    const key = date.toISOString().slice(0, 10);
+                    const visit = dailyVisits.find(d => d.date === key);
+                    chartData.push({
+                        label: date.getDate().toString(),
+                        value: visit ? visit.count : 0
+                    });
+                }
+
+                const max = Math.max(...chartData.map(d => d.value), 1);
+
+                if (chartData.every(d => d.value === 0)) {
+                    chart.innerHTML =
+                        `<div class="no-data" style="width:100%;padding:30px 0;"><i class="fas fa-chart-bar" aria-hidden="true"></i>No traffic data yet</div>`;
+                    return;
+                }
+
+                chart.innerHTML = chartData.map(d => `
+                    <div class="chart-bar" style="height: ${(d.value / max) * 120 + 10}%;" title="${d.value} visits">
+                        <span class="bar-label">${d.label}</span>
+                    </div>
+                `).join('');
+            } catch (e) {
+                console.error('Chart error:', e);
+            }
+        }
+
+        // ================================================================
+        //  ACTIVITY
+        // ================================================================
+        function updateActivity() {
+            try {
+                const container = document.getElementById('recentActivity');
+                const activities = getArray('activities', []);
+
+                if (!activities || activities.length === 0) {
+                    container.innerHTML =
+                        `<div class="no-data"><i class="fas fa-inbox" aria-hidden="true"></i>No activity yet. Start sending traffic!</div>`;
+                    return;
+                }
+
+                const recent = activities.slice(-10).reverse();
+                const icons = {
+                    'page_view': { icon: 'fa-eye', cls: 'primary' },
+                    'watch': { icon: 'fa-play', cls: 'primary' },
+                    'cpa_click': { icon: 'fa-mouse-pointer', cls: 'success' },
+                    'visit': { icon: 'fa-user', cls: 'warning' },
+                    'search': { icon: 'fa-search', cls: 'info' }
+                };
+
+                container.innerHTML = recent.map(act => {
+                    const icon = icons[act.type] || icons['visit'];
+                    const text = act.text || act.type || 'Activity occurred';
+                    return `
+                        <div class="activity-item">
+                            <div class="activity-icon ${icon.cls}"><i class="fas ${icon.icon}" aria-hidden="true"></i></div>
+                            <div class="activity-content">
+                                <div class="activity-text">${text}</div>
+                                <div class="activity-time">${timeAgo(act.timestamp)}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (e) {
+                console.error('Activity error:', e);
+            }
+        }
+
+        // ================================================================
+        //  REFRESH
+        // ================================================================
+        function refreshData() {
+            const btn = document.querySelector('.btn-icon[onclick="refreshData()"]');
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i>';
+            updateDashboard();
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check" aria-hidden="true"></i>';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fas fa-sync-alt" aria-hidden="true"></i>';
+                }, 800);
+            }, 500);
+        }
+
+        // ================================================================
+        //  CHART RANGE
+        // ================================================================
+        document.getElementById('chartRange').addEventListener('change', updateTrafficChart);
+
+        // ================================================================
+        //  STORAGE SYNC
+        // ================================================================
+        window.addEventListener('storage', function(e) {
+            if (e.key && e.key.startsWith('flixhub_')) {
+                if (e.key === 'flixhub_ads_updated') {
+                    loadAdSettings();
+                }
+                updateDashboard();
+            }
+        });
+
+        // ================================================================
+        //  ERROR HANDLING GLOBAL
+        // ================================================================
+        window.addEventListener('error', function(e) {
+            console.error('Global error:', e.message);
+            // Tidak menampilkan toast untuk error agar tidak mengganggu user
+        });
+
+        // ================================================================
+        //  INIT
+        // ================================================================
+        console.log('📊 FlixHub Admin Panel v2.0 loaded successfully!');
+        console.log('🔐 Login: admin / flixhub2025 (hashed)');
+        console.log('📈 All ad units can be managed from Settings page');
+        console.log('🔄 Auto-refresh every 30 seconds');
+        console.log('♿ Accessibility: Skip link, ARIA labels, focus indicators');
+        console.log('🔒 Security: Password hashed with Base64');
+        console.log('🗑️ Click trash icon to reset all data');
+    </script>
+
+</body>
+</html>
