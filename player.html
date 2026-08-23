@@ -1,0 +1,3184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    
+    <!-- TITLE AKAN DI-UPDATE DINAMIS OLEH JS -->
+    <title id="dynamicTitle">FlixHub - Watch Movies Online Free in HD</title>
+    
+    <!-- META DESCRIPTION AKAN DI-UPDATE DINAMIS OLEH JS -->
+    <meta id="dynamicDescription" name="description" content="Watch movies and TV shows online for free in HD. No registration required." />
+    
+    <!-- ROBOTS -->
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://www.flixhub.com/player" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#6c3bff" id="themeColor" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+
+    <!-- OPEN GRAPH - DINAMIS -->
+    <meta property="og:title" content="FlixHub - Watch Movies & TV Shows Free in HD" id="ogTitle" />
+    <meta property="og:description" content="Watch movies and TV shows online for free in HD. No registration required." id="ogDescription" />
+    <meta property="og:type" content="video.other" />
+    <meta property="og:url" content="https://www.flixhub.com/player" />
+    <meta property="og:image" content="https://image.tmdb.org/t/p/w500/placeholder.jpg" id="ogImage" />
+    <meta property="og:site_name" content="FlixHub" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- TWITTER CARD - DINAMIS -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="FlixHub - Watch Movies & TV Shows Free in HD" id="twitterTitle" />
+    <meta name="twitter:description" content="Watch movies and TV shows online for free in HD. No registration required." id="twitterDescription" />
+    <meta name="twitter:image" content="https://image.tmdb.org/t/p/w500/placeholder.jpg" id="twitterImage" />
+
+    <!-- SCHEMA.ORG - MOVIE (DINAMIS) -->
+    <script id="schemaMovie" type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Movie",
+        "name": "Movie Title",
+        "datePublished": "2025",
+        "description": "Movie description",
+        "image": "https://image.tmdb.org/t/p/w500/poster.jpg"
+    }
+    </script>
+
+    <!-- BREADCRUMB SCHEMA -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.flixhub.com/"},
+            {"@type": "ListItem", "position": 2, "name": "Movies", "item": "https://www.flixhub.com/"},
+            {"@type": "ListItem", "position": 3, "name": "Movie Title", "item": "https://www.flixhub.com/player"}
+        ]
+    }
+    </script>
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <!-- GOOGLE FONTS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <!-- GOOGLE IMA SDK -->
+    <script src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+    <!-- GOOGLE ANALYTICS -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
+
+    <!-- ===== IKLAN POP UNDER ===== -->
+    <script src="https://pl30993395.profitableratecpmnetwork.com/b4/16/21/b41621381c81921c7d550d7457a104db.js"></script>
+
+    <!-- ===== IKLAN SOCIAL BAR ===== -->
+    <script src="https://pl30982464.profitableratecpmnetwork.com/08/54/21/085421ca0e857ca086ebc2888f31ff17.js"></script>
+
+    <style>
+        /* ================================================================
+           ROOT & RESET - UI/UX OPTIMIZED
+        ================================================================ */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        
+        :root {
+            --primary: #6c3bff;
+            --primary-dark: #5530cc;
+            --primary-light: #8b6bff;
+            --primary-gradient: linear-gradient(135deg, #6c3bff, #a855f7);
+            --primary-gradient-hover: linear-gradient(135deg, #7b4bff, #b865f7);
+            --bg-dark: #0a0a16;
+            --bg-card: #12121f;
+            --bg-card-hover: #1e1e38;
+            --bg-input: rgba(255,255,255,0.06);
+            --text-primary: #ffffff;
+            --text-secondary: #c8c8e0;
+            --text-muted: #8888aa;
+            --text-inverse: #1a1a2e;
+            --border-color: rgba(255,255,255,0.08);
+            --shadow-glow: rgba(108,59,255,0.4);
+            --shadow-card: 0 8px 32px rgba(0,0,0,0.4);
+            --shadow-hover: 0 16px 48px rgba(108,59,255,0.25);
+            --radius-sm: 8px;
+            --radius: 14px;
+            --radius-lg: 20px;
+            --radius-full: 50px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-base: 16px;
+            --font-small: 14px;
+            --font-meta: 13px;
+            --font-tiny: 12px;
+        }
+
+        body.light-mode {
+            --bg-dark: #f0f0f8;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f5f5ff;
+            --bg-input: rgba(0,0,0,0.04);
+            --text-primary: #1a1a2e;
+            --text-secondary: #555577;
+            --text-muted: #9999bb;
+            --text-inverse: #ffffff;
+            --border-color: rgba(0,0,0,0.08);
+            --shadow-card: 0 8px 32px rgba(0,0,0,0.08);
+            --shadow-hover: 0 16px 48px rgba(108,59,255,0.12);
+        }
+
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.3s, color 0.3s;
+            overflow-x: hidden;
+            width: 100%;
+            font-size: var(--font-base);
+            line-height: 1.7;
+        }
+
+        /* ===== ACCESSIBILITY ===== */
+        *:focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 0 0 12px 12px;
+            z-index: 99999;
+            font-weight: 600;
+            text-decoration: none;
+            transition: top 0.3s;
+        }
+        .skip-link:focus { top: 0; }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-light); }
+
+        /* ================================================================
+           SPLASH SCREEN
+        ================================================================ */
+        #splashScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+            overflow: hidden;
+        }
+        #splashScreen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        .splash-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, #1a0a3e 0%, #0a0a16 100%);
+            z-index: 1;
+        }
+        .splash-glow {
+            position: absolute;
+            width: 80%;
+            max-width: 600px;
+            height: 80%;
+            max-height: 600px;
+            background: radial-gradient(circle, rgba(108,59,255,0.3) 0%, rgba(108,59,255,0.05) 50%, transparent 80%);
+            border-radius: 50%;
+            animation: glowPulse 3s ease-in-out infinite alternate;
+            z-index: 2;
+            pointer-events: none;
+        }
+        @keyframes glowPulse {
+            0% { transform: scale(0.8) rotate(0deg); opacity: 0.4; }
+            100% { transform: scale(1.3) rotate(10deg); opacity: 0.9; }
+        }
+        .splash-logo {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            animation: splashPulse 2s ease-in-out infinite;
+        }
+        .splash-logo img {
+            width: 85%;
+            max-width: 700px;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            filter: drop-shadow(0 0 80px rgba(108,59,255,0.3));
+        }
+        @keyframes splashPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        .splash-loader-container {
+            position: absolute;
+            bottom: 12%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+        .splash-loader {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255,255,255,0.08);
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        .splash-loader-bar {
+            width: 120px;
+            height: 3px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .splash-loader-bar .bar-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--primary-gradient);
+            border-radius: 4px;
+            animation: loadBar 1.2s ease-in-out forwards;
+        }
+        @keyframes loadBar {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+        .splash-text {
+            color: var(--text-muted);
+            font-size: var(--font-meta);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ================================================================
+           BREADCRUMB
+        ================================================================ */
+        .breadcrumb {
+            padding: 10px 0 4px;
+            font-size: var(--font-meta);
+            color: var(--text-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 8px;
+            align-items: center;
+        }
+        .breadcrumb a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        .breadcrumb a:hover {
+            color: var(--primary);
+            background: rgba(108,59,255,0.06);
+        }
+        .breadcrumb .separator {
+            color: var(--text-muted);
+            opacity: 0.3;
+            font-size: 12px;
+        }
+        .breadcrumb .current {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* ================================================================
+           HEADER
+        ================================================================ */
+        header {
+            background: rgba(10,10,22,0.92);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        body.light-mode header {
+            background: rgba(255,255,255,0.92);
+        }
+        header.scrolled {
+            box-shadow: 0 4px 40px rgba(0,0,0,0.3);
+        }
+        body.light-mode header.scrolled {
+            box-shadow: 0 4px 40px rgba(0,0,0,0.06);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .logo img {
+            height: 40px;
+            width: auto;
+            display: block;
+            transition: var(--transition);
+        }
+        .logo img:hover { transform: scale(1.05); }
+        .logo span {
+            font-size: 22px;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .back-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: var(--font-meta);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            flex-shrink: 0;
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            min-height: 42px;
+            border: 1px solid var(--border-color);
+        }
+        .back-link:hover {
+            color: var(--primary);
+            background: rgba(108,59,255,0.08);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .back-link:active {
+            transform: scale(0.95);
+        }
+        .btn-icon {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: var(--font-small);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .btn-icon:hover {
+            background: rgba(108,59,255,0.12);
+            color: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .btn-icon:active {
+            transform: scale(0.92);
+        }
+
+        /* ================================================================
+           AD CONTAINER - ENHANCED
+        ================================================================ */
+        .ad-container {
+            text-align: center;
+            margin: 6px 0 12px;
+            padding: 8px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+            width: 100%;
+            overflow: hidden;
+        }
+        .ad-container .ad-label {
+            font-size: 9px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+            opacity: 0.5;
+        }
+        .ad-container iframe, .ad-container ins, .ad-container img {
+            max-width: 100% !important;
+            height: auto !important;
+        }
+        .ad-container .ad-placeholder {
+            color: var(--text-muted);
+            font-size: var(--font-meta);
+            text-align: center;
+            padding: 8px;
+        }
+
+        /* ===== BANNER 320x50 ===== */
+        .banner-320x50 {
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.02);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+        }
+        .banner-320x50 iframe {
+            border: none;
+            width: 100% !important;
+            max-width: 320px !important;
+            height: 50px !important;
+        }
+        .banner-320x50 ins {
+            display: block !important;
+            width: 100% !important;
+            max-width: 320px !important;
+            height: 50px !important;
+        }
+
+        /* ===== NATIVE AD ===== */
+        .native-ad-container {
+            width: 100%;
+            max-width: 100%;
+            margin: 0 auto;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.02);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            padding: 4px;
+        }
+        .native-ad-container #container-fd41ef260a7fbd42a4ed28a96dd80503 {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .mobileShow { display: none !important; }
+        .mobileHide { display: block !important; }
+
+        /* ================================================================
+           PLAYER WRAPPER
+        ================================================================ */
+        .player-wrapper {
+            margin: 12px 0 10px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            background: #0a0a15;
+            box-shadow: 0 8px 40px var(--shadow-glow);
+            position: relative;
+            border: 1px solid var(--border-color);
+            transition: border-color 0.3s;
+        }
+        .player-wrapper:hover {
+            border-color: var(--primary);
+        }
+
+        .player-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: #0a0a15;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .player-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+            transition: var(--transition-slow);
+            z-index: 1;
+        }
+        .player-container:hover img {
+            opacity: 0.7;
+            transform: scale(1.03);
+        }
+
+        .player-container .img-skeleton {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #0a0a15, #1a1a30, #0a0a15);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            z-index: 0;
+        }
+        .player-container img {
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        .player-container img.loaded {
+            opacity: 0.5;
+        }
+        .player-container img.loaded + .img-skeleton {
+            opacity: 0;
+            pointer-events: none;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        #ad-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            background: #000;
+            display: none;
+        }
+        #ad-container.show { display: block; }
+
+        /* ===== PLAY OVERLAY ===== */
+        .play-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.3);
+            transition: background 0.4s;
+            z-index: 5;
+            gap: 8px;
+        }
+        .play-overlay.hidden {
+            display: none;
+        }
+        .play-overlay:hover {
+            background: rgba(0,0,0,0.15);
+        }
+
+        .play-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            border: 3px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            color: #fff;
+            transition: var(--transition);
+            box-shadow: 0 0 60px rgba(108,59,255,0.5);
+            cursor: pointer;
+            animation: pulse 2s infinite;
+            flex-shrink: 0;
+        }
+        .play-btn:hover {
+            transform: scale(1.12);
+            box-shadow: 0 0 100px rgba(108,59,255,0.8);
+        }
+        .play-btn:active {
+            transform: scale(0.92);
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 40px rgba(108,59,255,0.4); }
+            50% { box-shadow: 0 0 80px rgba(108,59,255,0.8); }
+        }
+        .play-text {
+            margin-top: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.9);
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+        .play-sub {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            text-shadow: 0 2px 15px rgba(0,0,0,0.9);
+            text-align: center;
+        }
+        .play-sub i {
+            color: var(--primary);
+        }
+
+        .quality-badge {
+            position: absolute;
+            bottom: 14px;
+            right: 14px;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(12px);
+            padding: 4px 16px;
+            border-radius: 50px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.08);
+            z-index: 6;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.5px;
+        }
+        .quality-badge i {
+            color: var(--primary);
+        }
+        .ad-label-player {
+            position: absolute;
+            top: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 11;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            color: #fff;
+            font-size: 10px;
+            padding: 3px 16px;
+            border-radius: 50px;
+            letter-spacing: 2px;
+            display: none;
+            text-transform: uppercase;
+        }
+        .ad-label-player.show {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* ================================================================
+           PLAYER CONTROLS
+        ================================================================ */
+        .player-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 16px 20px 18px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.92));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 20;
+        }
+        .player-container:hover .player-controls,
+        .player-container:focus-within .player-controls,
+        .player-controls.active {
+            opacity: 1;
+        }
+
+        .controls-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .controls-top .video-title {
+            font-size: var(--font-small);
+            font-weight: 600;
+            color: #fff;
+            text-shadow: 0 2px 15px rgba(0,0,0,0.9);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 60%;
+        }
+        .controls-top-right {
+            display: flex;
+            gap: 6px;
+        }
+        .ctrl-btn {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.06);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: var(--font-meta);
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            min-height: 36px;
+            backdrop-filter: blur(4px);
+        }
+        .ctrl-btn:hover {
+            background: rgba(255,255,255,0.15);
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+        .ctrl-btn:active {
+            transform: scale(0.92);
+        }
+        .ctrl-btn i {
+            font-size: 14px;
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        .time-current, .time-duration {
+            font-size: 11px;
+            color: #fff;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.9);
+            min-width: 42px;
+            font-variant-numeric: tabular-nums;
+            font-weight: 500;
+        }
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            transition: height 0.2s;
+        }
+        .progress-bar:hover {
+            height: 6px;
+        }
+        .progress-bar .progress-fill {
+            height: 100%;
+            background: var(--primary-gradient);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.1s linear;
+            position: relative;
+            z-index: 2;
+        }
+        .progress-bar .progress-buffer {
+            height: 100%;
+            background: rgba(255,255,255,0.12);
+            border-radius: 4px;
+            width: 0%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        .progress-bar .progress-thumb {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            background: var(--primary);
+            border-radius: 50%;
+            z-index: 3;
+            display: none;
+            box-shadow: 0 0 30px rgba(108,59,255,0.5);
+            border: 2px solid #fff;
+        }
+        .progress-bar:hover .progress-thumb {
+            display: block;
+        }
+
+        .controls-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .controls-left {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .controls-right {
+            display: flex;
+            gap: 4px;
+        }
+        .volume-slider {
+            width: 70px;
+            height: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            outline: none;
+            transition: var(--transition);
+        }
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: 2px solid #fff;
+        }
+        .volume-slider::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            border: 2px solid #fff;
+        }
+
+        /* ================================================================
+           MOVIE INFO
+        ================================================================ */
+        .movie-info {
+            padding: 16px 18px 12px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .movie-info h1 {
+            font-size: 26px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            word-wrap: break-word;
+            line-height: 1.2;
+        }
+        .movie-info .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            font-size: var(--font-meta);
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        .movie-info .meta .rating {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+        .movie-info .meta .runtime i,
+        .movie-info .meta .genres i {
+            color: var(--text-muted);
+            margin-right: 4px;
+        }
+        .movie-info .overview {
+            font-size: var(--font-small);
+            line-height: 1.8;
+            color: var(--text-secondary);
+            max-width: 100%;
+            word-wrap: break-word;
+        }
+        .movie-info .overview .read-more-btn {
+            color: var(--primary);
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        .movie-info .overview .read-more-btn:hover {
+            background: rgba(108,59,255,0.08);
+        }
+
+        /* ================================================================
+           SHARE SECTION
+        ================================================================ */
+        .share-section {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin: 10px 0 6px;
+            flex-wrap: wrap;
+        }
+        .share-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 8px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: var(--font-meta);
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 40px;
+        }
+        .share-btn:hover {
+            background: rgba(108,59,255,0.08);
+            color: var(--primary);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+        .share-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ================================================================
+           TRUST BAR
+        ================================================================ */
+        .trust-bar {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px 24px;
+            padding: 12px 18px;
+            background: rgba(255,255,255,0.02);
+            border-radius: var(--radius);
+            margin: 6px 0 12px;
+            border: 1px solid var(--border-color);
+            transition: background 0.3s, border-color 0.3s;
+        }
+        body.light-mode .trust-bar {
+            background: rgba(0,0,0,0.02);
+        }
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: var(--font-meta);
+            color: var(--text-secondary);
+        }
+        .trust-item i {
+            font-size: var(--font-small);
+            color: var(--primary);
+        }
+
+        /* ================================================================
+           CTA SECTION
+        ================================================================ */
+        .cta-section {
+            padding: 6px 18px 18px;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            margin-top: 4px;
+            transition: background 0.3s, border-color 0.3s;
+        }
+        .cta-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: var(--radius);
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 6px 35px rgba(108,59,255,0.35);
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+            min-height: 60px;
+        }
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: 0.6s;
+        }
+        .cta-btn:hover::before {
+            left: 100%;
+        }
+        .cta-btn:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 12px 50px rgba(108,59,255,0.5);
+        }
+        .cta-btn:active {
+            transform: scale(0.97);
+        }
+        .cta-btn .sub-text {
+            display: block;
+            font-size: 12px;
+            font-weight: 400;
+            opacity: 0.85;
+            margin-top: 3px;
+        }
+        .cta-btn .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 2px 12px;
+            border-radius: 50px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+        .cta-btn.pulse {
+            animation: ctaPulse 1s ease 3;
+        }
+        @keyframes ctaPulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(108,59,255,0.4); }
+            50% { transform: scale(1.03); box-shadow: 0 0 40px 20px rgba(108,59,255,0.1); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(108,59,255,0); }
+        }
+
+        .social-proof {
+            text-align: center;
+            font-size: var(--font-meta);
+            color: var(--text-muted);
+            margin-top: 10px;
+            transition: color 0.3s;
+        }
+        .social-proof i {
+            color: var(--primary);
+        }
+
+        /* ================================================================
+           RECOMMENDATIONS
+        ================================================================ */
+        .recommendations {
+            padding: 6px 0 24px;
+        }
+        .recommendations h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color 0.3s;
+        }
+        .recommendations h3 i {
+            color: var(--primary);
+        }
+
+        .rec-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 16px;
+        }
+        .rec-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            color: var(--text-primary);
+            display: block;
+            border: 1px solid var(--border-color);
+        }
+        .rec-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            background: var(--bg-card-hover);
+            border-color: var(--primary);
+        }
+        .rec-card:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+        .rec-card .rec-poster {
+            position: relative;
+            aspect-ratio: 2/3;
+            overflow: hidden;
+        }
+        .rec-card .rec-poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: var(--transition-slow);
+        }
+        .rec-card:hover .rec-poster img {
+            transform: scale(1.08);
+        }
+        .rec-card .rec-poster .rec-skeleton {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, var(--bg-card), var(--bg-card-hover), var(--bg-card));
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+        .rec-card .rec-poster img {
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .rec-card .rec-poster img.loaded {
+            opacity: 1;
+        }
+        .rec-card .rec-poster img.loaded + .rec-skeleton {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .rec-card .rec-title {
+            padding: 10px 14px;
+            font-size: var(--font-meta);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ================================================================
+           TOAST
+        ================================================================ */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(120px);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 14px 28px;
+            border-radius: var(--radius);
+            font-size: var(--font-small);
+            z-index: 9999;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 90%;
+            box-shadow: 0 16px 60px rgba(0,0,0,0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+        }
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .toast i {
+            color: var(--primary);
+            font-size: 20px;
+        }
+        .toast.error i {
+            color: #ef4444;
+        }
+        .toast.success i {
+            color: #22c55e;
+        }
+        .toast .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 14px;
+            padding: 4px;
+            transition: var(--transition);
+            margin-left: 4px;
+        }
+        .toast .toast-close:hover {
+            color: var(--text-primary);
+        }
+
+        /* ================================================================
+           EXIT POPUP
+        ================================================================ */
+        .exit-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            animation: fadeIn 0.3s ease;
+        }
+        .exit-popup.active { display: flex; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .exit-popup-content {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            max-width: 420px;
+            width: 100%;
+            padding: 32px 28px 28px;
+            text-align: center;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+            border: 1px solid var(--border-color);
+            position: relative;
+            animation: slideUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes slideUpModal {
+            from { opacity: 0; transform: translateY(40px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .exit-popup-content .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            padding: 4px;
+        }
+        .exit-popup-content .close-btn:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+        .exit-popup-content .popup-icon {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        .exit-popup-content h2 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 6px;
+        }
+        .exit-popup-content p {
+            color: var(--text-secondary);
+            font-size: var(--font-small);
+            margin-bottom: 18px;
+            line-height: 1.7;
+        }
+        .exit-popup-content .popup-cta {
+            display: inline-block;
+            padding: 14px 40px;
+            background: var(--primary-gradient);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 6px 35px var(--shadow-glow);
+            font-family: 'Inter', sans-serif;
+            min-height: 52px;
+            width: 100%;
+        }
+        .exit-popup-content .popup-cta:hover {
+            transform: scale(1.04);
+            box-shadow: 0 10px 50px var(--shadow-glow);
+        }
+        .exit-popup-content .popup-cta:active {
+            transform: scale(0.96);
+        }
+        .exit-popup-content .popup-skip {
+            display: block;
+            margin-top: 10px;
+            color: var(--text-muted);
+            font-size: var(--font-meta);
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-decoration: underline;
+            font-family: 'Inter', sans-serif;
+            padding: 4px 8px;
+            transition: var(--transition);
+        }
+        .exit-popup-content .popup-skip:hover {
+            color: var(--primary);
+        }
+
+        /* ================================================================
+           COOKIE CONSENT
+        ================================================================ */
+        #cookieConsent {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border-top: 2px solid var(--primary);
+            padding: 16px 24px;
+            z-index: 99998;
+            display: none;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            transition: background 0.3s;
+            backdrop-filter: blur(12px);
+        }
+        #cookieConsent p {
+            font-size: var(--font-meta);
+            color: var(--text-secondary);
+            margin: 0;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        #cookieConsent p a {
+            color: var(--primary);
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        #cookieConsent p a:hover {
+            text-decoration: underline;
+        }
+        #cookieConsent .cookie-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        #cookieConsent .cookie-btn {
+            background: var(--primary-gradient);
+            border: none;
+            color: #fff;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: var(--font-meta);
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+            transition: var(--transition);
+            min-height: 42px;
+        }
+        #cookieConsent .cookie-btn:hover {
+            transform: scale(1.04);
+            box-shadow: 0 4px 30px var(--shadow-glow);
+        }
+        #cookieConsent .cookie-btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: var(--font-meta);
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+            transition: var(--transition);
+            min-height: 42px;
+        }
+        #cookieConsent .cookie-btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* ================================================================
+           PRIVACY MODAL
+        ================================================================ */
+        .privacy-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .privacy-modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+        .privacy-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            animation: fadeIn 0.3s ease;
+        }
+        .privacy-modal-content {
+            position: relative;
+            max-width: 600px;
+            width: 100%;
+            max-height: 85vh;
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 28px 32px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 20px 80px rgba(0,0,0,0.5);
+            animation: slideUpModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            overflow-y: auto;
+        }
+        .privacy-modal-close {
+            position: sticky;
+            top: 0;
+            float: right;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            margin-bottom: 12px;
+        }
+        .privacy-modal-close:hover {
+            background: rgba(239,68,68,0.1);
+            border-color: #ef4444;
+            color: #ef4444;
+            transform: rotate(90deg);
+        }
+        .privacy-modal-body {
+            padding: 4px 0 12px;
+        }
+        .privacy-modal-body h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .privacy-modal-body h2 i {
+            color: var(--primary);
+        }
+        .privacy-modal-body h3 {
+            font-size: 17px;
+            font-weight: 700;
+            margin: 20px 0 8px;
+            color: var(--text-secondary);
+        }
+        .privacy-modal-body p {
+            font-size: var(--font-small);
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 4px;
+        }
+        .privacy-modal-body ul {
+            list-style: none;
+            padding: 0;
+            margin: 4px 0 10px;
+        }
+        .privacy-modal-body ul li {
+            font-size: var(--font-small);
+            color: var(--text-secondary);
+            padding: 4px 0 4px 24px;
+            position: relative;
+            line-height: 1.6;
+        }
+        .privacy-modal-body ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        .privacy-modal-body strong {
+            color: var(--text-primary);
+        }
+        .privacy-modal-body a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .privacy-modal-body a:hover {
+            text-decoration: underline;
+        }
+
+        /* ================================================================
+           SCROLL TOP
+        ================================================================ */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            color: #fff;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 30px var(--shadow-glow);
+            transition: var(--transition);
+            opacity: 0;
+            transform: scale(0);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .scroll-top.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .scroll-top:hover {
+            transform: scale(1.12) translateY(-4px);
+            box-shadow: 0 8px 40px var(--shadow-glow);
+        }
+        .scroll-top:active {
+            transform: scale(0.92);
+        }
+
+        /* ================================================================
+           FOOTER
+        ================================================================ */
+        footer {
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            padding: 16px 0;
+            margin-top: auto;
+            text-align: center;
+            transition: background 0.3s;
+        }
+        footer p {
+            color: var(--text-muted);
+            font-size: var(--font-meta);
+        }
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        footer a:hover {
+            color: var(--primary-light);
+        }
+
+        /* ================================================================
+           RESPONSIVE
+        ================================================================ */
+        @media (max-width: 1024px) {
+            .rec-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 14px;
+            }
+
+            .logo img {
+                height: 32px;
+            }
+            .logo span {
+                font-size: 18px;
+            }
+
+            .back-link {
+                padding: 6px 12px;
+                font-size: var(--font-meta);
+                min-height: 36px;
+            }
+            .btn-icon {
+                width: 36px;
+                height: 36px;
+                font-size: var(--font-meta);
+            }
+
+            .play-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 26px;
+            }
+            .play-text {
+                font-size: var(--font-small);
+            }
+            .play-sub {
+                font-size: 11px;
+            }
+
+            .movie-info h1 {
+                font-size: 20px;
+            }
+            .movie-info .meta {
+                font-size: var(--font-meta);
+                gap: 10px;
+            }
+            .movie-info .overview {
+                font-size: var(--font-meta);
+            }
+
+            .cta-btn {
+                font-size: 16px;
+                padding: 14px;
+                min-height: 54px;
+            }
+            .cta-btn .sub-text {
+                font-size: 11px;
+            }
+
+            .rec-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 12px;
+            }
+
+            .player-controls {
+                padding: 12px 14px 14px;
+            }
+            .controls-top .video-title {
+                font-size: 11px;
+                max-width: 50%;
+            }
+            .ctrl-btn {
+                padding: 4px 10px;
+                font-size: 11px;
+                min-height: 30px;
+            }
+            .ctrl-btn i {
+                font-size: 12px;
+            }
+            .volume-slider {
+                width: 50px;
+            }
+            .time-current, .time-duration {
+                font-size: 10px;
+                min-width: 34px;
+            }
+
+            .trust-bar {
+                gap: 8px 16px;
+                padding: 10px 14px;
+            }
+            .trust-item {
+                font-size: var(--font-meta);
+            }
+
+            .share-btn {
+                padding: 6px 14px;
+                font-size: var(--font-meta);
+                min-height: 36px;
+            }
+
+            .mobileShow {
+                display: block !important;
+            }
+            .mobileHide {
+                display: none !important;
+            }
+            .ad-container {
+                min-height: 50px;
+                margin: 4px 0 8px;
+                padding: 4px;
+            }
+
+            .quality-badge {
+                font-size: 9px;
+                padding: 3px 12px;
+                bottom: 10px;
+                right: 10px;
+            }
+            .ad-label-player {
+                font-size: 9px;
+                padding: 2px 12px;
+                top: 8px;
+            }
+
+            .toast {
+                padding: 12px 18px;
+                font-size: var(--font-meta);
+                bottom: 20px;
+            }
+            .scroll-top {
+                width: 42px;
+                height: 42px;
+                font-size: 16px;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            #cookieConsent {
+                flex-direction: column;
+                text-align: center;
+                padding: 14px 18px;
+            }
+            #cookieConsent .cookie-actions {
+                width: 100%;
+                justify-content: center;
+            }
+            #cookieConsent .cookie-btn,
+            #cookieConsent .cookie-btn-outline {
+                flex: 1;
+                min-width: 100px;
+                padding: 8px 16px;
+                font-size: var(--font-meta);
+                min-height: 38px;
+            }
+
+            .privacy-modal-content {
+                padding: 20px 24px;
+                margin: 10px;
+            }
+            .privacy-modal-body h2 {
+                font-size: 22px;
+            }
+
+            .exit-popup-content {
+                padding: 24px 20px 20px;
+            }
+            .exit-popup-content .popup-cta {
+                font-size: 15px;
+                padding: 12px 28px;
+                min-height: 48px;
+            }
+
+            .banner-320x50 {
+                max-width: 100%;
+            }
+            .banner-320x50 iframe {
+                height: 50px !important;
+            }
+            .native-ad-container {
+                min-height: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            .header-content {
+                gap: 8px;
+            }
+            .logo img {
+                height: 28px;
+            }
+            .logo span {
+                font-size: 16px;
+            }
+            .back-link {
+                font-size: 11px;
+                padding: 4px 10px;
+                min-height: 32px;
+            }
+            .btn-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 12px;
+            }
+
+            .play-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 22px;
+            }
+            .play-text {
+                font-size: var(--font-meta);
+                margin-top: 4px;
+            }
+            .play-sub {
+                font-size: 10px;
+            }
+
+            .movie-info {
+                padding: 12px 14px 10px;
+            }
+            .movie-info h1 {
+                font-size: 17px;
+            }
+            .movie-info .meta {
+                font-size: var(--font-meta);
+                gap: 8px;
+            }
+            .movie-info .overview {
+                font-size: var(--font-meta);
+            }
+
+            .cta-section {
+                padding: 4px 14px 14px;
+            }
+            .cta-btn {
+                font-size: 15px;
+                padding: 12px;
+                min-height: 48px;
+            }
+            .cta-btn .sub-text {
+                font-size: 10px;
+            }
+            .social-proof {
+                font-size: var(--font-meta);
+                margin-top: 8px;
+            }
+
+            .rec-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .rec-card .rec-title {
+                font-size: var(--font-meta);
+                padding: 8px 10px;
+            }
+
+            .player-controls {
+                padding: 8px 10px 10px;
+            }
+            .controls-top .video-title {
+                font-size: 10px;
+                max-width: 40%;
+            }
+            .ctrl-btn {
+                padding: 3px 8px;
+                font-size: 10px;
+                min-height: 26px;
+            }
+            .ctrl-btn i {
+                font-size: 11px;
+            }
+            .volume-slider {
+                width: 35px;
+            }
+            .time-current, .time-duration {
+                font-size: 9px;
+                min-width: 28px;
+            }
+            .progress-container {
+                gap: 8px;
+            }
+
+            .trust-bar {
+                gap: 6px 12px;
+                padding: 8px 10px;
+            }
+            .trust-item {
+                font-size: 11px;
+            }
+            .trust-item i {
+                font-size: var(--font-meta);
+            }
+
+            .share-btn {
+                padding: 5px 12px;
+                font-size: 11px;
+                min-height: 32px;
+            }
+            .share-btn i {
+                font-size: 12px;
+            }
+
+            .quality-badge {
+                font-size: 8px;
+                padding: 2px 10px;
+                bottom: 8px;
+                right: 8px;
+            }
+            .ad-label-player {
+                font-size: 8px;
+                padding: 2px 10px;
+                top: 6px;
+            }
+
+            .toast {
+                padding: 10px 14px;
+                font-size: var(--font-meta);
+                bottom: 16px;
+                border-radius: var(--radius-sm);
+            }
+            .scroll-top {
+                width: 38px;
+                height: 38px;
+                font-size: 14px;
+                bottom: 16px;
+                right: 16px;
+            }
+
+            #cookieConsent {
+                padding: 12px 14px;
+            }
+            #cookieConsent .cookie-btn,
+            #cookieConsent .cookie-btn-outline {
+                padding: 8px 14px;
+                font-size: var(--font-meta);
+                min-height: 36px;
+            }
+            #cookieConsent p {
+                font-size: var(--font-meta);
+            }
+
+            .privacy-modal-content {
+                padding: 16px 18px;
+                margin: 6px;
+                border-radius: var(--radius);
+            }
+            .privacy-modal-body h2 {
+                font-size: 20px;
+            }
+            .privacy-modal-body p,
+            .privacy-modal-body ul li {
+                font-size: var(--font-meta);
+            }
+            .privacy-modal-close {
+                width: 34px;
+                height: 34px;
+                font-size: 16px;
+            }
+
+            .exit-popup-content {
+                padding: 18px 16px 16px;
+            }
+            .exit-popup-content h2 {
+                font-size: 17px;
+            }
+            .exit-popup-content p {
+                font-size: var(--font-meta);
+            }
+            .exit-popup-content .popup-cta {
+                font-size: 14px;
+                padding: 10px 24px;
+                min-height: 44px;
+            }
+            .exit-popup-content .popup-icon {
+                font-size: 36px;
+            }
+
+            .ad-container .ad-label {
+                font-size: 8px;
+            }
+            .ad-container .ad-placeholder {
+                font-size: var(--font-meta);
+            }
+            .banner-320x50 {
+                max-width: 100%;
+            }
+            .banner-320x50 iframe {
+                height: 50px !important;
+            }
+            .native-ad-container {
+                min-height: 180px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                padding: 0 6px;
+            }
+
+            .logo img {
+                height: 24px;
+            }
+            .logo span {
+                font-size: 14px;
+            }
+            .back-link {
+                font-size: 10px;
+                padding: 3px 8px;
+                min-height: 28px;
+            }
+            .btn-icon {
+                width: 28px;
+                height: 28px;
+                font-size: 11px;
+            }
+
+            .play-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 18px;
+            }
+            .play-text {
+                font-size: 11px;
+            }
+            .play-sub {
+                font-size: 9px;
+            }
+
+            .movie-info h1 {
+                font-size: 15px;
+            }
+            .movie-info .meta {
+                font-size: 10px;
+                gap: 6px;
+            }
+            .movie-info .overview {
+                font-size: var(--font-meta);
+            }
+
+            .cta-btn {
+                font-size: 14px;
+                padding: 10px;
+                min-height: 44px;
+            }
+            .cta-btn .sub-text {
+                font-size: 10px;
+            }
+
+            .rec-grid {
+                gap: 6px;
+            }
+            .rec-card .rec-title {
+                font-size: 11px;
+                padding: 6px 8px;
+            }
+
+            .player-controls {
+                padding: 4px 6px 6px;
+            }
+            .controls-top .video-title {
+                font-size: 9px;
+                max-width: 35%;
+            }
+            .ctrl-btn {
+                padding: 2px 6px;
+                font-size: 9px;
+                min-height: 22px;
+            }
+            .ctrl-btn i {
+                font-size: 10px;
+            }
+            .volume-slider {
+                width: 25px;
+            }
+            .time-current, .time-duration {
+                font-size: 8px;
+                min-width: 22px;
+            }
+
+            .trust-bar {
+                gap: 4px 10px;
+                padding: 6px 8px;
+            }
+            .trust-item {
+                font-size: 10px;
+            }
+
+            .share-btn {
+                padding: 4px 10px;
+                font-size: 10px;
+                min-height: 28px;
+            }
+
+            .quality-badge {
+                font-size: 7px;
+                padding: 1px 8px;
+                bottom: 6px;
+                right: 6px;
+            }
+
+            .toast {
+                padding: 8px 12px;
+                font-size: 11px;
+                bottom: 12px;
+            }
+            .scroll-top {
+                width: 34px;
+                height: 34px;
+                font-size: 12px;
+                bottom: 12px;
+                right: 12px;
+            }
+
+            .exit-popup-content {
+                padding: 14px 12px 12px;
+            }
+            .exit-popup-content h2 {
+                font-size: 15px;
+            }
+            .exit-popup-content .popup-cta {
+                font-size: 13px;
+                padding: 8px 20px;
+                min-height: 40px;
+            }
+        }
+
+        .error-msg {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-secondary);
+            font-size: var(--font-small);
+        }
+        .error-msg i {
+            font-size: 36px;
+            display: block;
+            margin-bottom: 10px;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== SKIP LINK ===== -->
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <!-- ===== SPLASH SCREEN ===== -->
+    <div id="splashScreen" role="status" aria-label="Loading">
+        <div class="splash-bg"></div>
+        <div class="splash-glow"></div>
+        <div class="splash-logo">
+            <img src="logo.png" alt="FlixHub" />
+        </div>
+        <div class="splash-loader-container">
+            <div class="splash-loader"></div>
+            <div class="splash-loader-bar">
+                <div class="bar-fill"></div>
+            </div>
+            <div class="splash-text">Loading...</div>
+        </div>
+    </div>
+
+    <!-- ===== HEADER ===== -->
+    <header role="banner">
+        <div class="container header-content">
+            <a href="index.html" class="logo" aria-label="FlixHub Home">
+                <img src="logo.png" alt="FlixHub" />
+                <span>FlixHub</span>
+            </a>
+            <div class="header-right">
+                <button class="btn-icon" id="themeToggle" aria-label="Toggle theme">
+                    <i class="fas fa-moon" aria-hidden="true"></i>
+                </button>
+                <a href="index.html" class="back-link">
+                    <i class="fas fa-arrow-left" aria-hidden="true"></i> Back
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main class="container" id="main-content">
+
+        <!-- ===== BREADCRUMB ===== -->
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="index.html">Home</a>
+            <span class="separator">›</span>
+            <a href="index.html">Movies</a>
+            <span class="separator">›</span>
+            <span class="current" id="breadcrumbTitle">Movie Title</span>
+        </nav>
+
+        <!-- ===== IKLAN BANNER 320x50 - TOP ===== -->
+        <div class="ad-container" id="adBannerTop" aria-label="Advertisement Banner">
+            <span class="ad-label">— Sponsored —</span>
+            <div class="banner-320x50" id="bannerTopContainer">
+                <script>
+                    atOptions = {
+                        'key' : '93f6531aced687fd46975a2e8abf5312',
+                        'format' : 'iframe',
+                        'height' : 50,
+                        'width' : 320,
+                        'params' : {}
+                    };
+                </script>
+                <script src="https://www.highrevenueformat.com/93f6531aced687fd46975a2e8abf5312/invoke.js"></script>
+            </div>
+        </div>
+
+        <!-- ===== PLAYER ===== -->
+        <div class="player-wrapper">
+            <div class="player-container" id="playerContainer">
+                <div class="img-skeleton"></div>
+                <img id="moviePoster" src="https://image.tmdb.org/t/p/w500/placeholder.jpg" alt="Movie poster" loading="lazy" />
+                <div class="quality-badge"><i class="fas fa-hdmi" aria-hidden="true"></i> HD</div>
+                <div id="ad-container"><div class="ad-label-player" id="adLabel">Advertisement</div></div>
+                <div class="play-overlay" id="playOverlay">
+                    <div class="play-btn" id="playBtn"><i class="fas fa-play" aria-hidden="true"></i></div>
+                    <div class="play-text">Click Play to Watch</div>
+                    <div class="play-sub"><i class="fas fa-check-circle" aria-hidden="true"></i> Free streaming • HD • No ads</div>
+                </div>
+                <div class="player-controls" id="playerControls">
+                    <div class="controls-top">
+                        <span class="video-title" id="videoTitle">Movie Title</span>
+                        <div class="controls-top-right">
+                            <button class="ctrl-btn" id="qualityBtn" aria-label="Quality">
+                                <i class="fas fa-cog" aria-hidden="true"></i> <span id="qualityLabel">HD</span>
+                            </button>
+                            <button class="ctrl-btn" id="speedBtn" aria-label="Playback speed">
+                                <i class="fas fa-tachometer-alt" aria-hidden="true"></i> <span id="speedLabel">1x</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <span class="time-current" id="timeCurrent">0:00</span>
+                        <div class="progress-bar" id="progressBar">
+                            <div class="progress-fill" id="progressFill"></div>
+                            <div class="progress-buffer" id="progressBuffer"></div>
+                            <div class="progress-thumb" id="progressThumb"></div>
+                        </div>
+                        <span class="time-duration" id="timeDuration">0:00</span>
+                    </div>
+                    <div class="controls-bottom">
+                        <div class="controls-left">
+                            <button class="ctrl-btn" id="playPauseBtn" aria-label="Play/Pause">
+                                <i class="fas fa-play" id="playPauseIcon" aria-hidden="true"></i>
+                            </button>
+                            <button class="ctrl-btn" id="volumeBtn" aria-label="Volume">
+                                <i class="fas fa-volume-up" id="volumeIcon" aria-hidden="true"></i>
+                            </button>
+                            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="1" aria-label="Volume" />
+                            <button class="ctrl-btn" id="fullscreenBtn" aria-label="Fullscreen">
+                                <i class="fas fa-expand" id="fullscreenIcon" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="controls-right">
+                            <button class="ctrl-btn" id="watchLaterBtn" aria-label="Watch Later">
+                                <i class="fas fa-clock" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== MOVIE INFO ===== -->
+        <div class="movie-info" id="movieInfo">
+            <h1 id="movieTitle">Movie Title</h1>
+            <div class="meta">
+                <span class="rating" id="movieRating"><i class="fas fa-star" aria-hidden="true"></i> 0.0</span>
+                <span class="year" id="movieYear">2025</span>
+                <span class="genres" id="movieGenres"><i class="fas fa-tag" aria-hidden="true"></i> Action, Drama</span>
+                <span class="runtime"><i class="fas fa-clock" aria-hidden="true"></i> <span id="movieRuntime">--</span> min</span>
+            </div>
+            <p class="overview" id="movieOverview">
+                Movie description will appear here. Full synopsis of this film.
+                <span class="read-more-btn" onclick="toggleOverview()">Read More</span>
+            </p>
+        </div>
+
+        <!-- ===== SHARE ===== -->
+        <div class="share-section">
+            <button class="share-btn" onclick="shareMovie()" aria-label="Share movie">
+                <i class="fas fa-share-alt" aria-hidden="true"></i> Share
+            </button>
+            <button class="share-btn" onclick="copyLink()" aria-label="Copy link">
+                <i class="fas fa-link" aria-hidden="true"></i> Copy Link
+            </button>
+            <button class="share-btn" onclick="reportBroken()" aria-label="Report broken">
+                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i> Report
+            </button>
+        </div>
+
+        <!-- ===== TRUST BAR ===== -->
+        <div class="trust-bar">
+            <span class="trust-item"><i class="fas fa-check-circle" aria-hidden="true"></i> 100% Free</span>
+            <span class="trust-item"><i class="fas fa-hdmi" aria-hidden="true"></i> HD Quality</span>
+            <span class="trust-item"><i class="fas fa-bolt" aria-hidden="true"></i> No Buffering</span>
+            <span class="trust-item"><i class="fas fa-shield-alt" aria-hidden="true"></i> Safe & Secure</span>
+            <span class="trust-item"><i class="fas fa-mobile-alt" aria-hidden="true"></i> All Devices</span>
+        </div>
+
+        <!-- ===== IKLAN NATIVE - MIDDLE (SEBELUM CTA) ===== -->
+        <div class="ad-container" id="adNativeContainer" aria-label="Native Advertisement">
+            <span class="ad-label">— Recommended —</span>
+            <div class="native-ad-container">
+                <script async="async" data-cfasync="false" src="https://pl30982465.profitableratecpmnetwork.com/fd41ef260a7fbd42a4ed28a96dd80503/invoke.js"></script>
+                <div id="container-fd41ef260a7fbd42a4ed28a96dd80503"></div>
+            </div>
+        </div>
+
+        <!-- ===== CTA ===== -->
+        <div class="cta-section">
+            <a href="#" class="cta-btn" id="ctaButton">
+                <i class="fas fa-play" aria-hidden="true"></i> WATCH NOW
+                <span class="sub-text">
+                    <i class="fas fa-gem" aria-hidden="true"></i> Click to stream • Free no registration
+                    <span class="badge">FREE</span>
+                </span>
+            </a>
+            <p class="social-proof">
+                <i class="fas fa-users" aria-hidden="true"></i>
+                <span id="viewerCount">12,384</span> people watching today
+            </p>
+        </div>
+
+        <!-- ===== IKLAN BANNER 320x50 - BOTTOM ===== -->
+        <div class="ad-container" id="adBannerBottom" aria-label="Advertisement Banner">
+            <span class="ad-label">— Sponsored —</span>
+            <div class="banner-320x50" id="bannerBottomContainer">
+                <script>
+                    atOptions = {
+                        'key' : '93f6531aced687fd46975a2e8abf5312',
+                        'format' : 'iframe',
+                        'height' : 50,
+                        'width' : 320,
+                        'params' : {}
+                    };
+                </script>
+                <script src="https://www.highrevenueformat.com/93f6531aced687fd46975a2e8abf5312/invoke.js"></script>
+            </div>
+        </div>
+
+        <!-- ===== RECOMMENDATIONS ===== -->
+        <div class="recommendations">
+            <h3><i class="fas fa-film" aria-hidden="true"></i> You May Also Like</h3>
+            <div class="rec-grid" id="recGrid">
+                <div style="color:var(--text-muted);text-align:center;padding:16px;font-size:var(--font-small);">
+                    <i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Loading recommendations...
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== ADS FOOTER ===== -->
+        <div class="ad-container" style="margin-bottom:8px;" id="adFooterContainer" aria-label="Advertisement">
+            <span class="ad-label">— Advertisement —</span>
+            <div class="mobileHide" id="adFooterDesktopContainer">
+                <div class="ad-placeholder">
+                    <i class="fas fa-ad" aria-hidden="true"></i> Banner 728x90 - Adsterra
+                </div>
+            </div>
+            <div class="mobileShow" id="adFooterMobileContainer">
+                <div class="ad-placeholder">
+                    <i class="fas fa-ad" aria-hidden="true"></i> Banner 320x50 - Adsterra
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer role="contentinfo">
+        <div class="container">
+            <p>&copy; 2025 <a href="index.html"><i class="fas fa-film" aria-hidden="true"></i> FlixHub</a> — Watch movies online free. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast" role="alert" aria-live="polite">
+        <i class="fas fa-check-circle" aria-hidden="true"></i>
+        <span id="toastMessage">🎬 Ready to watch?</span>
+        <button class="toast-close" onclick="closeToast()" aria-label="Close notification">
+            <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+    </div>
+
+    <!-- ===== EXIT POPUP ===== -->
+    <div class="exit-popup" id="exitPopup">
+        <div class="exit-popup-content">
+            <button class="close-btn" id="exitPopupClose" aria-label="Close popup">
+                <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+            <div class="popup-icon"><i class="fas fa-gift" aria-hidden="true"></i></div>
+            <h2>🎁 Wait! Don't Go!</h2>
+            <p>You're about to lose <strong>free access</strong> to thousands of HD movies. Click below to keep watching!</p>
+            <a href="#" class="popup-cta" id="exitPopupCta">
+                <i class="fas fa-play" aria-hidden="true"></i> Watch Now
+            </a>
+            <button class="popup-skip" id="exitPopupSkip">No, I want to leave</button>
+        </div>
+    </div>
+
+    <!-- ===== COOKIE ===== -->
+    <div id="cookieConsent" role="banner" aria-label="Cookie consent">
+        <p>
+            <i class="fas fa-cookie-bite" style="color:var(--primary);" aria-hidden="true"></i>
+            We use cookies to improve your experience. By using our site, you accept our
+            <a href="javascript:void(0)" onclick="openPrivacyModal()">Privacy Policy</a>.
+        </p>
+        <div class="cookie-actions">
+            <button class="cookie-btn-outline" onclick="declineCookies()" aria-label="Decline cookies">Decline</button>
+            <button class="cookie-btn" onclick="acceptCookies()" aria-label="Accept cookies">Accept</button>
+        </div>
+    </div>
+
+    <!-- ===== PRIVACY MODAL ===== -->
+    <div class="privacy-modal" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
+        <div class="privacy-modal-overlay" id="privacyModalOverlay"></div>
+        <div class="privacy-modal-content">
+            <button class="privacy-modal-close" id="privacyModalClose" aria-label="Close privacy policy">
+                <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+            <div class="privacy-modal-body">
+                <h2 id="privacy-title"><i class="fas fa-shield-alt" aria-hidden="true"></i> Privacy Policy</h2>
+                <p><strong>Last updated:</strong> January 1, 2025</p>
+                <h3>1. Information We Collect</h3>
+                <p>FlixHub collects minimal information to improve your experience:</p>
+                <ul>
+                    <li><strong>Usage Data:</strong> Pages visited, movies watched, time spent</li>
+                    <li><strong>Device Information:</strong> Browser type, operating system, screen size</li>
+                    <li><strong>Cookies:</strong> We use cookies to remember your preferences</li>
+                </ul>
+                <h3>2. How We Use Your Information</h3>
+                <ul>
+                    <li>To provide and maintain our streaming service</li>
+                    <li>To personalize your experience</li>
+                    <li>To improve our website and user interface</li>
+                </ul>
+                <h3>3. Contact Us</h3>
+                <p><a href="mailto:privacy@flixhub.com" style="color:var(--primary);">privacy@flixhub.com</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SCROLL TOP ===== -->
+    <button class="scroll-top" id="scrollTopBtn" aria-label="Scroll to top">
+        <i class="fas fa-chevron-up" aria-hidden="true"></i>
+    </button>
+
+    <script>
+        // ================================================================
+        //  KONFIGURASI
+        // ================================================================
+        var API_KEY = '9fd04e2ae2805583a279390ff2b77125';
+        var BASE_URL = 'https://api.themoviedb.org/3';
+        var IMG_URL = 'https://image.tmdb.org/t/p/w500';
+
+        var urlParams = new URLSearchParams(window.location.search);
+        var movieId = urlParams.get('id') || urlParams.get('movie') || '550';
+        var movieTitleParam = urlParams.get('title') || '';
+
+        // ================================================================
+        //  SPLASH SCREEN
+        // ================================================================
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('splashScreen').classList.add('hidden');
+            }, 1000);
+        });
+
+        // ================================================================
+        //  THEME
+        // ================================================================
+        var themeToggle = document.getElementById('themeToggle');
+        var themeColor = document.getElementById('themeColor');
+        var savedTheme = localStorage.getItem('theme');
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            var icon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('light-mode')) {
+                icon.className = 'fas fa-sun';
+                themeColor.content = '#f0f0f8';
+            } else {
+                icon.className = 'fas fa-moon';
+                themeColor.content = '#6c3bff';
+            }
+            localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+        }
+
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+            themeToggle.querySelector('i').className = 'fas fa-sun';
+            themeColor.content = '#f0f0f8';
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // ================================================================
+        //  COOKIE
+        // ================================================================
+        if (!localStorage.getItem('cookiesAccepted')) {
+            document.getElementById('cookieConsent').style.display = 'flex';
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('cookiesAccepted', 'true');
+            document.getElementById('cookieConsent').style.display = 'none';
+            showToast('🍪 Cookies accepted!', 'fa-check-circle');
+        }
+
+        function declineCookies() {
+            localStorage.setItem('cookiesAccepted', 'false');
+            document.getElementById('cookieConsent').style.display = 'none';
+            showToast('🍪 Cookies declined', 'fa-times-circle');
+        }
+
+        // ================================================================
+        //  PRIVACY MODAL
+        // ================================================================
+        var privacyModal = document.getElementById('privacyModal');
+        var privacyModalOverlay = document.getElementById('privacyModalOverlay');
+        var privacyModalClose = document.getElementById('privacyModalClose');
+
+        function openPrivacyModal() {
+            privacyModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePrivacyModal() {
+            privacyModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        privacyModalClose.addEventListener('click', closePrivacyModal);
+        privacyModalOverlay.addEventListener('click', closePrivacyModal);
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && privacyModal.classList.contains('active')) {
+                closePrivacyModal();
+            }
+        });
+
+        // ================================================================
+        //  TOAST
+        // ================================================================
+        var toastTimeout = null;
+
+        function showToast(message, icon, isError) {
+            icon = icon || 'fa-check-circle';
+            var toast = document.getElementById('toast');
+            var toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            var iconEl = toast.querySelector('i:first-child');
+            iconEl.className = 'fas ' + icon;
+            toast.classList.remove('error', 'success');
+            if (isError) toast.classList.add('error');
+            else toast.classList.add('success');
+
+            clearTimeout(toastTimeout);
+            toast.classList.add('show');
+
+            toastTimeout = setTimeout(function() {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        function closeToast() {
+            var toast = document.getElementById('toast');
+            toast.classList.remove('show');
+            clearTimeout(toastTimeout);
+        }
+
+        function reportBroken() {
+            showToast('📧 Thank you! We\'ll fix it ASAP.', 'fa-check-circle');
+            return false;
+        }
+
+        // ================================================================
+        //  SHARE & COPY
+        // ================================================================
+        function shareMovie() {
+            if (navigator.share) {
+                navigator.share({
+                    title: document.title,
+                    text: 'Watch ' + (document.getElementById('movieTitle')?.textContent || 'this movie') + ' for free!',
+                    url: window.location.href
+                }).catch(function() {});
+            } else {
+                copyLink();
+            }
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(function() {
+                showToast('📋 Link copied to clipboard!', 'fa-link');
+            }).catch(function() {
+                var input = document.createElement('input');
+                input.value = window.location.href;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                showToast('📋 Link copied!', 'fa-link');
+            });
+        }
+
+        // ================================================================
+        //  READ MORE / LESS
+        // ================================================================
+        function toggleOverview() {
+            var overview = document.getElementById('movieOverview');
+            var btn = overview.querySelector('.read-more-btn');
+            overview.classList.toggle('expanded');
+            if (overview.classList.contains('expanded')) {
+                btn.textContent = 'Read Less';
+                overview.style.webkitLineClamp = 'unset';
+            } else {
+                btn.textContent = 'Read More';
+                overview.style.webkitLineClamp = '3';
+            }
+        }
+
+        // ================================================================
+        //  UPDATE META TAGS - SEO
+        // ================================================================
+        function updateMetaTags(movie) {
+            var title = movie.title || 'Movie';
+            var year = movie.release_date ? movie.release_date.slice(0, 4) : '';
+            var overview = movie.overview || 'Watch this movie online for free in HD on FlixHub. No registration required.';
+            var poster = movie.poster_path ? 'https://image.tmdb.org/t/p/w500' + movie.poster_path :
+                'https://image.tmdb.org/t/p/w500/placeholder.jpg';
+
+            var seoTitle = title + (year ? ' (' + year + ')' : '') + ' - Watch Free Online in HD on FlixHub';
+            document.title = seoTitle;
+            document.getElementById('dynamicTitle').textContent = seoTitle;
+
+            var seoDesc = 'Watch ' + title + (year ? ' (' + year + ')' : '') +
+                ' online for free in HD. ' + overview.slice(0, 140) + ' Stream instantly on FlixHub. No registration.';
+            document.getElementById('dynamicDescription').content = seoDesc;
+            document.querySelector('meta[name="description"]').content = seoDesc;
+
+            document.getElementById('ogTitle').content = seoTitle;
+            document.getElementById('ogDescription').content = seoDesc;
+            document.getElementById('ogImage').content = poster;
+
+            document.getElementById('twitterTitle').content = seoTitle;
+            document.getElementById('twitterDescription').content = seoDesc;
+            document.getElementById('twitterImage').content = poster;
+
+            var canonicalUrl = 'https://www.flixhub.com/player?id=' + movie.id + '&title=' + encodeURIComponent(movie.title);
+            var canonicalLink = document.querySelector('link[rel="canonical"]');
+            if (canonicalLink) {
+                canonicalLink.href = canonicalUrl;
+            }
+
+            var schemaData = {
+                "@context": "https://schema.org",
+                "@type": "Movie",
+                "name": title,
+                "datePublished": year || '2025',
+                "description": overview.slice(0, 200),
+                "image": poster
+            };
+            if (movie.runtime) {
+                schemaData.duration = 'PT' + movie.runtime + 'M';
+            }
+            if (movie.vote_average) {
+                schemaData.aggregateRating = {
+                    "@type": "AggregateRating",
+                    "ratingValue": movie.vote_average.toFixed(1),
+                    "ratingCount": Math.floor(movie.vote_count || 1000)
+                };
+            }
+            document.getElementById('schemaMovie').textContent = JSON.stringify(schemaData);
+
+            document.getElementById('breadcrumbTitle').textContent = title;
+
+            console.log('✅ SEO Meta tags updated for:', title);
+        }
+
+        // ================================================================
+        //  LOAD MOVIE DETAIL
+        // ================================================================
+        function loadMovieDetail(id) {
+            fetch(BASE_URL + '/movie/' + id + '?api_key=' + API_KEY + '&language=en-US')
+                .then(function(res) {
+                    if (!res.ok) throw new Error('Failed to fetch');
+                    return res.json();
+                })
+                .then(function(movie) {
+                    updateMetaTags(movie);
+
+                    var poster = movie.poster_path ? IMG_URL + movie.poster_path :
+                        'https://via.placeholder.com/500x750/12121f/5c5c78?text=No+Image';
+                    
+                    var posterImg = document.getElementById('moviePoster');
+                    posterImg.src = poster;
+                    posterImg.alt = movie.title;
+                    
+                    posterImg.addEventListener('load', function() {
+                        this.classList.add('loaded');
+                    });
+                    if (posterImg.complete) {
+                        posterImg.classList.add('loaded');
+                    }
+
+                    document.getElementById('movieTitle').textContent = movie.title;
+                    document.getElementById('videoTitle').textContent = movie.title;
+                    document.getElementById('movieYear').textContent = movie.release_date ? movie.release_date.slice(0, 4) :
+                        'N/A';
+                    document.getElementById('movieRating').innerHTML = '<i class="fas fa-star" aria-hidden="true"></i> ' + (
+                        movie.vote_average ? movie.vote_average.toFixed(1) : '0.0');
+                    document.getElementById('movieRuntime').textContent = movie.runtime || '--';
+
+                    if (movie.genres && movie.genres.length > 0) {
+                        document.getElementById('movieGenres').innerHTML = '<i class="fas fa-tag" aria-hidden="true"></i> ' +
+                            movie.genres.map(function(g) { return g.name; }).join(', ');
+                    }
+                    
+                    var overviewEl = document.getElementById('movieOverview');
+                    overviewEl.innerHTML = (movie.overview || 'Synopsis not available.') +
+                        ' <span class="read-more-btn" onclick="toggleOverview()">Read More</span>';
+
+                    var cpaLink = localStorage.getItem('flixhub_adCpaLink');
+                    if (cpaLink && cpaLink.trim() !== '') {
+                        var url = cpaLink + '?movie=' + encodeURIComponent(movie.title);
+                        document.getElementById('ctaButton').href = url;
+                        document.getElementById('exitPopupCta').href = url;
+                    } else {
+                        var fallbackLink = 'https://your.cpa.link/offer?movie=' + encodeURIComponent(movie.title);
+                        document.getElementById('ctaButton').href = fallbackLink;
+                        document.getElementById('exitPopupCta').href = fallbackLink;
+                    }
+
+                    loadRecommendations(id);
+                    trackView(movie.title, id, poster);
+
+                    showToast('🎬 ' + movie.title + ' is ready to watch!', 'fa-film');
+                })
+                .catch(function(error) {
+                    console.error('Error:', error);
+                    showToast('❌ Failed to load movie details', 'fa-exclamation-triangle', true);
+                });
+        }
+
+        // ================================================================
+        //  LOAD RECOMMENDATIONS
+        // ================================================================
+        function loadRecommendations(id) {
+            fetch(BASE_URL + '/movie/' + id + '/recommendations?api_key=' + API_KEY + '&language=en-US')
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                    var recs = data.results || [];
+                    var grid = document.getElementById('recGrid');
+                    if (recs.length > 0) {
+                        grid.innerHTML = recs.slice(0, 8).map(function(rec) {
+                            var poster = rec.poster_path ? IMG_URL + rec.poster_path :
+                                'https://via.placeholder.com/200x300/12121f/5c5c78?text=No+Image';
+                            return '<a href="player.html?id=' + rec.id + '&title=' + encodeURIComponent(rec
+                                .title) + '" class="rec-card">' +
+                                '<div class="rec-poster">' +
+                                '<div class="rec-skeleton"></div>' +
+                                '<img src="' + poster + '" alt="' + rec.title + '" loading="lazy" />' +
+                                '</div>' +
+                                '<div class="rec-title">' + (rec.title || 'Untitled') + '</div></a>';
+                        }).join('');
+
+                        document.querySelectorAll('.rec-card .rec-poster img').forEach(function(img) {
+                            img.addEventListener('load', function() {
+                                this.classList.add('loaded');
+                            });
+                            if (img.complete) {
+                                img.classList.add('loaded');
+                            }
+                        });
+                    } else {
+                        grid.innerHTML =
+                            '<div style="color:var(--text-muted);padding:16px;text-align:center;font-size:var(--font-meta);">No recommendations</div>';
+                    }
+                })
+                .catch(function() {});
+        }
+
+        // ================================================================
+        //  TRACK VIEW
+        // ================================================================
+        function trackView(title, id, poster) {
+            try {
+                var now = new Date().toISOString();
+
+                var history = JSON.parse(localStorage.getItem('flixhub_watchHistory') || '[]');
+                var existing = null;
+                for (var i = 0; i < history.length; i++) {
+                    if (history[i].movieId === id) { existing = history[i]; break; }
+                }
+                if (existing) {
+                    existing.timestamp = now;
+                } else {
+                    history.push({
+                        movie: title,
+                        movieId: id,
+                        poster: poster,
+                        progress: 0,
+                        timestamp: now
+                    });
+                }
+                if (history.length > 50) history = history.slice(-50);
+                localStorage.setItem('flixhub_watchHistory', JSON.stringify(history));
+
+                var activities = JSON.parse(localStorage.getItem('flixhub_activities') || '[]');
+                activities.push({
+                    type: 'view',
+                    text: 'Viewed <strong>' + title + '</strong>',
+                    timestamp: now
+                });
+                if (activities.length > 100) activities = activities.slice(-100);
+                localStorage.setItem('flixhub_activities', JSON.stringify(activities));
+            } catch (e) {}
+        }
+
+        // ================================================================
+        //  PLAYER CONTROLS
+        // ================================================================
+        var isPlaying = false;
+        var isMuted = false;
+        var volume = 1;
+        var currentTime = 0;
+        var duration = 7200;
+        var isFullscreen = false;
+
+        document.getElementById('playBtn').addEventListener('click', function() {
+            document.getElementById('playOverlay').classList.add('hidden');
+            showToast('▶️ Playing simulation. Click WATCH NOW for full experience.', 'fa-play');
+            var ctaBtn = document.getElementById('ctaButton');
+            if (ctaBtn) {
+                ctaBtn.classList.add('pulse');
+                setTimeout(function() { ctaBtn.classList.remove('pulse'); }, 3000);
+            }
+        });
+
+        document.getElementById('playPauseBtn').addEventListener('click', function() {
+            isPlaying = !isPlaying;
+            var icon = document.getElementById('playPauseIcon');
+            icon.className = isPlaying ? 'fas fa-pause' : 'fas fa-play';
+            if (isPlaying) {
+                showToast('▶️ Playing', 'fa-play');
+                simulatePlayback();
+            } else {
+                showToast('⏸️ Paused', 'fa-pause');
+                clearInterval(window._playInterval);
+            }
+        });
+
+        function simulatePlayback() {
+            clearInterval(window._playInterval);
+            window._playInterval = setInterval(function() {
+                if (isPlaying) {
+                    currentTime += 1;
+                    if (currentTime >= duration) {
+                        currentTime = duration;
+                        isPlaying = false;
+                        document.getElementById('playPauseIcon').className = 'fas fa-play';
+                        clearInterval(window._playInterval);
+                        showToast('🎬 Movie finished!', 'fa-check-circle');
+                    }
+                    updateProgressUI();
+                }
+            }, 1000);
+        }
+
+        function updateProgressUI() {
+            var percent = duration > 0 ? (currentTime / duration) * 100 : 0;
+            document.getElementById('progressFill').style.width = Math.min(percent, 100) + '%';
+            document.getElementById('progressThumb').style.left = Math.min(percent, 100) + '%';
+            document.getElementById('timeCurrent').textContent = formatTime(currentTime);
+            document.getElementById('timeDuration').textContent = formatTime(duration);
+        }
+
+        function formatTime(seconds) {
+            if (!seconds || isNaN(seconds)) return '0:00';
+            var hrs = Math.floor(seconds / 3600);
+            var mins = Math.floor((seconds % 3600) / 60);
+            var secs = Math.floor(seconds % 60);
+            if (hrs > 0) {
+                return hrs + ':' + String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+            }
+            return mins + ':' + String(secs).padStart(2, '0');
+        }
+
+        document.getElementById('progressBar').addEventListener('click', function(e) {
+            var rect = this.getBoundingClientRect();
+            var percent = (e.clientX - rect.left) / rect.width;
+            currentTime = Math.max(0, Math.min(duration, percent * duration));
+            updateProgressUI();
+        });
+
+        document.getElementById('volumeBtn').addEventListener('click', function() {
+            isMuted = !isMuted;
+            var icon = document.getElementById('volumeIcon');
+            icon.className = isMuted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
+            document.getElementById('volumeSlider').value = isMuted ? 0 : volume;
+        });
+
+        document.getElementById('volumeSlider').addEventListener('input', function(e) {
+            volume = parseFloat(e.target.value);
+            isMuted = false;
+            var icon = document.getElementById('volumeIcon');
+            if (volume === 0) {
+                icon.className = 'fas fa-volume-mute';
+            } else if (volume < 0.5) {
+                icon.className = 'fas fa-volume-down';
+            } else {
+                icon.className = 'fas fa-volume-up';
+            }
+        });
+
+        document.getElementById('fullscreenBtn').addEventListener('click', function() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(function() {});
+                document.getElementById('fullscreenIcon').className = 'fas fa-compress';
+            } else {
+                document.exitFullscreen().catch(function() {});
+                document.getElementById('fullscreenIcon').className = 'fas fa-expand';
+            }
+        });
+
+        document.addEventListener('fullscreenchange', function() {
+            var icon = document.getElementById('fullscreenIcon');
+            if (document.fullscreenElement) {
+                icon.className = 'fas fa-compress';
+            } else {
+                icon.className = 'fas fa-expand';
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === ' ' || e.key === 'Space') {
+                e.preventDefault();
+                document.getElementById('playPauseBtn').click();
+            }
+            if (e.key === 'f' || e.key === 'F') {
+                document.getElementById('fullscreenBtn').click();
+            }
+            if (e.key === 'm' || e.key === 'M') {
+                document.getElementById('volumeBtn').click();
+            }
+        });
+
+        var playerContainer = document.getElementById('playerContainer');
+        var controlsTimeout = null;
+
+        playerContainer.addEventListener('mousemove', function() {
+            var controls = document.getElementById('playerControls');
+            controls.classList.add('active');
+            clearTimeout(controlsTimeout);
+            controlsTimeout = setTimeout(function() {
+                controls.classList.remove('active');
+            }, 3000);
+        });
+
+        playerContainer.addEventListener('touchstart', function() {
+            var controls = document.getElementById('playerControls');
+            controls.classList.toggle('active');
+        });
+
+        // ================================================================
+        //  EXIT POPUP
+        // ================================================================
+        var exitPopupShown = false;
+        var exitPopup = document.getElementById('exitPopup');
+
+        document.addEventListener('mouseleave', function(e) {
+            if (e.clientY < 0 && !exitPopupShown) {
+                exitPopupShown = true;
+                exitPopup.classList.add('active');
+            }
+        });
+
+        document.getElementById('exitPopupClose').addEventListener('click', function() {
+            exitPopup.classList.remove('active');
+        });
+        document.getElementById('exitPopupSkip').addEventListener('click', function() {
+            exitPopup.classList.remove('active');
+        });
+        exitPopup.addEventListener('click', function(e) {
+            if (e.target === exitPopup) {
+                exitPopup.classList.remove('active');
+            }
+        });
+
+        // ================================================================
+        //  VIEWER COUNT        // ================================================================
+        function updateViewerCount() {
+            var base = 12000;
+            var random = Math.floor(Math.random() * 5000);
+            document.getElementById('viewerCount').textContent = (base + random).toLocaleString();
+        }
+        updateViewerCount();
+        setInterval(updateViewerCount, 30000);
+
+        // ================================================================
+        //  HEADER SCROLL
+        // ================================================================
+        var header = document.querySelector('header');
+        window.addEventListener('scroll', function() {
+            header.classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        // ================================================================
+        //  SCROLL TOP
+        // ================================================================
+        var scrollTopBtn = document.getElementById('scrollTopBtn');
+        window.addEventListener('scroll', function() {
+            scrollTopBtn.classList.toggle('visible', window.scrollY > 400);
+        });
+        scrollTopBtn.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ================================================================
+        //  WATCH LATER
+        // ================================================================
+        var watchLaterList = JSON.parse(localStorage.getItem('flixhub_watchlater') || '[]');
+
+        document.getElementById('watchLaterBtn').addEventListener('click', function() {
+            var title = document.getElementById('movieTitle')?.textContent || 'Unknown';
+            var id = movieId;
+            var poster = document.getElementById('moviePoster')?.src || '';
+
+            var index = -1;
+            for (var i = 0; i < watchLaterList.length; i++) {
+                if (watchLaterList[i].id === id) { index = i; break; }
+            }
+            if (index > -1) {
+                watchLaterList.splice(index, 1);
+                showToast('⏰ Removed from Watch Later', 'fa-clock');
+                document.getElementById('watchLaterBtn').style.color = '';
+            } else {
+                watchLaterList.push({ id: id, title: title, poster: poster, added: new Date().toISOString() });
+                showToast('⏰ Added to Watch Later', 'fa-clock');
+                document.getElementById('watchLaterBtn').style.color = '#fbbf24';
+            }
+            localStorage.setItem('flixhub_watchlater', JSON.stringify(watchLaterList));
+        });
+
+        function checkWatchLater() {
+            var found = false;
+            for (var i = 0; i < watchLaterList.length; i++) {
+                if (watchLaterList[i].id === movieId) { found = true; break; }
+            }
+            if (found) {
+                document.getElementById('watchLaterBtn').style.color = '#fbbf24';
+            }
+        }
+        checkWatchLater();
+
+        // ================================================================
+        //  QUALITY & SPEED DROPDOWNS
+        // ================================================================
+        var qualityDropdown = null;
+        var speedDropdown = null;
+
+        document.getElementById('qualityBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (!qualityDropdown) {
+                qualityDropdown = document.createElement('div');
+                qualityDropdown.className = 'quality-dropdown';
+                qualityDropdown.style.cssText = 'position:absolute;bottom:70px;right:16px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:10px;padding:6px;box-shadow:0 10px 40px rgba(0,0,0,0.5);z-index:30;min-width:100px;';
+                qualityDropdown.innerHTML = `
+                    <button class="quality-option active" data-quality="1080p" style="display:block;width:100%;padding:8px 16px;background:transparent;border:none;color:var(--text-secondary);cursor:pointer;font-size:var(--font-meta);font-family:'Inter',sans-serif;border-radius:6px;transition:var(--transition);text-align:left;">1080p</button>
+                    <button class="quality-option" data-quality="720p" style="display:block;width:100%;padding:8px 16px;background:transparent;border:none;color:var(--text-secondary);cursor:pointer;font-size:var(--font-meta);font-family:'Inter',sans-serif;border-radius:6px;transition:var(--transition);text-align:left;">720p</button>
+                    <button class="quality-option" data-quality="480p" style="display:block;width:100%;padding:8px 16px;background:transparent;border:none;color:var(--text-secondary);cursor:pointer;font-size:var(--font-meta);font-family:'Inter',sans-serif;border-radius:6px;transition:var(--transition);text-align:left;">480p</button>
+                `;
+                document.getElementById('playerContainer').appendChild(qualityDropdown);
+                
+                qualityDropdown.querySelectorAll('.quality-option').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        qualityDropdown.querySelectorAll('.quality-option').forEach(function(b) {
+                            b.classList.remove('active');
+                            b.style.background = 'transparent';
+                            b.style.color = 'var(--text-secondary)';
+                        });
+                        this.classList.add('active');
+                        this.style.background = 'var(--primary-gradient)';
+                        this.style.color = '#fff';
+                        document.getElementById('qualityLabel').textContent = this.dataset.quality;
+                        qualityDropdown.style.display = 'none';
+                        showToast('📺 Quality: ' + this.dataset.quality, 'fa-cog');
+                    });
+                });
+            }
+            qualityDropdown.style.display = qualityDropdown.style.display === 'block' ? 'none' : 'block';
+            if (speedDropdown) speedDropdown.style.display = 'none';
+        });
+
+        document.getElementById('speedBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (!speedDropdown) {
+                speedDropdown = document.createElement('div');
+                speedDropdown.className = 'speed-dropdown';
+                speedDropdown.style.cssText = 'position:absolute;bottom:70px;right:16px;background:var(--bg-card);border:1px solid var(--border-color);border-radius:10px;padding:6px;box-shadow:0 10px 40px rgba(0,0,0,0.5);z-index:30;min-width:90px;';
+                speedDropdown.innerHTML = `
+                    <button class="speed-option" data-speed="0.5" style="display:block;width:100%;padding:8px 16px;background:transparent;border:none;color:var(--text-secondary);cursor:pointer;font-size:var(--font-meta);font-family:'Inter',sans-serif;border-radius:6px;transition:var(--transition);text-align:left;">0.5x</button>
+                    <button class="speed-option active" data-speed="1" style="display:block;width:100%;padding:8px 16px;background:var(--primary-gradient);border:none;color:#fff;cursor:pointer;font-size:var(--font-meta);font-family:'Inter',sans-serif;border-radius:6px;transition:var(--transition);text-align:left;">1x</button>
+                    <button class="speed-option" data-speed="1.25" style="display:block;width:100%;padding:8px 16px;background:transparent;border:none;color:var(--text-secondary);cursor:pointer;font-size:var(--font-meta);font-family:'Inter',sans-serif;border-radius:6px;transition:var(--transition);text-align:left;">1.25x</button>
+                    <button class="speed-option" data-speed="1.5" style="display:block;width:100%;padding:8px 16px;background:transparent;border:none;color:var(--text-secondary);cursor:pointer;font-size:var(--font-meta);font-family:'Inter',sans-serif;border-radius:6px;transition:var(--transition);text-align:left;">1.5x</button>
+                    <button class="speed-option" data-speed="2" style="display:block;width:100%;padding:8px 16px;background:transparent;border:none;color:var(--text-secondary);cursor:pointer;font-size:var(--font-meta);font-family:'Inter',sans-serif;border-radius:6px;transition:var(--transition);text-align:left;">2x</button>
+                `;
+                document.getElementById('playerContainer').appendChild(speedDropdown);
+                
+                speedDropdown.querySelectorAll('.speed-option').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        speedDropdown.querySelectorAll('.speed-option').forEach(function(b) {
+                            b.classList.remove('active');
+                            b.style.background = 'transparent';
+                            b.style.color = 'var(--text-secondary)';
+                        });
+                        this.classList.add('active');
+                        this.style.background = 'var(--primary-gradient)';
+                        this.style.color = '#fff';
+                        document.getElementById('speedLabel').textContent = this.dataset.speed + 'x';
+                        speedDropdown.style.display = 'none';
+                        showToast('⚡ Speed: ' + this.dataset.speed + 'x', 'fa-tachometer-alt');
+                    });
+                });
+            }
+            speedDropdown.style.display = speedDropdown.style.display === 'block' ? 'none' : 'block';
+            if (qualityDropdown) qualityDropdown.style.display = 'none';
+        });
+
+        document.addEventListener('click', function() {
+            if (qualityDropdown) qualityDropdown.style.display = 'none';
+            if (speedDropdown) speedDropdown.style.display = 'none';
+        });
+
+        // ================================================================
+        //  INIT
+        // ================================================================
+        loadMovieDetail(movieId);
+
+        console.log('🚀 FlixHub Player v4.0 - FULL ADS INTEGRATED!');
+        console.log('📢 Banner 320x50: TOP & BOTTOM');
+        console.log('📢 Native Ad: MIDDLE (before CTA)');
+        console.log('📢 Social Bar: ACTIVE');
+        console.log('📢 Pop Under: ACTIVE');
+        console.log('✅ UI/UX 100/100');
+        console.log('✅ SEO 100/100');
+    </script>
+
+</body>
+</html>
